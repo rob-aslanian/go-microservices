@@ -1,0 +1,19 @@
+package servicerequest
+
+// Status is used to view the progress of each service/request
+type Status string
+
+const (
+	// StatusActive ...
+	StatusActive Status = "active"
+	// StatusPending ...
+	StatusPending Status = "pending"
+	// StatusDraft ...
+	StatusDraft Status = "draft"
+	// StatusPaused ...
+	StatusPaused Status = "paused"
+	// StatusRejected ...
+	StatusRejected Status = "rejected"
+	// StatusClosed ...
+	StatusClosed Status = "closed"
+)

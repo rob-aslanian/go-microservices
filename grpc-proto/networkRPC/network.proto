@@ -1,0 +1,508 @@
+syntax = "proto3";
+package networkRPC;
+import "userRPC/user.proto";
+import "companyRPC/company.proto";
+
+// protoc --go_out=plugins=grpc:. network.proto
+
+service NetworkService {
+    rpc SendFriendRequest (FriendshipRequest) returns (Friendship);
+    rpc ApproveFriendRequest (Friendship) returns (Empty);
+    rpc DenyFriendRequest (Friendship) returns (Empty);
+    rpc IgnoreFriendRequest (Friendship) returns (Empty);
+    rpc GetFriendRequests (FriendRequestFilter) returns (FriendshipArr);
+    rpc GetAllFriendships (FriendshipFilter) returns (FriendshipArr);
+    rpc GetAllFriendshipsID (Empty) returns (StringArr);
+    rpc Unfriend (User) returns (Empty);
+    rpc IsFriend (User) returns (BooleanValue);
+
+    rpc Follow (User) returns (Empty);
+    rpc Unfollow (User) returns (Empty);
+    rpc GetFollowers (UserFilter) returns (FollowsArr);
+    rpc GetFollowings (UserFilter) returns (FollowsArr);
+
+    rpc AddToFavourites (User) returns (Empty);
+    rpc AddToFollowingsFavourites (Company) returns (Empty);
+    rpc AddToFollowingsFavouritesForCompany (CompanyCompanyId) returns (Empty);
+    rpc RemoveFromFavourites (User) returns (Empty);
+    rpc RemoveFromFollowingsFavourites (Company) returns (Empty);
+    rpc RemoveFromFollowingsFavouritesForCompany (CompanyCompanyId) returns (Empty);
+
+    rpc GetCategoryTree (Empty) returns (CategoryTree);
+    rpc GetCategoryTreeForFollowings (Empty) returns (CategoryTree);
+    rpc GetCategoryTreeForFollowingsForCompany (Company) returns (CategoryTree);
+    rpc CreateCategory (CategoryPath) returns (Empty);
+    rpc CreateCategoryForFollowings (CategoryPath) returns (Empty);
+    rpc CreateCategoryForFollowingsForCompany (CategoryPathWithCompanyId) returns (Empty);
+    rpc RemoveCategory (CategoryPath) returns (Empty);
+    rpc RemoveCategoryForFollowings (CategoryPath) returns (Empty);
+    rpc RemoveCategoryForFollowingsForCompany (CategoryPathWithCompanyId) returns (Empty);
+    rpc AddToCategory (CategoryRequest) returns (Empty);
+    rpc AddToFollowingsCategory (CategoryRequest) returns (Empty);
+    rpc AddToFollowingsCategoryForCompany (CategoryRequestWithCompanyId) returns (Empty);
+    rpc RemoveFromCategory (CategoryRequest) returns (Empty);
+    rpc RemoveFromFollowingsCategory (CategoryRequest) returns (Empty);
+    rpc RemoveFromFollowingsCategoryForCompany (CategoryRequestWithCompanyId) returns (Empty);
+    rpc BatchRemoveFromCategory (BatchRemoveFromCategoryRequest) returns (Empty);
+    rpc BatchRemoveFromFollowingsCategory (BatchRemoveFromCategoryRequest) returns (Empty);
+    rpc BatchRemoveFromFollowingsCategoryForCompany (BatchRemoveFromCategoryRequestWithCompanyId) returns (Empty);
+
+    rpc GetFriendSuggestions (Pagination) returns (UserSuggestionArr);
+
+    rpc MakeCompanyOwner (UserCompanyId) returns (Empty);
+    rpc IsCompanyOwner (UserCompanyId) returns (BooleanValue);
+    rpc MakeCompanyAdmin (MakeCompanyAdminRequest) returns (Empty);
+    rpc GetAdminObject (Company) returns (AdminObject);
+    rpc GetCompanyAdmins (Company) returns (AdminObjectArr);
+    rpc GetUserCompanies (User) returns (AdminObjectArr);
+    rpc ChangeAdminLevel (MakeCompanyAdminRequest) returns (Empty);
+    rpc DeleteCompanyAdmin (UserCompanyId) returns (Empty);
+    rpc GetCompanyCountings (Company) returns (CompanyCountings);
+
+    rpc FollowCompany (Company) returns (Empty);
+    rpc UnfollowCompany (Company) returns (Empty);
+    rpc GetFollowerCompanies (CompanyFilter) returns (CompanyFollowsArr);
+    rpc GetFilteredFollowingCompanies (CompanyFilter) returns (CompanyFollowsArr);
+    rpc AddCompanyToFavourites (Company) returns (Empty);
+    rpc RemoveCompanyFromFavourites (Company) returns (Empty);
+    rpc AddCompanyToCategory (CategoryRequest) returns (Empty);
+    rpc RemoveCompanyFromCategory (CategoryRequest) returns (Empty);
+    rpc GetSuggestedCompanies (Pagination) returns (CompanySuggestionArr);
+
+    //    rpc AddExperience (AddExperienceRequest) returns (Empty) {
+    //    }
+    //    rpc GetAllExperience (Empty) returns (ExperienceArr) {
+    //    }
+
+    rpc AskRecommendation (RecommendationParams) returns (Empty);
+    rpc IgnoreRecommendationRequest (RecommendationRequest) returns (Empty);
+    rpc GetRequestedRecommendations (Pagination) returns (RecommendationRequestArr);
+    rpc GetReceivedRecommendationRequests (Pagination) returns (RecommendationRequestArr);
+    rpc WriteRecommendation (RecommendationParams) returns (Empty);
+    rpc SetRecommendationVisibility (RecommendationVisibility) returns (Empty);
+    rpc GetReceivedRecommendations (Pagination) returns (RecommendationArr);
+    rpc GetGivenRecommendations (Pagination) returns (RecommendationArr);
+    rpc GetReceivedRecommendationById (IdWithPagination) returns (RecommendationArr);
+    rpc GetGivenRecommendationsById (IdWithPagination) returns (RecommendationArr);
+    rpc GetHiddenRecommendationByID (IdWithPagination) returns (RecommendationArr);
+
+    rpc BlockUser (User) returns (Empty);
+    rpc UnblockUser (User) returns (Empty);
+    rpc BlockCompany (Company) returns (Empty);
+    rpc UnblockCompany (Company) returns (Empty);
+    rpc BlockUserForCompany (UserCompanyId) returns (Empty);
+    rpc UnblockUserForCompany (UserCompanyId) returns (Empty);
+    rpc GetBlockedUsersForCompany (Company) returns (UserArr);
+
+    rpc GetblockedUsersOrCompanies (Empty) returns (BlockedUserOrCompanyArr);
+    rpc IsBlocked (User) returns (BooleanValue);
+    rpc IsBlockedByUser (User) returns (BooleanValue);
+    rpc IsBlockedCompany (Company) returns (BooleanValue);
+    rpc IsBlockedCompanyByUser (Company) returns (BooleanValue);
+
+    rpc IsBlockedForCompany (UserCompanyId) returns (BooleanValue);
+    rpc IsBlockedByCompany (UserCompanyId) returns (BooleanValue);
+    rpc IsBlockedCompanyForCompany (UserCompanyId) returns (BooleanValue);
+    rpc IsBlockedCompanyByCompany (UserCompanyId) returns (BooleanValue);
+
+    rpc GetFollowingsForCompany (IdWithUserFilter) returns (FollowsArr);
+    rpc GetFollowersForCompany (IdWithUserFilter) returns (FollowsArr);
+    rpc GetFollowingCompaniesForCompany (IdWithCompanyFilter) returns (CompanyFollowsArr);
+    rpc GetFollowerCompaniesForCompany (IdWithCompanyFilter) returns (CompanyFollowsArr);
+    rpc FollowForCompany (UserCompanyId) returns (Empty);
+    rpc UnfollowForCompany (UserCompanyId) returns (Empty);
+    rpc FollowCompanyForCompany (CompanyCompanyId) returns (Empty);
+    rpc UnfollowCompanyForCompany (CompanyCompanyId) returns (Empty);
+    rpc GetSuggestedPeopleForCompany (Company) returns (UserSuggestionArr);
+    rpc GetSuggestedCompaniesForCompany (IdWithPagination) returns (CompanySuggestionArr);
+    rpc IsFollowing (User) returns (BooleanValue);
+    rpc IsFollowingCompany (Company) returns (BooleanValue);
+    rpc IsFavourite (User) returns (BooleanValue);
+    rpc IsFavouriteCompany (Company) returns (BooleanValue);
+
+    rpc IsFollowingForCompany (UserCompanyId) returns (BooleanValue);
+    rpc IsFollowingCompanyForCompany (UserCompanyId) returns (BooleanValue);
+
+    rpc IsFriendRequestSend (User) returns (BooleanValue);
+    rpc IsFriendRequestRecieved (User) returns (FriendRequestID);
+    rpc GetFriendshipID (User) returns (Friendship);
+
+    // for internal
+    rpc GetNumberOfFollowersForCompany (Company) returns (IntValue);
+    rpc GetFriendIdsOf (User) returns (StringArr);
+    rpc GetUserCountings (User) returns (UserCountings);
+
+    rpc GetMutualFriendsOfUser (IdWithPagination) returns (FriendList);
+    rpc GetAmountOfMutualFriends (ID) returns (Amount);
+    rpc GetFriendsOfUser (IdWithPagination) returns (FriendList);
+    rpc GetFollowsOfUser (IdWithPagination) returns (FriendList);
+    rpc GetFollowersOfUser (IdWithPagination) returns (FriendList);
+    rpc GetFollowsCompaniesOfUser (IdWithPagination) returns (CompanyList);
+    rpc GetFollowersCompaniesOfUser (IdWithPagination) returns (CompanyList);
+    rpc GetFollowsOfCompany (IdWithPagination) returns (FriendList);
+    rpc GetFollowersOfCompany (IdWithPagination) returns (FriendList);
+    rpc GetFollowsCompaniesOfCompany (IdWithPagination) returns (CompanyList);
+    rpc GetFollowersCompaniesOfCompany (IdWithPagination) returns (CompanyList);
+    rpc GetFollowersIDs (GetFollowersIDsRequest) returns (IDs);
+}
+
+message Empty {}
+
+message BlockedUserOrCompanyArr {
+    repeated BlockedUserOrCompany List = 1;
+}
+message BlockedUserOrCompany {
+    string Id = 1;
+    string Name = 2;
+    string Avatar = 3;
+    bool IsCompany = 4;
+}
+
+message IdWithPagination {
+    string Id = 1;
+    Pagination Pagination = 2;
+}
+
+message UserCountings {
+    int32 NumOfConnections = 1;
+    int32 NumOfFollowings = 2;
+    int32 NumOfFollowers = 3;
+    int32 NumOfReceivedRecommendations = 4;
+}
+
+message StringArr {
+    repeated string List = 1;
+}
+
+message Pagination {
+    int32 Amount = 1;
+    int32 After = 2;
+}
+
+message RecommendationParams {
+    string UserId = 1;
+    string Text = 2;
+    userRPC.RecommendationRelationEnum Relations = 3;
+    string Title = 4;
+}
+
+message RecommendationVisibility {
+    string RecommendationId = 1;
+    bool Visible = 2;
+}
+
+
+
+message RecommendationArr {
+    repeated Recommendation Recommendations = 1;
+}
+message Recommendation {
+    string Id = 1;
+    User Recommendator = 2;
+    User Receiver = 3;
+    string Text = 4;
+    bool Hidden = 5;
+    int64 CreatedAt = 6;
+    bool IsHiddenNull = 7;
+    string Title = 8;
+    userRPC.RecommendationRelationEnum Relation = 9;
+}
+
+message RecommendationRequestArr {
+    repeated RecommendationRequest Requests = 1;
+}
+message RecommendationRequest {
+    string Id = 1;
+    User Requestor = 2;
+    User Requested = 3;
+    string Text = 4;
+    int64 CreatedAt = 5;
+    string Title = 6;
+    userRPC.RecommendationRelationEnum Relation = 7;
+}
+
+message IntValue {
+    int32 Value = 1;
+}
+
+message IdWithCompanyFilter {
+    string Id = 1;
+    CompanyFilter Filter = 2;
+}
+
+message IdWithUserFilter {
+    string Id = 1;
+    UserFilter Filter = 2;
+}
+
+message UserFilter {
+    string Query = 1;
+    string Category = 2;
+    string Letter = 3;
+    string SortBy = 4;
+    repeated string Companies = 5;
+}
+
+enum AdminLevel {
+    Admin = 0;
+    JobAdmin = 1;
+    CommercialAdmin = 2;
+    VShopAdmin = 3;
+    VServiceAdmin = 4;
+}
+
+message CompanyCompanyId {
+    string Company1Id = 1;
+    string Company2Id = 2;
+}
+
+message MakeCompanyAdminRequest {
+    string UserId = 1;
+    string CompanyId = 2;
+    AdminLevel Level = 3;
+}
+
+message AdminObjectArr {
+    repeated AdminObject List = 1;
+}
+
+message AdminObject {
+    User User = 1;
+    Company Company = 2;
+    AdminLevel Level = 3;
+    User CreatedBy = 4;
+    int64 CreatedAt = 5;
+}
+
+message BooleanValue {
+    bool Value = 1;
+}
+
+message ExperienceArr {
+    repeated Experience Experiences = 1;
+}
+
+message Experience {
+    Company Company = 1;
+    string Title = 2;
+    int32 StartMonth = 3;
+    int32 StartYear = 4;
+    int32 EndMonth = 5;
+    int32 EndYear = 6;
+    bool WorkingCurrently = 7;
+    string Description = 8;
+}
+
+message AddExperienceRequest {
+    string CompanyId = 1;
+    string Title = 2;
+    int32 StartMonth = 3;
+    int32 StartYear = 4;
+    int32 EndMonth = 5;
+    int32 EndYear = 6;
+    bool WorkingCurrently = 7;
+    string Description = 8;
+}
+
+message CompanyFilter {
+    string Query = 1;
+    string Category = 2;
+    string Letter = 3;
+    string SortBy = 4;
+}
+
+message CompanyFollowsArr {
+    repeated CompanyFollowInfo Follows = 1;
+}
+
+message CompanyFollowInfo {
+    Company Company = 1;
+    bool Following = 2;
+    int32 Followers = 3;
+    int32 Rating = 4;
+    int32 Size = 5;
+    repeated string Categories = 6;
+}
+
+message UserCompanyId {
+    string UserId = 1;
+    string CompanyId = 2;
+}
+
+message CompanyArr {
+    repeated Company Companies = 1;
+}
+
+message Company {
+    string Id = 1;
+    string Name = 2;
+    string Url = 3;
+    string Avatar = 4;
+    string Industry = 5;
+    string Type = 6;
+    string Email = 7;
+    string Address = 8;
+    int32 FoundationYear = 9;
+}
+
+message UserSuggestionArr {
+    repeated UserSuggestion Suggestions = 1;
+}
+
+message UserSuggestion {
+    User User = 1;
+    bool Following = 2;
+    int32 Followers = 3;
+}
+
+message CompanySuggestionArr {
+    repeated CompanySuggestion Suggestions = 1;
+}
+
+message CompanySuggestion {
+    Company Company = 1;
+    int32 Followers = 2;
+}
+
+message FollowsArr {
+    repeated FollowInfo Follows = 1;
+}
+
+message FollowInfo {
+    User User = 1;
+    int32 Followers = 2;
+    bool Following = 3;
+    bool IsFriend = 4;
+    int64 CreatedAt = 5;
+}
+
+message FriendshipRequest {
+    string FriendId = 1;
+    string Description = 2;
+}
+
+message FriendRequestFilter {
+    string Status = 1;
+    bool Sent = 2;
+}
+
+message FriendshipFilter {
+    string Query = 1;
+    string Category = 2;
+    string Letter = 3;
+    string SortBy = 4;
+    repeated string Companies = 5;
+}
+
+message FriendshipArr {
+    repeated Friendship Friendships = 1;
+}
+
+message Friendship {
+    string Id = 1;
+    User Friend = 2;
+    bool MyRequest = 3;
+    string Status = 4;
+    string Description = 5;
+    repeated string categories = 6;
+    bool following = 7;
+    int64 CreatedAt = 8;
+    int64 RespondedAt = 9;
+}
+
+message UserArr {
+    repeated User Users = 1;
+}
+
+message User {
+    string Id = 1;
+    string Status = 2;
+    string Url = 3;
+    string Avatar = 4;
+    string FirstName = 5;
+    string LastName = 6;
+    string Gender = 7;
+    string PrimaryEmail = 8;
+    string PrimaryPhone = 9;
+}
+
+message CategoryRequestWithCompanyId {
+    string CompanyId = 1;
+    string Id = 2;
+    string CategoryName = 3;
+}
+
+message CategoryRequest {
+    string Id = 1;
+    string CategoryName = 2;
+}
+
+message CategoryPathWithCompanyId {
+    string CompanyId = 1;
+    CategoryPath CategoryPath = 2;
+}
+
+message CategoryPath {
+    string Name = 1;
+    string Parent = 2;
+}
+
+message CategoryTree {
+    repeated CategoryItem Categories = 1;
+}
+
+message CategoryItem {
+    string Name = 1;
+    string UniqueName = 2;
+    bool HasChildren = 3;
+    repeated CategoryItem Children = 4;
+}
+
+message BatchRemoveFromCategoryRequestWithCompanyId {
+    string CompanyId = 1;
+    BatchRemoveFromCategoryRequest Request = 2;
+}
+
+message BatchRemoveFromCategoryRequest {
+    repeated string Ids = 1;
+    string Category = 2;
+    bool All = 3;
+}
+
+message FriendRequestID {
+  bool Recivied = 1;
+  string FriendshipID = 2;
+}
+
+message FriendList {
+  repeated userRPC.Profile Friends = 1;
+  int64 Amount = 2;
+}
+
+message CompanyList {
+  repeated companyRPC.Profile Companies = 1;
+  int64 Amount = 2;
+}
+
+message CompanyCountings {
+  int32 Followings = 1;
+  int32 Followers = 2;
+  int32 Employees = 3;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message Amount {
+  int32 Amount = 1;
+}
+
+message IDs {
+  repeated string IDs = 1;
+}
+
+message GetFollowersIDsRequest {
+  string ID = 1;
+  bool IsCompany = 2;
+}

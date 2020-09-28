@@ -1,0 +1,16 @@
+syntax = "proto3";
+package mailRPC;
+
+// protoc --go_out=plugins=grpc:. mail.proto
+
+service MailService {
+    rpc SendMail(SendMailRequest) returns (Empty);
+}
+
+message Empty{}
+
+message SendMailRequest {
+    string Receiver = 1;
+    string Data = 2;
+}
+

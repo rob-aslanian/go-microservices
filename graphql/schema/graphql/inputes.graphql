@@ -1,0 +1,1886 @@
+input RegistrationInput {
+  firstname: String!
+  lastname: String!
+  email: String!
+  username: String!
+  //country_code: Int!
+  //number: String!
+  password: String!
+  birthday: String!
+  country: ID
+  language: ID
+  gender: GenderValue!
+  invited_by: ID
+}
+
+input Credentials {
+  login: String!
+  password: String!
+  two_fa_code: String
+}
+
+input FirstnameInput {
+  name: String
+  permission: PermissionType
+}
+
+input LastnameInput {
+  lastname: String
+  permission: PermissionType
+}
+
+input GenderInput {
+  gender: GenderValue
+  permission: PermissionInput
+}
+
+input AddTitleInput {
+  //title_id: ID
+  title: String
+  permission: PermissionType!
+}
+
+input ChangeTitleInput {
+  id: ID!
+  //title_id: ID
+  title: String
+  permission: PermissionType
+}
+
+input SearchCityInput {
+  country_id: ID!
+  find_city: String
+}
+
+input SearchAllCityInput{
+  find_city: String
+}
+
+input SearchCountryInput {
+  find: String
+}
+
+input PaginationInput {
+  first: Int
+  after: String
+}
+
+input ActivationMethods {
+  by_SMS: Boolean!
+  by_email: Boolean!
+}
+
+input RecoverMethods {
+  by_SMS: Boolean!
+  by_email: Boolean!
+  send_username: Boolean!
+  reset_password: Boolean!
+}
+
+input LocationInput {
+  city: CityInput!
+  country_id: ID!
+}
+
+input CityInput {
+  id: ID
+  city: String
+  subdivision: String
+}
+
+input CountryInput {
+  id: ID
+  // country: String
+}
+
+// input PhoneInput {
+//   country_code: Int!
+//   number: String!
+// }
+
+input RecoveryRequestInput {
+  code: String!
+  password: String!
+  id: ID!
+}
+
+input PermissionInput {
+  type: PermissionType!
+}
+
+input PatronymicInput {
+  patronymic: String
+  permission: PermissionInput
+}
+
+input NicknameInput {
+  nickname: String
+  permission: PermissionInput
+}
+
+input MiddlenameInput {
+  middlename: String
+  permission: PermissionInput
+}
+
+input NativeNameInput {
+  name: String
+  permission: PermissionInput
+  language: ID
+}
+
+input BirthdayInput {
+  date: String
+  permission: PermissionInput
+}
+
+input EmailInput {
+  email: String!
+  permission: PermissionInput!
+}
+
+input ChangingEmailInput {
+  id: ID!
+  permission: PermissionInput
+  primary: Boolean
+}
+
+input PhoneInput {
+  country_code_id: Int!
+  number:     String!
+  permission: PermissionInput!
+}
+
+input ChangingPhoneInput {
+  id:         ID!
+  permission: PermissionInput
+  primary:    Boolean
+}
+
+input CompanyPhoneInput {
+  country_code_id: Int!
+  number:          String!
+}
+
+input AddressInput {
+  name:      String!
+  firstname: String!
+  lastname:  String!
+  apartment: String!
+  street:    String!
+  zip:       String!
+  location:  LocationInput!
+}
+
+input ChangingMyAddressInput {
+  name:      String
+  firstname: String
+  lastname:  String
+  apartment: String
+  street:    String
+  zip:       String
+  location:  LocationInput
+  primary:   Boolean
+}
+
+input ChangingOtherAddressInput {
+  name:      String
+  firstname: String
+  lastname:  String
+  apartment: String
+  street:    String
+  zip:       String
+  location:  LocationInput
+}
+
+input LinkInput {
+  url: String!
+}
+
+
+input LinkWithIDInput {
+  id: ID
+  url: String!
+}
+
+input ExperienceInput {
+  position: String!
+  company: String
+  city_id: ID
+  start_date: String
+  finish_date: String
+  currently_work: Boolean
+  description: String
+  links: [LinkInput!]
+  files_id: [String!]
+}
+
+input ChangingExperienceInput {
+  position: String
+  company: String
+  city_id: ID
+  start_date: String
+  finish_date: String
+  currently_work: Boolean
+  description: String
+  links: [LinkWithIDInput!]
+}
+
+input EducationInput {
+  school: String!
+  degree: String
+  field_study: String!
+  grade: String
+  city_id: ID
+  start_date: String!
+  finish_date: String
+  currently_study: Boolean!
+  description: String
+  links: [LinkInput!]
+  files_id: [String!]
+}
+
+input ChangingEducationInput {
+  school: String
+  degree: String
+  field_study: String
+  grade: String
+  city_id: ID
+  start_date: String
+  finish_date: String
+  currently_study: Boolean!
+  description: String
+  links: [LinkWithIDInput!]
+}
+
+// Company account managment
+
+input RegistrationCompanyInput {
+  name:            String!
+  url:             String!
+  // industry:        CompanyIndustryInput!
+  industry:        ID!
+  type:            CompanyTypeEnum!
+  address:         String!
+  apartment:       String
+  zip:             String!
+  city_id:         ID!
+  // state:           String!
+  // foundation_date: String!
+  email:           String!
+  phone:           CompanyPhoneInput!
+  vat:             String
+  websites:        [String!]
+  invited_by:      ID
+}
+
+input CompanyIndustryInput {
+  id:            ID!
+  subindustries: [ID!]!
+}
+
+input ChangeCompanyIndustryInput {
+  id:            ID!
+  subindustries: [ID!]
+}
+
+input CompanyEmailInput {
+  email: String!
+}
+
+input ChangingCompanyEmailInput {
+  id:         ID!
+  is_primary: Boolean
+}
+
+input CompanyPhoneInput {
+  country_code_id: Int!
+  number:          String!
+}
+
+input ChangingCompanyPhoneInput {
+  id:         ID!
+  is_primary: Boolean
+}
+
+input CompanyAddressInput {
+  name:           String!
+  zip_code:       String!
+  apartment:      String!
+  street_address: String!
+  city_id:        String!
+  // country_id:     String!
+  // state:          String!
+  phones:         [CompanyPhoneInput!]!
+  business_hours: [CompanyBusinessHoursInput!]!
+  geo_pos:        CompanyGeoPosInput
+  primary:        Boolean!
+}
+
+input ChangingCompanyAddressInput {
+  id:             ID!
+  name:           String
+  zip_code:       String
+  apartment:      String
+  street_address: String
+  city_id:        String
+  // country_id:     String
+  // state:          String
+  phones:         [CompanyPhoneInput!]
+  business_hours: [CompanyBusinessHoursInput!]
+  geo_pos:        CompanyGeoPosInput
+  primary:     Boolean
+}
+
+input CompanyBusinessHoursInput {
+  week_days: [WeekDay!]!
+  hour_from: String!
+  hour_to:   String!
+}
+
+input CompanyGeoPosInput {
+  lantitude: Float!
+  longitude: Float!
+}
+
+input ChangingCompanyWebsiteInput {
+  id:      ID!
+  website: String
+}
+
+// Company profile management
+
+input BusinessHoursItemInput {
+  // id:        ID!
+  week_days: [WeekDay!]!
+  hour_from: String!
+  hour_to: String!
+}
+
+input CompanyFounderInput {
+  name:           String
+  position_title: String!
+  // avatar:         String
+  user_id:        ID
+}
+
+input CompanyAwardInput {
+  title:  String!
+  issuer: String!
+  year:   Int!
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input CompanyMilestoneInput {
+  // image:       String
+  year:        Int!
+  title:       String!
+  description: String!
+}
+
+input CompanyProductInput {
+  // image:   String
+  name:    String!
+  website: String!
+}
+
+input CompanyServiceInput {
+  // image:   String
+  name:    String!
+  website: String!
+}
+
+input ChangingCompanyAboutUsInput {
+  description:     String
+  mission:         String
+  industry:        CompanyIndustryInput
+  type:            CompanyTypeEnum
+  foundation_date: String
+  size:            CompanySizeEnum
+  parking:         CompanyParkingEnum
+  business_hours:  [BusinessHoursItemInput!]
+}
+
+input ChangingCompanyFounderInput {
+  id:             ID!
+  name:           String
+  position_title: String
+  // avatar:         String
+}
+
+input ChangingCompanyAwardInput {
+  id:     ID!
+  title:  String
+  issuer: String
+  year:   Int
+  link: [LinkWithIDInput!]
+}
+
+input ChangingCompanyMilestoneInput {
+  id:          ID!
+  // image:       String
+  year:        Int
+  title:       String
+  description: String
+}
+
+input ChangingCompanyProductInput {
+  id:      ID!
+  // image:   String
+  name:    String
+  website: String
+}
+
+input ChangingCompanyServiceInput {
+  id:      ID!
+  // image:   String
+  name:    String
+  website: String
+}
+
+input CompanyReviewInput {
+  score:       CompanyScoreEnum!
+  headline:    String!
+  description: String
+}
+
+input CompanyReviewReportInput {
+  report: CompanyReviewReportEnum!
+  explanation: String
+}
+
+input CompanyReportInput {
+  report: CompanyReportEnum!
+  explanation: String
+}
+
+input SkillInput {
+  skill: String!
+}
+
+input ChangeOrderSkillInput {
+  id: ID!
+  position: Int!
+}
+
+input KnownLanguageInput {
+  language_id: ID!
+  rank: Int!
+}
+
+input ChangingKnownLanguageInput {
+  language_id: ID
+  rank: Int
+}
+
+input CertificationInput {
+  name: String!
+  certification_authority: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  url: String
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input LicenseInput {
+  name: String!
+  issuer: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  url: String
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input AwardInput {
+  title: String!
+  issuer: String
+  date: String
+  description: String
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input ProjectInput {
+  name: String!
+  url: String
+  description: String
+  start_date: String!
+  finish_date: String
+  url: String
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input PublicationInput {
+  title: String!
+  publisher: String
+  date: String
+  url: String
+  description: String
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+input TestInput {
+  title: String!
+  date: String
+  description: String
+  score: Float!
+  files_id: [String!]
+  link: [LinkInput!]
+}
+
+
+input ChangingCertificationInput {
+  name: String
+  certification_authority: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  url: String
+  link: [LinkWithIDInput!]
+}
+
+input ChangingLicenseInput {
+  name: String
+  issuer: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  url: String
+  link: [LinkWithIDInput!]
+}
+
+input ChangingAwardInput {
+  title: String
+  issuer: String
+  date: String
+  description: String
+  link: [LinkWithIDInput!]
+}
+
+input ChangingProjectInput {
+  name: String
+  url: String
+  description: String
+  start_date: String!
+  finish_date: String
+  link: [LinkWithIDInput!]
+}
+
+input ChangingPublicationInput {
+  title: String
+  publisher: String
+  date: String
+  url: String
+  description: String
+  link: [LinkWithIDInput!]
+}
+
+input ChangingTestInput {
+  title: String
+  date: String
+  description: String
+  score: Int
+  link: [LinkWithIDInput!]
+}
+
+input InterestInput {
+  interest: String!
+  description: String
+}
+
+input ChangingInterestInput {
+  interest: String
+  description: String
+}
+
+input SearchUserQuery {
+  keywords: [String!]
+  isMyConnection: Boolean!
+  conenctionsOf: [ID!]
+  country: [ID!]
+  city: [ID!]
+  school: [String!]
+  degree: [String!]
+  filedOfStudy: [String!]
+  isStudent: Boolean!
+  currentCompany: [String!]
+  pastCompany: [String!]
+  industry: [String!]
+  position: [String!]
+  firstname: [String!]
+  lastname: [String!]
+  nickname: [String!]
+  isMale: Boolean!
+  isFemale: Boolean!
+  minAge: Int
+  maxAge: Int
+  skill: [String!]
+  language: [ID!]
+  interest: [String!]
+  full_name: String
+}
+
+input SearchJobQuery {
+  keywords: [String!]
+  date_posted: DatePostedEnum!
+  experience_level: CareerInterestEnum!
+  degree: [String!]
+  country: [ID!]
+  city: [ID!]
+  job_type: [String!]
+  language: [ID!]
+  industry: [String!]
+  subindustry: [String!]
+  company_name: [String!]
+  company_size: CompanySizeEnum!
+  currency: String
+  period: SalaryIntervalEnum!
+  min_salary: Int
+  max_salary: Int
+  skill: [String!]
+  is_following: Boolean!
+  without_cover_letter: Boolean!
+  with_salary: Boolean!
+  company_ids: [ID!]
+}
+
+input SearchServiceQuery {
+  name:String
+  keywords: [String!]
+  location_type:LocationEnum
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  country: [ID!]
+  city: [ID!]
+  currency: String
+  fixed_price_amount:Int
+  min_salary: Int
+  max_salary: Int
+  skill: [String!]
+  is_always_open: Boolean!
+  week_days: [WeekDay!]
+  hour_from: String
+  hour_to: String
+  services_ownwer:ServiceOwenrEnum
+}
+
+input SearchServiceRequestQuery {
+  name:String
+  keywords: [String!]
+  location_type:LocationEnum
+  delivery_time: DeliveryTimeEnum!
+  project_type:[ProjectTypeEnum!]
+  price: PriceEnum!
+  country: [ID!]
+  city: [ID!]
+  currency: String
+  fixed_price_amount:Int
+  min_salary: Int
+  max_salary: Int
+  skill: [String!]
+  tool:[String!]
+  language:[String!]
+  services_ownwer:ServiceOwenrEnum
+}
+
+
+
+input Date {
+  dayOfBirth: Int
+  monthOfBirth: Int
+  yearOfBirth: Int
+}
+
+
+input JobDetailsInput {
+    title: String!
+    country: ID
+    region: String
+    city: ID
+    location_type: LocationEnum!
+    job_functions: [JobFunctionEnum!]!
+    employment_types: [JobTypeEnum!]!
+    descriptions: [JobDescriptionInput!]!
+
+    required:ApplicantQuailificationInput
+    preterred:ApplicantQuailificationInput
+
+    salary_currency: String
+    salary_min: Int
+    salary_max: Int
+    salary_interval: SalaryIntervalEnum
+    additional_compensation: [AdditionalCompensationEnum!]!
+    additional_info:AdditionalInfoInput
+
+    benefits: [JobBenefit!]
+
+    number_of_positions: Int!
+    # publish_day: Int
+    # publish_month: Int
+    # publish_year: Int
+    # deadline_day: Int!
+    # deadline_month: Int!
+    # deadline_year: Int!
+    # hiring_day: Int!
+    # hiring_month: Int!
+    # hiring_year: Int!
+    cover_letter: Boolean!
+    is_willing_to_work_remotly: Boolean!
+    # header_url: String!
+}
+
+input ApplicantQuailificationInput {
+   experience: CareerInterestEnum!
+   languages: [LanguageInput!]
+   tools: [ToolsTechnologiesInput!]
+   skills:[String!]
+   license: String!
+   education:[String!]
+   work: String!
+}
+
+input ToolsTechnologiesInput {
+  tool:String!
+  rank: LevelEnum!
+}
+
+
+input AdditionalInfoInput{
+  suitable_for: [SuitableForEnum!]!
+  travel_requirement:TravelRequirementEnum!
+}
+
+input SearchCandidateQuery {
+  keywords: [String!]
+  country: [ID!]
+  city: [ID!]
+  current_company: [String!]
+  past_company: [String!]
+  industry: [String!]
+  sub_industry: [String!]
+  experience_level: CareerInterestEnum!
+  job_type: [String!]
+  skill: [String!]
+  language: [ID!]school: [String!]
+  degree: [String!]
+  field_of_study: [String!]
+  is_student: Boolean!
+  currency: String
+  period: SalaryIntervalEnum!
+  min_salary: Int
+  max_salary: Int
+  is_willing_to_travel: Boolean!
+  is_willing_to_work_remotly: Boolean!
+  is_possible_to_relocate: Boolean!
+}
+
+input JobMetaInput {
+    advertisement_countries: [String!]!
+    renewal: Int!
+    # job_plan: JobPlan!
+    amount_of_days: Int!
+    anonymous: Boolean!
+    num_of_languages: Int!
+    currency: String!
+    highlight: JobHighlight
+}
+
+
+input JobDescriptionInput {
+    language: String!
+    description: String!
+    why_us: String!
+}
+
+
+enum CareerInterestEnum{
+  experience_unknown
+  without_experience
+  less_then_one_year
+  one_two_years
+  two_three_years
+  three_five_years
+  five_seven_years
+  seven_ten_years
+  ten_years_and_more
+}
+
+enum DatePostedEnum{
+  past_24_hours
+  past_week
+  past_month
+  anytime
+}
+
+input JobSearchFilterInput {
+  keywords: [String!]
+  date_posted: DatePostedEnum!
+  experience_level: CareerInterestEnum!
+  degree: [String!]
+  country: [String!]
+  city: [String!]
+  job_type: [String!]
+  language: [String!]
+  industry: [String!]
+  subindustry: [String!]
+  company_name: [String!]
+  company_size: CompanySizeEnum!
+  currency: String
+  period: String
+  min_salary: Int
+  max_salary: Int
+  skill: [String!]
+  is_following: Boolean!
+  without_cover_letter: Boolean!
+  with_salary: Boolean!
+}
+
+input CandidateSearchFilterInput {
+    keywords: [String!]
+    country: [String!]
+    city: [String!]
+    current_company: [String!]
+    past_company: [String!]
+    industry: [String!]
+    sub_industry: [String!]
+    experience_level: CareerInterestEnum!
+    job_type: [String!]
+    skill: [String!]
+    language: [String!]
+    school: [String!]
+    degree: [String!]
+    field_of_study: [String!]
+    is_student: Boolean!
+    currency: String
+    period: String
+    min_salary: Int
+    max_salary: Int
+    is_willing_to_travel: Boolean!
+    is_willing_to_work_remotly: Boolean!
+    is_possible_to_relocate: Boolean!
+}
+
+input CareerInterestsInput {
+    jobs: [String!]!
+    industry: String!
+    subindustry: [String!]!
+    company_size: CompanySizeEnum!
+    job_types: [JobTypeEnum!]!
+
+    salary_currency: String!
+    salary_min: Int!
+    salary_max: Int!
+    salary_interval: SalaryIntervalEnum!
+
+    relocate: Boolean!
+    remote: Boolean!
+    travel: Boolean!
+
+    experience: CareerInterestEnum!
+    cities: [String!]!
+
+    suitable_for: [SuitableForEnum!]!
+}
+
+
+
+input ChatReplyFileInput {
+    id: ID!
+    name: String!
+}
+
+input ParticipantInput {
+    id: ID!
+    is_company: Boolean!
+    is_admin: Boolean!
+}
+
+input FeedbackInput {
+  name: String!
+  email: String!
+  message: String!
+}
+
+input AdditionalFeedbackInput{
+  company_id: ID
+  reaction: FeedbackReactions!
+  compliment: FeedbackComplimetInput!
+  complaint: FeedbackComplaintInput!
+  bugs: String
+  could_not_find: String
+  suggestion:FeedbackSuggestionInput!
+  other:FeedbackOtherInput!
+}
+
+input FeedbackComplimetInput {
+  favorite_features: String
+  improve_experience: String
+  services_to_have:String
+}
+
+input InvitationWalletInput {
+  name:String!
+  email:String!
+  message:String
+  silver_coins:Int!
+}
+
+input WalletInput {
+  action_type:WalletActionTypeEnum!
+  amount:WalletInputAmount!
+}
+
+input WalletInputAmount {
+    gold_coins:Int
+    silver_coins:Int
+    pending_amount:Int
+}
+
+input FeedbackComplaintInput {
+  missing_or_wrong:String
+  improve_experience: String
+  tell_us_more: String
+
+}
+
+input FeedbackSuggestionInput {
+  idea: String
+  proposal: String
+}
+
+input FeedbackOtherInput {
+  subject: String
+  description: String
+}
+
+input ProfileTranslationInput {
+  firstname: String!
+  lastname:  String!
+  headline:  String!
+  story:     String!
+  nickname:  String!
+}
+
+input ExperienceTranslationInput {
+  experience_id: ID!
+  position:      String!
+  company:       String!
+  description:   String!
+}
+
+input EducationTranslationInput {
+  education_id:   ID!
+  school:         String!
+  degree:         String!
+  field_of_study: String!
+  grade:          String!
+  description:    String!
+}
+
+input InterestTranslationInput {
+  interest_id: ID!
+  interest:    String!
+  description: String!
+}
+
+
+
+input PortfolioTranslationInput {
+  portfolio_id: ID!
+  tittle:    String!
+  description: String!
+}
+
+input ToolTechnologyTranslationInput {
+  tool_technology_id: ID!
+  tool_technology:    String!
+}
+
+input SkillTranslationInput {
+  skill_id: ID!
+  skill:    String!
+}
+
+input BenefitsTranslationInput {
+  benefit_id: ID!
+  benefits: CompanyBenefitsEnum!
+}
+
+input AccomplishmentTranslationInput {
+  accomplishment_id: ID!
+  name:              String!
+  issuer:            String!
+  description:       String!
+}
+
+input ApplicationInput {
+  job_id: ID!
+  email: String!
+  phone: String!
+  cover_letter: String!
+  document_id: [ID!]
+}
+
+input ReportUserInput {
+  reason: ReportUserEnum!
+  text: String
+}
+
+input SearchCompaniesQuery {
+  keywords: [String!]
+  search_for_companies: Boolean!
+  search_for_organizations: Boolean!
+  with_jobs: Boolean!
+  name: [String!]
+  city: [ID!]
+  country: [ID!]
+  industry: [ID!]
+  subindustry: [ID!]
+  size: CompanySizeEnum!
+  type: CompanyTypeEnum!
+  rating: [CompanyScoreEnum!]
+  business_hours: [WeekDay!]
+  founders_id: [ID!]
+  founders_name: [String!]
+  is_career_center_opened: Boolean
+}
+
+// for search filters
+
+input UserSearchFilter {
+  name: String!
+  filter: SearchUserQuery!
+}
+
+input UserSearchFilterForCompany {
+  companyID: ID!
+  name: String!
+  userSearchFilter: SearchUserQuery!
+}
+
+input CompanySearchFilter {
+  name: String!
+  filter: SearchCompaniesQuery!
+}
+
+input CompanySearchFilterForCompany {
+  companyID: ID!
+  name: String!
+  companySearchFilter: SearchCompaniesQuery!
+ }
+
+input JobSearchFilter {
+   name: String!
+   filter: JobSearchFilterInput!
+}
+
+  input JobSearchFilterForCompany {
+  companyID: ID!
+  name: String!
+  jobSearchFilter: JobSearchFilterInput!
+}
+
+input CandidateSearchFilterForCompany{
+  name: String!
+  companyID: ID!
+  candidateSearchFilter: SearchCandidateQuery!
+}
+
+
+
+input PortfolioInput {
+  title: String!
+  description: String!
+  tools: [String!]
+  is_comment_disabled: Boolean!
+  content_type:ContentTypeEnum!
+}
+
+enum ContentTypeEnum {
+    Photo
+    Article
+    Video
+    Audio
+}
+
+input ChangeOrderFilesInPortfolioInput {
+  id: ID!
+  fileID: ID!
+  position: Int!
+}
+
+input ChangingPortfolioInput {
+  title: String!
+  description: String!
+  tools:[String!]
+  is_comment_disabled:Boolean!
+}
+
+input ToolTechnologyInput{
+  tool_Technology: String!
+  rank: LevelEnum!
+}
+
+input AddPortfolioCommentInput {
+  company_id:   ID,
+  owner_id:     ID!
+  portfolio_id: ID!
+  comment:      String!
+}
+
+
+input ChangeToolTechnologyInput{
+  id: ID!
+  tool_Technology: String!
+  rank: LevelEnum!
+}
+
+enum LevelEnum {
+  Level_Begginer
+  Level_Intermediate
+  Level_Advanced
+  Level_Master
+}
+
+input GalleryInput {
+  files_id: String!
+}
+
+input ChangeOrderGalleryInput {
+  id: ID!
+  position: Int!
+}
+
+input CompanyProfileTranslationInput {
+  language:     String!
+  name:         String!
+  mission:      String!
+  description:  String!
+}
+
+input MilestoneTranslationInput{
+  milestone_id: ID!
+  title:        String!
+  description:  String!
+}
+
+input AwardTranslationInput {
+  award_id: ID!
+  title:    String!
+  issuer:   String!
+}
+
+
+input QualificationsInput {
+  skills: [SkillInput]!
+  toolTechnology: [VOfficeToolTechnologyInput!]
+}
+
+input ChangeQualificationsInput {
+  skills: [ChangeSkillInput!]
+  toolTechnology: [ChangeVOfficeToolTechnologyInput!]
+  languages: [ChangeQualificationLanguageInput!]
+}
+
+# Pass id only when changing
+input SkillInput {
+  skill: String!
+}
+
+input ChangeSkillInput{
+  id: ID!
+  skill: String!
+}
+
+# Pass id only when changing
+input QualificationLanguageInput {
+  language: String!
+  rank: LevelEnum!
+}
+# Pass id only when changing
+
+
+input ChangeQualificationLanguageInput {
+  id: ID
+  language: String!
+  rank: LevelEnum!
+}
+
+#input LocationInput {
+ # CouyntryID: ID!
+  #CityID: ID!
+#}
+
+input CreateVOfficeInput {
+  name: String!
+  category: String!
+  location: LocationInput!
+  description: String
+  languages: [QualificationLanguageInput!]
+}
+
+
+
+input VOfficePortfolioInput {
+  contentType: ContentTypeEnum!
+  tittle: String!
+  description: String!
+  links: [LinkWithIDInput!]
+  files_id: [String!]
+}
+
+input VOfficeToolTechnologyInput{
+  tool_Technology: String!
+  rank: LevelEnum!
+}
+
+input ChangeVOfficeToolTechnologyInput{
+  id: ID!
+  tool_Technology: String!
+  rank: LevelEnum!
+}
+
+input CategoryInput {
+  main: String!
+  sub_category: [String!]!
+}
+
+input OfficeRegisterCategoyrInput {
+  main: [String!]!
+  sub_category: [String!]!
+}
+
+input ServiceInput {
+  office_id: String!
+  title: String!
+  description: String!
+  category: CategoryInput!
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  currency: String!
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  additional_details: AdditionalDetailsInput
+  location_type: LocationEnum
+  location: LocationInput
+  files_id: [String!]
+  is_Draft: Boolean!
+  is_Remote: Boolean!
+  wokring_hour:WorkingHour
+}
+
+input WorkingHour {
+   is_always_open:Boolean!
+   working_date:[ServiceWorkingHourInput]!
+}
+
+input ServiceWorkingHourInput {
+  week_days: [WeekDay!]!
+  hour_from: String!
+  hour_to:   String!
+}
+
+
+input ProposalInput {
+  owner_id:ID!
+  request_id:ID!
+  is_owner_company:Boolean!
+  proposal_detail:ProposalDetailInput!
+}
+
+
+input ReviewDetailInput{
+  profile_id:ID!
+  is_company:Boolean!
+  clarity:Int!
+  communication:Int!
+  payment:Int!
+  hire:ReviewHire!
+  description:String
+}
+
+input ProposalDetailInput {
+    profile_id:ID!
+    is_company:Boolean!
+    service_id:ID!
+    office_id:ID!
+    message:String!
+    price_type: PriceEnum!
+    price_amount: Int
+    currency: String
+    delivery_time: DeliveryTimeEnum!
+    expertaion_time:Int!
+    custom_date:String
+    min_price:Int
+    max_price:Int
+}
+
+input OrderServiceInput {
+  owner_id:ID!
+  is_owner_company:Boolean!
+  service_id:ID!
+  office_id:ID!
+  order_details:OrderServiceDetailInput!
+}
+
+input OrderServiceDetailInput {
+    profile_id:ID!
+    is_company:Boolean!
+    description:String!
+    price_type: PriceEnum!
+    price_amount: Int
+    currency: String
+    min_price:Int
+    max_price:Int
+    custom_date:String
+    delivery_time: DeliveryTimeEnum!
+}
+
+input ServiceRequestInput {
+  title: String!
+  description: String!
+  category: CategoryInput!
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  currency: String!
+  project_type: ProjectTypeEnum!
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  additional_details: RequestAdditionalDetailsInput
+  location_type: LocationEnum
+  location: LocationInput
+  files_id: [String!]
+  is_Draft: Boolean!
+  is_Remote: Boolean!
+  custom_date:String
+
+}
+
+
+input RequestInput {
+  title: String!
+  description: String!
+  category: CategoryInput!
+  project_type: ProjectTypeEnum!
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  currency: String!
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  additional_details: RequestAdditionalDetailsInput
+  location_type: LocationEnum
+  location: LocationInput
+  files_id: [String!]
+  provider_invite: [String!]
+  is_Draft: Boolean!
+}
+
+input AdditionalDetailsInput {
+  qualifications: QualificationsInput
+}
+
+input RequestAdditionalDetailsInput {
+  skills:[SkillInput]!
+  tools_Technologies: [VOfficeToolTechnologyInput!]
+  languages: [QualificationLanguageInput!]
+  service_provider: RequestServiceProviderEnum!
+}
+
+input BannerInput {
+  location:        [LocationInput!]!
+  # places:          [AdvertPlace!]!
+  start_date:      String!
+  name:            String!
+  # is_responsive:   Boolean!
+  format:          AdvertFormatEnum!
+  contents:        [AdvertContentInput!]!
+  currency:        String!
+  button_title:    String!
+}
+
+input AdvertContentInput {
+  file_id:         ID!
+  title:           String!
+  description:     String!
+  destination_url: String!
+}
+
+input LanguageInput{
+  language: String!
+  rank: LevelEnum!
+}
+
+input AdvertJobInput {
+  name:            String!
+  start_date:      String!
+  currency:        String!
+  location:        [LocationInput!]!
+}
+
+input AdvertCandidateInput {
+  name:            String!
+  start_date:      String!
+  currency:        String!
+  format:          AdvertFormatEnum!
+  location:        [LocationInput!]!
+}
+
+input PostNewsfeedInput {
+  # id of your company
+  company_id:          ID
+  # id of user's newsfeed
+  newsfeed_user_id:    ID
+  # id of company's newsfeed
+  newsfeed_company_id: ID
+  text:                String!
+  files_ids:           [ID!]
+  shared_post_id:      ID
+  tags:                [NewsfeedTagInput!]
+}
+
+input CommentPostNewsfeedInput {
+  company_id:          ID
+  post_id:             ID!
+  parent_id:           ID
+  text:                String!
+  tags:                [NewsfeedTagInput!]
+  files_ids:           [ID!]
+}
+
+input ChangePostNewsfeedInput {
+  post_id:    ID!
+  company_id: ID
+  is_pinned:  Boolean!
+  text:       String!
+  tags:       [NewsfeedTagInput!]
+}
+
+input NewsfeedTagInput {
+  id:   ID!
+  type: TagableEntity!
+}
+
+input ChangeCommentNewsfeedInput {
+  post_id:    ID!
+  comment_id: ID!
+  company_id: ID
+  text:       String!
+  tags:       [NewsfeedTagInput!]
+}
+
+input LikeInput {
+  id:   ID!
+  type: LikableEntity!
+  emoji: String!
+}
+
+input RegisterGroupRequestInput {
+  name: String!
+  type: String!
+  privacy_type: GroupPrivacyTypeEnum!
+}
+
+input GroupDescriptionInput {
+  description: String!
+  rules:       String!
+  location:    LocationInput
+}
+
+input OpenCareerCenterInput {
+  title:               String!
+  description:         String!
+  cv_button_enabled:   Boolean!
+  custom_button:       CareerCenterButtonInput!
+}
+
+input CareerCenterButtonInput {
+  enabled: Boolean!
+  title:   String!
+  url:     String!
+}
+
+input AddCVInCareerCenterInput {
+  ExpierencedProfessionals: Boolean!
+  NewJobSeekers:            Boolean!
+  YoungProfessionals:       Boolean!
+}
+
+input CreateShopInput {
+  Title:       String!
+  Category:    String!
+  Description: String!
+  ProductsType: [ProductTypeEnum!]!
+}
+
+input PriceInput {
+  amount:   Float!
+  currency: String!
+}
+
+input AddProductRequestInput {
+  shopID:         ID!
+  title:          String!
+  category:       CategoryInput!
+  brand:          String
+  is_used:        Boolean!
+  productType:    ProductTypeEnum!
+  price:          PriceInput!
+  sku:            String!
+  in_stock:       Boolean!
+  quantity:       Int!
+  specification:  SpecificationInput!
+  discount:       DiscountInput!
+  description:    String!
+}
+
+input SpecificationInput {
+  size:       String!
+  color:      String!
+  material:   String!
+  variations: [VariationInput!]
+}
+
+input VariationInput {
+  price:    PriceInput!
+  sku:      String!
+  in_stock: Boolean!
+  quantity: Int!
+}
+
+input DiscountInput {
+  amountOfProducts: Int!
+  discountType:     String!
+  discountValue:    String!
+  startDate:        String!
+  endDate:          String!
+}
+
+input ChangeShowcaseRequestInput {
+  shopID:     ID!
+  showcase:   String!
+}
+
+input MakeOrderRequestInput {
+  product_ids: [ID!]!
+  address:     ShopAddressInput!
+}
+
+input ShopAddressInput {
+  firstname:  String!
+  lastname:   String!
+  cityID:     ID!
+  zip_code:   String!
+  apartment:  String!
+  phone:      String!
+  address:    String!
+  comments:   String
+}
+
+input ChangeOrderStatusInput {
+  order_id:     ID!
+  order_status: ShopOrderStatusEnum!
+}
+
+input ChangeProductInput {
+  category:       CategoryInput!
+  is_used:        Boolean!
+  in_stock:       Boolean!
+  sku:            String!
+  quantity:       Int!
+  price:          PriceInput!
+  specification:  SpecificationInput!
+}
+
+input SearchProductInput {
+  keyword:      String
+  categoryMain: [String!]
+  categorySub:  [String!]
+  priceMax:     Int
+  priceMin:     Int
+  IsUsed:       Boolean
+  IsInStock:    Boolean
+}
+
+
+input RentalLocationInput {
+   city: CityInput!
+   country_id: ID!
+   street:String
+   address:String
+}
+
+
+input RentalInput {
+    deal_type:DealTypeEnum!
+    property_type:PropertyTypeEnum!
+    location:RentalLocationInput!
+    expired_days:Int!
+    post_currency:String!
+}
+
+input RentalDetailInput{
+  title:String!
+  house_rules:String
+  description:String
+}
+
+input RentalPriceInput {
+    price_type:PriceTypeEnum!
+    fix_price:Int
+    min_price:Int
+    max_price:Int
+    currency:String!
+}
+
+input RentalPhoneInput {
+    country_code_id: Int!
+    number:     String!
+}
+
+
+input AddRealEstateInput{
+  company_id:ID 
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  phones:[RentalPhoneInput!]
+  price:RentalPriceInput
+  who_live:[WhoLiveEnum!]
+  status:StatusRentalEnum!
+  badrooms:Int
+  bathrooms:Int
+  total_area:Int
+  floor:Int
+  floors:Int
+  car_spaces:Int
+  rooms:Int
+  property_types:[PropertyTypeEnum!]
+  type_of_land:[StatusRentalEnum!]
+  outdoor_features:[OutdoorFeaturesEnum!]
+  indoor_features:[IndoorFeaturesEnum!]
+  climat_control:[ClimatControlEnum!]
+  commercial_properties:[CommercialPropertyEnum!]
+  commercial_locations:[CommericalPropertyLocationEnum!]
+  additional_filters:[AdditionalFilterEnum!]
+  type_of_property:[TypeOfPropertyEnum!]
+  location_type:[RealEstateLocationEnum!]
+  country_ids:[String!]
+  city_ids:[String!]
+  services:[RealEstateServiceEnum!]
+  materials:[RealEstateMaterial!]
+  layout:LayoutEnum
+  building_use:BuildingUseEnum
+  availability_from:String
+  availability_to:String
+  purchase:RentalPriceInput
+  exterior:RentalPriceInput
+  interior:RentalPriceInput
+  interior_and_exterior:RentalPriceInput
+  timing:RealEstateTiming
+  is_agent:Boolean!
+  has_repossesed:Boolean!
+  metrict_type:PriceTypeEnum
+}
+
+input HouseRentalAppartamentInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  type_of_home:[TypeOfPropertyEnum!]!
+  status:StatusEnum!
+  badrooms:Int!
+  bathrooms:Int!
+  total_area:Int!
+  floor:Int!
+  floors:Int!
+  car_spaces:Int!
+  outdoor_features:[OutdoorFeaturesEnum!]!
+  indoor_features:[IndoorFeaturesEnum!]!
+  climat_control:[ClimatControlEnum!]!
+  availability_from:String
+  availability_to:String
+  phones:[RentalPhoneInput!]!
+  price:RentalPriceInput!
+  is_agent:Boolean!
+  has_repossesed:Boolean!
+  who_live:[WhoLiveEnum!]
+}
+
+
+input RealEstateBuildingsInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  status:StatusEnum!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateCommercialInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  commercial_properties:[CommercialPropertyEnum!]!
+  commercial_location:CommericalPropertyLocationEnum!
+  additional_filters:[AdditionalFilterEnum!]!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateGarageInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  additional_filters:[AdditionalFilterEnum!]!
+  total_area:Int!
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateHotelRoomsInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  status:StatusEnum!
+  rooms:Int!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateLandInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  type_of_land:[StatusEnum!]!
+  more:[AdditionalFilterEnum!]!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateOfficeInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  layout:LayoutEnum!
+  building_use:BuildingUseEnum!
+  status:StatusEnum!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input RealEstateRuralFarmInput {
+  company_id:ID
+  rental_info:RentalInput!
+  rental_detail:[RentalDetailInput!]!
+  property_type:[PropertyTypeEnum!]!
+  additional:[OutdoorFeaturesEnum!]!
+  status:StatusEnum!
+  total_area:Int!
+  availability_from:String
+  availability_to:String
+  price:RentalPriceInput!
+  phones:[RentalPhoneInput!]!
+}
+
+input CommonRealEstateInput {
+  company_id:                 ID
+  deal_type:                  DealTypeEnum!
+  property:                   PropertyTypeEnum!
+  type_of_property:           TypeOfPropertyEnum!
+  status:                     StatusRentalEnum
+  badrooms:                   Int
+  bathrooms:                  Int
+  total_area:                 Float!
+  total_area_unit:            UnitSquareEnum!
+  floor:                      Int
+  floors:                     Int
+  car_spaces:                 Int
+  outdoor_features:           [OutdoorFeaturesEnum!]
+  indoor_features:            [IndoorFeaturesEnum!]
+  climat_control:             [ClimatControlEnum!]
+  is_agent:                   Boolean!
+  title:                      String!
+  house_rules:                String
+  description:                String!
+  description_translations:   [RealEstateDescriptionTranslation!]
+  price:                      RentalPriceInput!
+  phones:                     [RentalPhoneInput!]!
+  reposssessed_property:      Boolean!
+  // garage + commercial properties
+  additional_filters:         [AdditionalFilterEnum!]
+  // office
+  layout:                     LayoutEnum
+  building:                   BuildingUseEnum
+  // commercial properties
+  type_of_property:           [CommercialPropertyEnum!]
+  location:                   [CommericalPropertyLocationEnum!]
+  // land
+  type_of_land:               [LandTypeEnum!]
+  more:                       [RealEstateMore!]
+}
+
+input  AdvertCampaignInput {
+  company_id:ID
+  start_date:      String!
+  name:            String!
+  type: AdvertType!
+  formats: [AdvertFormatEnum!]!
+  locations: [LocationInput!]!
+  languages: [String!]!
+  currency: String!
+  gender:GenderValue
+  age_from:Int
+  age_to:Int
+  impressions:Int!
+  clicks:Int!
+  forwarding:Int!
+  referals:Int!
+}
+
+input AdvertInput{
+   id:ID
+   url:String
+   type:AdvertType!
+   name:String!
+   content:[AdvertCampaignContnetInput!]
+}
+
+input AdvertCampaignContnetInput {
+  headline:String!
+  description:String
+  custom_button:String
+  url:String
+}
+
+input RealEstateDescriptionTranslation {
+  lang:           String!
+  description:    String!
+}

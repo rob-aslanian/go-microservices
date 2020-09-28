@@ -1,0 +1,556 @@
+syntax = "proto3";
+package searchRPC;
+import "userRPC/user.proto";
+import "jobsRPC/jobs.proto";
+import "companyRPC/company.proto";
+import "servicesRPC/service.proto";
+
+
+// protoc --go_out=plugins=grpc:. search.proto
+
+service SearchService{
+  // rpc CommonSearch(CommonSearchRequest) returns (Result){};
+  rpc UserSearch(UserSearchRequest) returns (Profiles);
+  rpc CompanySearch(CompanySearchRequest) returns (Companies);
+  rpc ServiceSearch(ServiceSearchRequest) returns (Services);
+  rpc ServiceRequestSearch(ServiceRequestSearchRequest) returns (ServiceRequests);
+
+
+
+  rpc JobSearch(JobSearchRequest) returns (Jobs);
+  rpc CandidateSearch(CandidateSearchRequest) returns (Candidates);
+
+  rpc SaveUserSearchFilter(SaveUserSearchFilterRequest) returns (ID);
+  rpc SaveCompanySearchFilter(SaveCompanySearchFilterRequest) returns (ID);
+  rpc SaveJobSearchFilter(SaveJobSearchFilterRequest) returns (ID);
+  rpc SaveServiceSearchFilter(SaveServiceSearchFilterRequest) returns (ID);
+  rpc SaveServiceRequestSearchFilter(SaveServiceRequestSearchFilterRequest) returns (ID); 
+
+
+  // rpc SaveCandidateSearchFilter(SaveCandidateSearchFilterRequest) returns (ID);
+
+  rpc SaveUserSearchFilterForCompany(SaveUserSearchFilterRequest) returns (ID);
+  rpc SaveCompanySearchFilterForCompany(SaveCompanySearchFilterRequest) returns (ID);
+  rpc SaveJobSearchFilterForCompany(SaveJobSearchFilterRequest) returns (ID);
+  rpc SaveCandidateSearchFilterForCompany(SaveCandidateSearchFilterRequest) returns (ID);
+
+  // rpc GetFiltersByType(FilterTypeRequest) returns (FilterArr);
+  rpc GetAllFilters(Empty) returns (FilterArr);
+  rpc RemoveFilter(ID) returns (Empty);
+
+  // rpc GetFiltersByTypeForCompany(FilterTypeRequest) returns (FilterArr);
+  rpc GetAllFiltersForCompany(ID) returns (FilterArr);
+  rpc RemoveFilterForCompany(IDs) returns (Empty);
+}
+
+message Empty {}
+
+message CommonSearchRequest {
+  repeated string Keywords = 1;
+
+  string Country = 2;
+  string City = 3;
+
+  string Industry = 4;
+}
+
+message ID{
+  string ID = 1;
+}
+
+message IDs{
+  string ID = 1;
+  string CompanyID = 2;
+}
+
+message FilterArr {
+  repeated Filter Filters = 1;
+}
+
+message Filter{
+  string ID = 1;
+  string Name = 2;
+
+  oneof filters {
+    UserSearchResult UserSearch = 3;
+    CompanySearchResult CompanySearch = 4;
+    JobSearchResult JobSearch = 5;
+    CandidateSearchResult CandidateSearch = 6;
+    ServiceSearchRequest ServiceSearch = 7;
+    ServiceRequestSearchRequest ServiceRequestSearch = 8;
+    
+    
+  }
+}
+
+message SaveUserSearchFilterRequest{
+  string Name = 1;
+  string CompanyID = 2;
+  UserSearchRequest UserSearch = 3;
+}
+
+message SaveJobSearchFilterRequest{
+  string Name = 1;
+  string CompanyID = 2;
+  JobSearchRequest JobSearch = 3;
+}
+
+message SaveServiceSearchFilterRequest {
+  string Name = 1;
+  string CompanyID = 2;
+  ServiceSearchRequest ServiceSearch = 3;
+
+}
+
+message SaveServiceRequestSearchFilterRequest {
+  string Name = 1;
+  string CompanyID = 2;
+  ServiceRequestSearchRequest ServiceRequestSearch = 3;
+}
+
+message SaveCompanySearchFilterRequest{
+  string Name = 1;
+  string CompanyID = 2;
+  CompanySearchRequest CompanySearch = 3;
+}
+
+message SaveCandidateSearchFilterRequest{
+  string Name = 1;
+  string CompanyID = 2;
+  CandidateSearchRequest CandidateSearch = 3;
+}
+
+message FilterTypeRequest{
+  string CompanyID = 1;
+  enum FilterType{
+    UserFilterType = 0;
+    JobFilterType = 1;
+    CandidateFilterType = 2;
+    CompanyFilterType = 3;
+  }
+  FilterType Type = 2;
+}
+
+message City {
+  string ID = 1;
+  string City = 2;
+  string Subdivision = 3;
+  string Country = 4;
+}
+
+message UserSearchResult {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+  bool MyConnections = 4;
+  repeated string ConnectionsOfID = 5;
+
+  repeated string CountryID = 6;
+  repeated City City = 7;
+  repeated string CityID = 27;
+
+  repeated string School = 8;
+  repeated string Degree = 9;
+  repeated string FieldOfStudy = 10;
+  bool IsStudent = 11;
+
+  repeated string CurrentCompany = 12;
+  repeated string PastCompany = 13;
+  repeated string Industry = 14;
+  repeated string Position = 15;
+
+  repeated string Firstname = 16;
+  repeated string Lastname = 17;
+  repeated string Nickname = 18;
+
+  bool IsMale = 19;
+  bool IsFemale = 20;
+
+  uint32 MinAge = 21;
+  uint32 MaxAge = 22;
+
+  repeated string Skill = 23;
+  repeated string Language = 24;
+  repeated string Interest = 25;
+
+  string FullName = 26;
+}
+message UserSearchRequest {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+  bool MyConnections = 4;
+  repeated string ConnectionsOfID = 5;
+
+  repeated string CountryID = 6;
+  repeated string CityID = 7;
+
+  repeated string School = 8;
+  repeated string Degree = 9;
+  repeated string FieldOfStudy = 10;
+  bool IsStudent = 11;
+
+  repeated string CurrentCompany = 12;
+  repeated string PastCompany = 13;
+  repeated string Industry = 14;
+  repeated string Position = 15;
+
+  repeated string Firstname = 16;
+  repeated string Lastname = 17;
+  repeated string Nickname = 18;
+
+  bool IsMale = 19;
+  bool IsFemale = 20;
+
+  uint32 MinAge = 21;
+  uint32 MaxAge = 22;
+
+  repeated string Skill = 23;
+  repeated string Language = 24;
+  repeated string Interest = 25;
+
+  string FullName = 26;
+}
+
+// message Date {
+//   uint32 Day = 1;
+//   uint32 Month = 2;
+//   uint32 Year = 3;
+// }
+enum DatePostedEnum {
+  Past24Hours = 0;
+  PastWeek = 1;
+  PastMonth = 2;
+  Anytime = 3;
+}
+
+message CompanySearchResult {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  bool IsCompany = 4;
+  bool IsOrganization = 5;
+
+  repeated string Name = 6;
+
+  repeated string Country = 7;
+  repeated City City = 8;
+  repeated string CityID = 18;
+
+  repeated string Industry = 9;
+  repeated string SubIndustry = 10;
+
+  companyRPC.Size Size = 11;
+  repeated string FounderIDs = 12;
+  repeated string FounderNames = 13;
+  companyRPC.Type Type = 14;
+  bool IsJobOffers = 15;
+  repeated string Rating = 16;
+  repeated string BusinessHours = 17; // TODO: change type on enum
+}
+
+message CompanySearchRequest {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  bool IsCompany = 4;
+  bool IsOrganization = 5;
+
+  repeated string Name = 6;
+
+  repeated string Country = 7;
+  repeated string City = 8;
+
+  repeated string Industry = 9;
+  repeated string SubIndustry = 10;
+
+  companyRPC.Size Size = 11;
+  repeated string FounderIDs = 12;
+  repeated string FounderNames = 13;
+  companyRPC.Type Type = 14;
+  bool IsJobOffers = 15;
+  repeated string Rating = 16;
+  repeated string BusinessHours = 17; // TODO: change type on enum
+  bool IsCareerCenterOpenened = 18;
+}
+
+message ServiceSearchRequest {
+  uint32 First = 1;
+  string After = 2;
+  repeated string Keywords = 3;
+  repeated string Country = 4;
+  repeated string City = 5;
+  string Currency = 6;
+  string Period = 7;
+  int32 FixedPrice = 8;
+  int32 MinSalary = 9;
+  int32 MaxSalary = 10;
+  repeated string Skill = 11;
+  servicesRPC.LocationEnum LocationType = 12;
+  servicesRPC.DeliveryTimeEnum DeliveryTime = 13;
+  servicesRPC.PriceEnum Price = 14;
+  bool IsAlwaysOpen = 15;
+  repeated servicesRPC.WeekDays WeekDays = 16;
+  string HourFrom = 17;
+  string HourTo = 18;
+  ServiceOwnerEnum ServiceOwner = 19;
+  
+}
+
+message ServiceRequestSearchRequest {
+  uint32 First = 1;
+  string After = 2;
+  repeated string Keywords = 3;
+  repeated string Country = 4;
+  repeated string City = 5;
+  repeated servicesRPC.RequestProjectTypeEnum ProjectType = 6;
+  servicesRPC.PriceEnum PriceType = 7;
+  string Currency = 8;
+  int32 FixedPrice = 9;
+  int32 MinSalary = 10;
+  int32 MaxSalary = 11;
+  repeated string Skills = 12;
+  repeated string Tools = 13;
+  repeated string Languages = 14;
+  servicesRPC.LocationEnum LocationType = 15;
+  servicesRPC.DeliveryTimeEnum DeliveryTime = 16;
+  ServiceOwnerEnum ServiceOwner = 17;
+}
+
+message Profiles {
+  repeated userRPC.Profile Profiles = 1;
+  int64 Total = 2;
+}
+
+
+enum ServiceOwnerEnum {
+  Any_Owner = 0;
+  Owner_User  = 1;
+  Owner_Company = 2;
+}
+
+enum ExperienceEnum {
+  UnknownExperience = 0;
+  WithoutExperience = 1;
+  LessThenOneYear = 2;
+  OneTwoYears = 3;
+  TwoThreeYears = 4;
+  ThreeFiveYears = 5;
+  FiveSevenyears = 6;
+  SevenTenYears = 7;
+  TenYearsAndMore = 8;
+}
+
+enum CompanySizeEnum {
+  SIZE_UNDEFINED = 0;
+  SIZE_SELF_EMPLOYED = 1;
+  SIZE_1_10_EMPLOYEES = 2;
+  SIZE_11_50_EMPLOYEES = 3;
+  SIZE_51_200_EMPLOYEES = 4;
+  SIZE_201_500_EMPLOYEES = 5;
+  SIZE_501_1000_EMPLOYEES = 6;
+  SIZE_1001_5000_EMPLOYEES = 7;
+  SIZE_5001_10000_EMPLOYEES = 8;
+  SIZE_10001_PLUS_EMPLOYEES = 9;
+}
+
+message JobSearchResult {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  DatePostedEnum DatePosted = 4;
+
+  ExperienceEnum ExperienceLevel = 5;
+
+  repeated string Degree = 6;
+
+  repeated string Country = 7;
+  repeated City City = 8;
+  repeated string CityID = 26;
+
+  repeated string JobType = 9;
+
+  repeated string Language = 10;
+
+  repeated string Industry = 11;
+  repeated string Subindustry = 12;
+  repeated string CompanyName = 13;
+  CompanySizeEnum CompanySize = 14;
+
+  string Currency = 15;
+  string Period = 16;
+  uint32 MinSalary = 17;
+  uint32 MaxSalary = 18;
+
+  repeated string Skill = 19;
+
+  bool IsFollowing = 20;
+  bool WithoutCoverLetter = 21;
+  bool WithSalary = 22;
+  bool IsMinSalaryNull = 24;
+  bool IsMaxSalaryNull = 25;
+}
+
+message JobSearchRequest {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  DatePostedEnum DatePosted = 4;
+
+  ExperienceEnum ExperienceLevel = 5;
+
+  repeated string Degree = 6;
+
+  repeated string Country = 7;
+  repeated string City = 8;
+
+  repeated string JobType = 9;
+
+  repeated string Language = 10;
+
+  repeated string Industry = 11;
+  repeated string Subindustry = 12;
+  repeated string CompanyName = 13;
+  CompanySizeEnum CompanySize = 14;
+
+  string Currency = 15;
+  string Period = 16;
+  uint32 MinSalary = 17;
+  uint32 MaxSalary = 18;
+
+  repeated string Skill = 19;
+
+  bool IsFollowing = 20;
+  bool WithoutCoverLetter = 21;
+  bool WithSalary = 22;
+  bool IsMinSalaryNull = 24;
+  bool IsMaxSalaryNull = 25;
+  repeated string CompanyIDs = 26;
+}
+
+message JobResult {
+  string ID = 1;
+  jobsRPC.JobDetails Job = 2;
+  companyRPC.Profile Company = 3;
+  bool IsSaved = 4;
+  bool IsApplied = 5;
+}
+
+message Jobs {
+  repeated JobResult JobResults = 1;
+  int64 Total = 2;
+}
+
+message CandidateSearchResult {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  repeated string Country = 4;
+  repeated City City = 5;
+  repeated string CityID = 28;
+
+  repeated string CurrentCompany = 6;
+  repeated string PastCompany = 7;
+
+  repeated string Industry = 8;
+  repeated string SubIndustry = 9;
+
+  ExperienceEnum ExperienceLevel = 10;
+  repeated string JobType = 11;
+
+  repeated string Skill = 12;
+  repeated string Language = 13;
+
+  repeated string School  = 14;
+  repeated string Degree = 15;
+  repeated string FieldOfStudy = 16;
+  bool IsStudent = 17;
+
+  string Currency = 18;
+  string Period = 19;
+  uint32 MinSalary = 20;
+  uint32 MaxSalary = 21;
+
+  bool IsWillingToTravel = 22;
+  bool IsWillingToWorkRemotly = 23;
+  bool IsPossibleToRelocate = 24;
+  bool IsMinSalaryNull = 26;
+  bool IsMaxSalaryNull = 27;
+}
+
+message CandidateSearchRequest {
+  uint32 First = 1;
+  string After = 2;
+
+  repeated string Keywords = 3;
+
+  repeated string Country = 4;
+  repeated string City = 5;
+
+  repeated string CurrentCompany = 6;
+  repeated string PastCompany = 7;
+
+  repeated string Industry = 8;
+  repeated string SubIndustry = 9;
+
+  ExperienceEnum ExperienceLevel = 10;
+  repeated string JobType = 11;
+
+  repeated string Skill = 12;
+  repeated string Language = 13;
+
+  repeated string School  = 14;
+  repeated string Degree = 15;
+  repeated string FieldOfStudy = 16;
+  bool IsStudent = 17;
+
+  string Currency = 18;
+  string Period = 19;
+  uint32 MinSalary = 20;
+  uint32 MaxSalary = 21;
+
+  bool IsWillingToTravel = 22;
+  bool IsWillingToWorkRemotly = 23;
+  bool IsPossibleToRelocate = 24;
+  bool IsMinSalaryNull = 26;
+  bool IsMaxSalaryNull = 27;
+
+  string CompanyID = 28;
+}
+
+message CandidateResult{
+  userRPC.Profile Candidates = 1;
+  jobsRPC.CareerInterests CareerInterests = 2;
+}
+
+message Candidates {
+  repeated CandidateResult CandidateResults = 1;
+  int64 Total = 2;
+}
+
+message Companies {
+  int64 Total = 1;
+  repeated companyRPC.Profile Results = 2;
+}
+
+message Services {
+  int64 Total = 1;
+  repeated string IDs = 2;
+}
+
+message ServiceRequests {
+  int64 Total = 1;
+  repeated string IDs = 2;
+}

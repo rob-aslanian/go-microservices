@@ -1,0 +1,3362 @@
+type Profile {
+  id: ID!
+  url: String!
+  // statistic: Statistic!
+  avatar: String
+  firstname: String!
+  lastname: String!
+  middlename: String
+  patronymic: String
+  nickname: String
+  native_name: NativeName
+  birthday: String!
+  gender: GenderValue
+  email: String
+  phone: String
+  emails: [String!]!
+  phones: [String!]!
+  location: LocationProfile
+  headline: String
+  story: String
+  experiences(first: Int, after: String): [ExperienceProfile!]
+  toolsTechnologies(first: Int, after: String): [ToolsTechnologiesProfile!]
+  educations(first: Int, after: String): [EducationProfile!]
+  skills(first: Int, after: String): [SkillProfile!]
+  interests(first: Int, after: String): [InterestProfile!]
+  accomplishments(first: Int, after: String): [Accomplishment!]
+  languages(first: Int, after: String): [KnownLanguageProfile!]
+
+  recieved_recommendation(first: Int, after: String): [Recommendation!]
+  given_recommendations(first: Int, after: String): [Recommendation!]
+  received_recommendation_requests(first: Int, after: String): [RecommendationRequest!]
+  requested_recommendation_requests(first: Int, after: String): [RecommendationRequest!]
+  hidden_recommendation(first: Int, after: String): [Recommendation!]
+  online: Boolean!
+  me: Boolean!
+  friend: Boolean!
+  follow: Boolean!
+  favorite: Boolean!
+  blocked: Boolean!
+  friend_request: Boolean!
+  recieved_friend_request: Boolean!
+  friendship_id: String
+  profile_complete_percent: Int
+  current_translation: String!
+  available_translations: [String!]!
+  date_of_registration: String!
+
+  network_info(): NetworkInfoInUserProfile
+}
+
+
+type PortfolioInfo {
+   portfolio_statistic:PortfolioInfoStatistic!
+   portfolio_amount:PortfolioInfoAmount!
+}
+
+
+type PortfolioInfoAmount {
+    has_photo:Boolean!
+    has_video:Boolean!
+    has_article:Boolean!
+    has_audio:Boolean!
+
+}
+
+type PortfolioInfoStatistic {
+  view_count:Int!
+  like_count:Int!
+  comment_count:Int!
+}
+
+
+type NativeName {
+  name: String!
+  language: String!
+}
+
+enum GenderValue {
+    male
+    female
+    both
+}
+
+type LocationProfile {
+  city: String
+  country: String
+}
+
+enum StatusAccount {
+  activated
+  not_activated
+  disabled
+  blocked
+}
+
+type Statistic {
+  following: Int!
+  followers: Int!
+  connections: Int!
+  recommendations: Int!
+  reviews: Int!
+}
+
+type EmailProfile {
+  email: String!
+  primary: Boolean!
+}
+
+type PhoneProfile {
+  country_code: String!
+  number: String!
+  primary: Boolean!
+}
+
+type Location {
+  city: City
+  country: Country
+}
+
+type CityInAddress {
+  id: ID
+  city: String
+  subdivision: String
+}
+
+type City {
+  id: ID
+  city: String
+  subdivision: String
+  country: String
+}
+
+type Country {
+  id: ID
+  country: String
+}
+
+// unfinished
+type Shop {
+  id: ID!
+}
+
+// type Language {
+//   id: ID!
+//   language: String!
+// }
+
+type KnownLanguageProfile {
+  id: ID!
+  image: String!
+  language: ID!
+  rate: Int!
+}
+
+type KnownLanguage {
+  image: String!
+  language: ID!
+  rate: Int!
+}
+
+type ExperienceProfile {
+  id: ID!
+  title: String!
+  company: String!
+  location: Location
+  start_date: String!
+  finish_date: String
+  currently: Boolean
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type Experience {
+  title: String!
+  company: String!
+  location: Location
+  start_date: String!
+  finish_date: String
+  currently: Boolean
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type File {
+  id: ID!
+  name: String!
+  address: String!
+  mime_type: String!
+}
+
+type Link {
+  id: ID!
+  address: String!
+}
+
+type EducationProfile {
+  id: ID!
+  school: String!
+  degree: String
+  field_study: String!
+  grade: String
+  location: Location
+  start_date: String!
+  finish_date: String!
+  currently_study: Boolean!
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type Education {
+  school: String!
+  degree: String
+  field_study: String!
+  grade: String
+  start_date: String!
+  finish_date: String!
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type SkillProfile {
+    id: ID!
+    name: String!
+    endorsements(first: Int, after: String): [Profile!]
+    amount_endorsements: Int!
+}
+
+type Skill {
+  name: String!
+  endorsements: [Profile!]
+  amount_endorsements: Int!
+}
+
+type InterestProfile {
+  id: ID!
+  interest: String!
+  image: String!
+  description: String!
+}
+
+type Interest {
+  title: String!
+  image: String!
+}
+
+// type Recommendations {
+//  getRequestedRecommendation(first: Int, after: String): [Recommendation!]
+//  getGivenRecommendations(first: Int, after: String): [Recommendation!]
+//  getReceivedRecommendationRequests(first: Int, after: String): [RecommendationRequest!]
+//  getRequestedRecommendationRequests(first: Int, after: String): [RecommendationRequest!]
+// }
+
+type Recommendation {
+  id: ID!
+  text: String!
+  is_hidden: Boolean
+  receiver: Profile!
+  recommendator: Profile!
+  created_at: Time!
+  title:String!
+  relation:RecommendationRelationEnum!
+}
+
+type RecommendationRequest {
+  id: ID!
+  requestor: Profile!
+  requested: Profile!
+  text: String!
+  created_at: Time!
+  title:String!
+  relation:RecommendationRelationEnum!
+}
+
+// type Recommendation {
+//   // received_request: [ReceivedRecommendation!]
+//   // given: [GivenRecommendation!]
+//   // requested_: [RequestedRecommendation!]
+//
+//   requested_recommendation: [request!]
+//   recieved_request: [request!]
+//   recieved: [recommendations!]
+// }
+//
+// type ReceivedRecommendation {
+//   id: ID!
+//   sender: Profile!
+//   position: String!
+//   company: String!
+//   description: String!
+// }
+//
+// type GivenRecommendation {
+//   id: ID!
+//   sender: Profile!
+//   position: String!
+//   company: String!
+//   description: String!
+// }
+
+
+
+type Account {
+  status: StatusAccount!
+  firstname: String!
+  lastname: String!
+  patronymic: Patronymic
+  middlename: Middlename
+  firstname_native: FirstnameNative
+  nickname: Nickname
+  birthday: Birthday
+  gender: Gender
+  email: [EmailAccount!]!
+  phone: [PhoneAccount!]!
+  my_address: [MyAddress!]
+  otherAddress: [OtherAddress!]
+  ui_language: ID!
+  privacy: Privacy!
+  notifications: Notification!
+  sessions(first: Int, after: Int): [Sessions!]!
+  editable: Boolean!
+  amount_of_sessions: Int!
+  last_change_password: String!
+}
+
+type Wallet {
+  balance: String!
+  transition: String!
+  points: Int!
+}
+
+enum PermissionType {
+  my_connections
+  members
+  me
+}
+
+type Permission {
+  type: PermissionType!
+}
+
+type Title {
+  id: ID
+  title: String!
+  permission: Permission!
+}
+
+type Patronymic {
+  patronymic: String
+  permission: Permission!
+}
+
+type Middlename {
+  middlename: String
+  permission: Permission!
+}
+
+type FirstnameNative {
+  firstname: String!
+  language: ID!
+  permission: Permission!
+}
+
+type Nickname {
+  nickname: String!
+  permission: Permission!
+}
+
+type Birthday {
+  birthday: String!
+  permission: Permission!
+}
+
+type Gender {
+  gender: GenderValue
+  permission: Permission!
+}
+
+type EmailAccount {
+  id: ID!
+  email: String!
+  primary: Boolean!
+  activated: Boolean!
+  permission: Permission!
+}
+
+type PhoneAccount {
+  id: ID!
+  country_code: String!
+  number: String!
+  primary: Boolean!
+  activated: Boolean!
+  permission: Permission!
+  country_iso: String!
+}
+
+type MyAddress {
+  id: ID!
+  name: String!
+  firstname: String!
+  lastname: String!
+  apartment: String!
+  street: String!
+  zip: String!
+  city: CityInAddress!
+  country_id: ID!
+  primary: Boolean!
+}
+
+type OtherAddress {
+  id: ID!
+  name: String!
+  fisrtname: String!
+  lastname: String!
+  appartment: String!
+  street: String!
+  zip: String!
+  city: CityInAddress!
+  country_id: ID!
+}
+
+type Notification {
+  connection_request: Boolean!
+  accept_invitation: Boolean!
+  new_followers: Boolean!
+  new_chat_message: Boolean!
+  birthdays: Boolean!
+  endorsements: Boolean!
+  email_updates: Boolean!
+  job_changes_in_network: Boolean!
+  import_contacts_joined: Boolean!
+  job_recommendations: Boolean!
+  job_invitation: Boolean!
+}
+
+type Privacy {
+  find_by_email: String!
+  find_by_phone: String!
+  active_status: String!
+  sharing_edits: String!
+  profile_pictures: String!
+  my_connections: String!
+}
+
+
+type ActivateResponse {
+  token: String
+  avatar: String
+  id: ID!
+  url: String
+  first_name: String
+  last_name: String
+}
+
+type LoginResponse {
+  status: StatusAccount!
+  token: String
+  avatar: String
+  id: ID!
+  url: String
+  is_2fa_requeried: Boolean!
+  first_name: String
+  last_name: String
+  gender: String
+  email:String
+}
+
+type Success {
+  id: ID
+  success: Boolean!
+}
+
+type AddVofficeResponse{
+  id: ID
+  success: Boolean!
+  links:[Link]
+}
+
+type CountryCode {
+  id: ID!
+  country_code: String!
+  country: String!
+}
+
+type Phone {
+  country_code: String!
+  number: String!
+}
+
+type CategoryNameWithUserId {
+  unique_name: String!
+  user_id: String!
+}
+
+type CategoryNameWithCompanyId {
+  unique_name: String!
+  company_id: ID!
+}
+
+
+type CategoryItem{
+  name: String!
+  unique_name: String!
+  has_children: Boolean!
+  children: [CategoryItem!]
+}
+
+type Friendship{
+  id: ID!
+  my_request: Boolean
+  status: StatusFriendship!
+  description: String
+  categories: [String!]
+  following: Boolean
+  friend: NetworkUser!
+  created_at: Float!
+  responded_at: Float!
+}
+
+enum StatusFriendship{
+    Requested
+    Approved
+    Denied
+    Ignored
+}
+
+type LastExperience {
+  company: String!
+  position: String!
+}
+
+type NetworkUser{
+  id: ID!
+  url: String
+  avatar: String
+  first_name: String!
+  last_name: String!
+  gender: String
+  primary_email: String!
+  primary_phone: String
+  last_experience: LastExperience!
+}
+
+enum SortBy{
+  first_name
+  last_name
+  recently_added
+}
+
+type FollowInfo {
+  user: NetworkUser!
+  followers: Int!
+  following: Boolean!
+  is_friend: Boolean!
+}
+
+type FollowInfoWithProfile {
+  user: NetworkUser!
+  user_profile: Profile!
+  followers: Int!
+  following: Boolean!
+  is_friend: Boolean!
+}
+
+type UserSuggestion{
+  user: NetworkUser!
+  user_profile: Profile!
+  following: Boolean!
+  followers: Int!
+}
+
+type CompanySuggestion{
+  company: NetworkCompany!
+  company_profile: CompanyProfile!
+  followers: Int!
+}
+
+type NetworkCompany{
+  id: ID!
+  name: String!
+  url: String
+  avatar: String
+  # industry: CompanyIndustryEnum!
+  industry: String!
+  type: CompanyTypeEnum!
+  email: String!
+  address: String
+  foundation_year: Int!
+}
+
+type CompanyFollowInfo{
+  company: NetworkCompany!
+  company_profile: CompanyProfile!
+  following: Boolean!
+  followers: Int!
+  rating: Int!
+  size: Int!
+  categories: [String!]!
+}
+
+type BlockedUser{
+  id: ID!
+  first_name: String!
+  last_name: String!
+}
+
+type BlockedUserOrCompany{
+  id: ID!
+  name: String!
+  avatar: String!
+  is_company: Boolean!
+}
+
+enum PrivacyEnum {
+  find_by_email
+  find_by_phone
+  active_status
+  sharing_edits
+  profile_pictures
+  my_connections
+}
+
+type TwoFAResponse {
+  qr_code: String!
+  key: String!
+}
+
+enum NotificationEnum {
+  connection_request
+  accept_invitation
+  new_followers
+  new_chat_message
+  birthdays
+  endorsements
+  email_updates
+  job_changes_in_network
+  import_contacts_joined
+  job_recommendations
+  job_invitation
+}
+
+type Sessions {
+  id: ID!
+  browser_version: String!
+  os: String!
+  os_version: String!
+  device_type: String!
+  browser: String!
+  # city: String!
+  # country_id: String!
+  location: City
+  last_activity_time: String!
+  current_session: Boolean!
+}
+
+
+// Company account managment
+
+enum CompanyStatusEnum {
+  status_activated
+  status_not_activated
+  status_deactivated
+}
+
+enum CompanyIndustryEnum {
+  industry_unknown
+  industry_information_technology
+}
+
+enum CompanySubindustryEnum {
+  subindustry_unknown
+  subindustry_web_development
+  subindustry_it_management
+}
+
+enum CompanyTypeEnum {
+  type_unknown
+  type_self_employed
+  type_educational_institution
+  type_government_agency
+  type_sole_proprietorship
+  type_privately_held
+  type_partnership
+  type_public_company
+}
+
+enum CompanySizeEnum {
+  size_unknown
+  size_self_employed
+  size_1_10_employees
+  size_11_50_employees
+  size_51_200_employees
+  size_201_500_employees
+  size_501_1000_employees
+  size_1001_5000_employees
+  size_5001_10000_employees
+  size_10001_plus_employees
+}
+
+enum CompanyParkingEnum {
+  parking_unknown
+  parking_no_parking
+  parking_parking_lot
+  parking_street_parking
+}
+
+type RegisterCompanyResponse {
+  success: Boolean!
+  id: ID
+  url: String!
+}
+
+type CompanyIndustry {
+  id:            String!
+  subindustries: [String!]!
+  # id:            CompanyIndustryEnum!
+  # subindustries: [CompanySubindustryEnum!]!
+}
+
+type CompanyAccount {
+  id:              ID!
+  owner_id:        ID!
+  name:            String!
+  url:             String!
+  industry:        CompanyIndustry!
+  type:            CompanyTypeEnum!
+  size:            CompanySizeEnum!
+  addresses:       [CompanyAddress!]!
+  foundation_date: String!
+  emails:          [CompanyEmail!]!
+  phones:          [CompanyPhone!]!
+  status:          CompanyStatusEnum!
+  websites:        [CompanyWebsite!]!
+  parking:         CompanyParkingEnum!
+  business_hours:  [BusinessHoursItem!]
+}
+
+type CompanyAddress {
+  id:             ID!
+  name:           String!
+  zip_code:       String!
+  apartment:      String!
+  street_address: String!
+  city:           CityInAddress
+  country_id:     ID!
+  // city_id:        Int!
+  // country_id:     String!
+  // state:          String!
+  phones:         [CompanyPhone!]!
+  business_hours: [BusinessHoursItem!]!
+  geo_pos:        GeoPos!
+  primary:        Boolean!
+}
+
+type BusinessHoursItem {
+  id:        ID!
+  week_days: [WeekDay!]!
+  hour_from: String!
+  hour_to: String!
+}
+
+type GeoPos {
+  lantitude: Float!
+  longitude: Float!
+}
+
+type CompanyEmail {
+  id:    ID!
+  email: String!
+}
+
+type CompanyPhone {
+  id:              ID!
+  country_code_id: Int!
+  country_code:    String!
+  country_id:      ID!
+  number:          String!
+  is_primary:      Boolean!
+}
+
+type CompanyWebsite {
+  id:    ID!
+  website: String!
+}
+
+enum CompanyAdminRoleEnum {
+  role_unknown
+  role_admin
+  role_job_editor
+  role_commercial_admin
+  role_v_shop_admin
+  role_v_service_admin
+}
+
+// Company profile management
+
+type CompanyReview {
+  id:          ID!
+  score:       CompanyScoreEnum!
+  headline:    String!
+  description: String!
+  user:        Profile!
+  created_at: String!
+}
+
+type CompanyReviewForUser {
+  id:          ID!
+  score:       CompanyScoreEnum!
+  headline:    String!
+  description: String!
+  company:     CompanyProfile!
+  created_at:  String!
+}
+
+type CompanyScore {
+  score_unknown:   Int!
+  score_poor:      Int!
+  score_fair:      Int!
+  score_good:      Int!
+  score_very_good: Int!
+  score_excellent: Int!
+}
+
+enum CompanyScoreEnum {
+  score_unknown
+  score_poor
+  score_fair
+  score_good
+  score_very_good
+  score_excellent
+}
+
+enum CompanyReviewReportEnum {
+  review_report_unknown
+  review_report_spam
+  review_report_scam
+  review_report_inappropriate_offensive
+  review_report_false_fake
+  review_report_off_topic
+  review_report_somthing_else
+}
+
+enum CompanyReportEnum {
+  report_unknown
+  report_violates_terms_of_use
+  report_not_real_organization
+  report_may_have_been_hacked
+  report_picture_is_not_logo
+  report_duplicate
+  report_somthing_else
+}
+
+type CompanyProfile {
+  id:              ID!
+  avatar:          String
+  url:             String!
+  name:            String!
+  description:     String
+  mission:         String
+  industry:        CompanyIndustry!
+  type:            CompanyTypeEnum!
+  foundation_date: String
+  size:            CompanySizeEnum
+  parking:         CompanyParkingEnum
+  business_hours:  [BusinessHoursItem!]
+  founders(first: Int, after: String):        [CompanyFounder!]
+  awards:          [CompanyAward!]
+  gallery(first: Int, after: Int): GalleryProfile!
+  milstones:       [CompanyMilestone!]
+  products:        [CompanyProduct!]
+  services:        [CompanyService!]
+  addresses:       [CompanyAddress!]
+  cover:           String
+  email:           String
+  phone:           PhoneProfile
+  emails:          [String!]!
+  phones:          [String!]!
+  websites:        [String!]
+  my_role:         CompanyAdminRoleEnum!
+  network_info(): NetworkInfoInCompanyProfile
+  amount_jobs:     Int
+  avarage_rating:  Float
+  is_about_us_set: Boolean!
+  follow:          Boolean!
+  favorite:        Boolean!
+  online:          Boolean!
+  blocked:         Boolean!
+  benefits:        [CompanyBenefitsEnum!]
+  current_translation: String!
+  available_translations: [String!]!
+  career_center:   CareerCenter
+}
+
+type CompanyFounder {
+  id:             ID!
+  name:           String!
+  position_title: String!
+  avatar:         String
+  // url:            String
+  userID:         String
+  approved:       Boolean!
+}
+
+type CompanyAward {
+  id:     ID!
+  title:  String!
+  issuer: String!
+  year:   Int!
+  file: [File!]
+  link: [Link!]
+}
+
+type CompanyMilestone {
+  id:          ID!
+  image:       String!
+  year:        Int!
+  title:       String!
+  description: String!
+}
+
+type CompanyProduct {
+  id:      ID!
+  image:   String!
+  name:    String!
+  website: String!
+}
+
+type CompanyService {
+  id:      ID!
+  image:   String!
+  name:    String!
+  website: String!
+}
+
+type CompanyReport {
+  id:          Int!
+  report:      CompanyReportEnum!
+  explanation: String
+}
+
+interface Accomplishment {
+  id: ID!
+}
+
+type Certification implements Accomplishment{
+  id: ID!
+  name: String!
+  certification_authority: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  url: String
+  file: [File!]
+  link: [Link!]
+}
+
+type License implements Accomplishment{
+  id: ID!
+  name: String!
+  issuer: String
+  license_number: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  file: [File!]
+  link: [Link!]
+}
+
+type Award implements Accomplishment{
+  id: ID!
+  title: String!
+  issuer: String
+  date: String
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type Project implements Accomplishment{
+  id: ID!
+  name: String!
+  url: String
+  start_date: String!
+  finish_date: String
+  is_expire: Boolean!
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type Publication implements Accomplishment{
+  id: ID!
+  title: String!
+  publisher: String
+  date: String
+  url: String
+  description: String
+  file: [File!]
+  link: [Link!]
+}
+
+type Test implements Accomplishment{
+  id: ID!
+  title: String!
+  date: String
+  description: String
+  score: Int!
+  file: [File!]
+  link: [Link!]
+}
+
+type SearchUserResult {
+  profiles: [Profile!]
+  amount_of_results: Int!
+}
+
+type SearchJobResult {
+  job_search_result: [JobSearchResult!]
+  amount_of_results: Int!
+}
+
+type SearchServiceResult {
+  service_search_result: [Service!]
+  amount_of_results: Int!
+}
+
+type SearchServiceRequestResult {
+  service_request_search_result:[ServiceRequest!]
+  amount_of_results:Int!
+}
+
+type JobSearchResult {
+    id: ID!
+    job_details: JobDetails!
+    company: CompanyProfile!
+    is_saved: Boolean!
+    is_applied: Boolean!
+}
+
+type SearchCandidateResult {
+  candidate_search_result: [JobApplicant!]
+  amount_of_results: Int!
+}
+
+// type CandidateSearchResult {
+//  user: Profile!
+//  candidate_description: CareerInterests!
+// }
+
+type ApplicationMeta {
+    seen: Boolean!
+    category: String
+}
+
+type Application {
+    job_id: String!
+    email: String
+    phone: String
+    documents: [File!]
+    cover_letter: String
+    created_at: String!
+
+    metadata: ApplicationMeta!
+}
+
+type JobApplicant {
+    userId: ID!
+    user: Profile!
+    career_interests: CareerInterests
+    application: Application!
+}
+
+type TotalPricingResult {
+    total: Float!
+    currency: String!
+    countries: [PricingResultByCountry]!
+}
+
+type PricingResultByCountry {
+    country: String!
+    plan_price: Float!
+    renewal_price: Float!
+    publish_anonymously_price: Float!
+    language_price: Float!
+    total_price: Float!
+}
+
+type JobPosting {
+    id: ID!
+    user_id: ID!
+    job_details: JobDetails!
+    job_meta: JobMeta!
+    company: CompanyProfile!
+    status: String!
+    application: Application
+    is_saved: Boolean!
+    is_applied: Boolean!
+    text_invitation: String!
+    number_of_applications: Int!
+    number_of_views: Int!
+}
+
+enum ServiceOwenrEnum {
+  Any_Owner
+  Owner_User
+  Owner_Company
+}
+
+type JobDetails {
+    title: String!
+    country: String!
+    location: City!
+    location_type:LocationEnum
+    job_functions: [JobFunctionEnum!]!
+    employment_types: [String!]!
+    descriptions: [JobDescription!]!
+    required:ApplicantQuailification
+    preterred:ApplicantQuailification
+    salary_currency: String
+    salary_min: Int
+    salary_max: Int
+    salary_interval: String
+    additional_compensation: [AdditionalCompensationEnum]
+    additional_info: AdditionalInfo
+    files: [File!]
+    benefits: [String!]!
+
+    number_of_positions: Int
+    publish_day: Int
+    publish_month: Int
+    publish_year: Int
+    deadline_day: Int
+    deadline_month: Int
+    deadline_year: Int
+    hiring_day: Int
+    hiring_month: Int
+    hiring_year: Int
+    cover_letter: Boolean!
+
+    header_url: String
+}
+
+
+type AdditionalInfo {
+  suitable_for: [SuitableForEnum!]
+  travel_requirement:TravelRequirementEnum!
+}
+
+enum JobFunctionEnum {
+  none
+  accounting
+  administrative
+  arts_design
+  business_development
+  community_social_services
+  consulting
+  education
+  engineering
+  entrepreneurship
+  finance
+  healthcare_services
+  human_resources
+  information_technology
+  legal
+  marketing
+  media_communications
+  military_protective_services
+  operations
+  product_management
+  program_product_management
+  purchasing
+  quality_assurance
+  real_estate
+  rersearch
+  sales
+  support
+}
+
+enum TravelRequirementEnum {
+  none
+  all_time
+  once_week
+  once_month
+  few_times
+  once_year
+}
+
+enum SuitableForEnum {
+  none
+  student
+  person_with_a_disability
+  single_parent
+  veterans
+}
+
+enum JobHighlight {
+  none
+  blue
+  white
+}
+
+enum JobPlan {
+    unknown
+    basic
+    start
+    standard
+    professional
+    professionalPlus
+    exclusive
+    premium
+}
+
+type JobMeta {
+    advertisement_countries: [String!]!
+    renewal: Int!
+    # job_plan: JobPlan!
+    amount_of_days: Int!
+    anonymous: Boolean!
+    num_of_languages: Int!
+    currency: String!
+    highlight: JobHighlight
+}
+
+
+type JobDescription {
+    language: String!
+    description: String!
+    why_us: String!
+}
+
+# type CandidateProfileResult {
+#     candidates: [CandidateProfile!]!
+#     amount_of_results: Int!
+# }
+
+type CandidateProfile {
+    user_id: ID!
+    user: Profile!
+    is_open: Boolean!
+    career_interests: CareerInterests!
+    is_saved: Boolean!
+}
+
+enum JobTypeEnum {
+    FullTime
+    PartTime
+    Partner
+    Contractual
+    Volunteer
+    Temporary
+    Consultancy
+    Internship
+}
+
+enum AdditionalCompensationEnum {
+  any
+  bonus
+  sales_commission
+  tips_gratuities
+  profit_sharing
+}
+
+
+enum SalaryIntervalEnum {
+  Unknown
+  Any
+  Hour
+  Month
+  Year
+}
+
+type CareerInterests {
+    jobs: [String!]!
+    industry: String
+    subindustry: [String]
+    company_size: CompanySizeEnum!
+    job_types: [JobTypeEnum!]
+
+    salary_currency: String
+    salary_min: Int
+    salary_max: Int
+    salary_interval: SalaryIntervalEnum
+
+    relocate: Boolean!
+    remote: Boolean!
+    travel: Boolean!
+
+    experience: CareerInterestEnum!
+    cities: [City!]!
+
+    is_invited: Boolean!
+    is_saved: Boolean!
+    suitable_for: [SuitableForEnum!]
+}
+
+
+
+type FeedBacks {
+  feedbacks:[FeedBack!]!
+}
+
+type FeedBack {
+  profile:Profile!
+  reaction: FeedbackReactions!
+  compliment: FeedbackComplimet!
+  complaint: FeedbackComplaint!
+  bugs: FeedBackBug!
+  could_not_find: String!
+  suggestion:FeedbackSuggestion!
+  other:FeedbackOther!
+  created_at:String!
+}
+
+enum FeedbackReactions {
+  very_bad
+  bad
+  okey
+  good
+  great
+  excellent
+}
+
+type FeedBackBug {
+  description:String!
+  files:[File!]!
+}
+
+
+type FeedbackComplimet {
+  favorite_features: String
+  improve_experience: String
+  services_to_have:String
+}
+
+type FeedbackComplaint {
+  missing_or_wrong:String
+  improve_experience: String
+  tell_us_more: String
+
+}
+
+type FeedbackSuggestion {
+  idea: String
+  proposal: String
+  files:[File!]!
+}
+
+type FeedbackOther {
+  subject: String
+  description: String
+}
+
+type WalletAmount {
+  gold_coins:Int!
+  silver_coins:Int!
+  pending_amount:Int!
+}
+
+type WalletResponse {
+  amount:WalletAmount!
+  status:WalletStatus!
+}
+
+type WalletTransactions {
+  transitions:[WalletTransaction!]!
+  transition_amount:Int!
+}
+
+type WalletTransaction {
+  transaction_type:WalletActionTypeEnum!
+  status:WalletStatus!
+  wallet_amount:WalletAmount!
+  transition_at:String!
+  coin_type:TransactionTypeEnum!
+}
+
+type Users {
+  user_amount: Int!
+  users:[UserForAdmin!]!
+}
+
+type UserForAdmin {
+  id: ID!
+  url: String!
+  status:UserStatusEnum!
+  avatar: String
+  firstname: String!
+  lastname: String!
+  birthday: String!
+  gender: GenderValue
+  email: String
+  phone: String
+  location: LocationProfile
+  profile_complete_percent: Int
+  date_of_registration: String!
+}
+
+enum TransactionTypeEnum {
+  all,
+  gold,
+  silver
+}
+
+enum UserStatusEnum {
+  UNKNOWN
+  ACTIVATED
+  NOT_ACTIVATED
+  DEACTIVATED
+}
+
+
+enum WalletActionTypeEnum {
+  unknown
+  share
+  apply_job
+  invitation
+  user_registration
+  company_registation
+  become_candidate
+  create_post
+  job_share
+}
+
+enum WalletStatus {
+  done
+  pending
+  rejected
+}
+
+enum DatePostedEnum{
+  past_24_hours
+  past_week
+  past_month
+  anytime
+}
+
+type JobsDate{
+    day: Int!
+    month: Int!
+    year: Int!
+}
+
+# type JobSearchFilterType {
+#   keywords: [String!]
+#     date_posted: DatePostedEnum!
+#     experience_level: CareerInterestEnum!
+#     degree: [String!]!
+#     country: [String!]!
+#     city: [String!]!
+#     job_type: [String!]!
+#     language: [String!]!
+#     industry: [String!]!
+#     subindustry: [String!]!
+#     company_name: [String!]!
+#     company_size: CompanySizeEnum!
+#     currency: String
+#     period: String!
+#     min_salary: Int!
+#     max_salary: Int!
+#
+#     skill: [String!]!
+#
+#     is_following: Boolean!
+#     without_cover_letter: Boolean!
+#     with_salary: Boolean!
+# }
+
+# type NamedJobSearchFilter {
+#     id: ID!
+#     name: String!
+#     filter: JobSearchFilter!
+# }
+
+# type JobAlert {
+#     id: ID!
+#     name: String!
+#     interval: String!
+#     notify_email: Boolean!
+#     notify_notification: Boolean!
+#     filter: JobSearchFilterType!
+# }
+
+
+enum CareerInterestEnum{
+  experience_unknown
+  without_experience
+  less_then_one_year
+  one_two_years
+  two_three_years
+  three_five_years
+  five_seven_years
+  seven_ten_years
+  ten_years_and_more
+}
+
+# type CandidateSearchFilter {
+#   keywords: [String!]
+#     country: [String!]!
+#     city: [String!]!
+#     current_company: [String!]!
+#     past_company: [String!]!
+#     industry: [String!]!
+#     sub_industry: [String!]!
+#     experience_level: CareerInterestEnum!
+#     job_type: [String!]!
+#     skill: [String!]!
+#     language: [String!]!
+#     school: [String!]!
+#     degree: [String!]!
+#     field_of_study: [String!]!
+#     is_student: Boolean!
+#     currency: String
+#     period: String!
+#     min_salary: Int!
+#     max_salary: Int!
+#     is_willing_to_travel: Boolean!
+#     is_willing_to_work_remotly: Boolean!
+#     is_possible_to_relocate: Boolean!
+# }
+
+# type NamedCandidateSearchFilter {
+#     id: ID!
+#     name: String!
+#     filter: CandidateSearchFilter!
+# }
+
+# type CandidateAlert {
+#     id: ID!
+#     name: String!
+#     interval: String!
+#     notify_email: Boolean!
+#     notify_notification: Boolean!
+#     filter: CandidateSearchFilter!
+# }
+
+type Participant {
+    id: ID!
+    name: String!
+    url: String!
+    avatar: String!
+
+    is_company: Boolean!
+    is_admin: Boolean!
+
+    has_left: Boolean!
+    is_active: Boolean!
+}
+
+type Conversation {
+    id: ID!
+    name: String!
+    participants: [Participant!]!
+    avatar: String!
+    is_group: Boolean!
+    last_message: Message
+
+    unread: Boolean!
+    muted: Boolean!
+    blocked: Boolean!
+    archived: Boolean!
+    has_left: Boolean!
+    labels: [String!]
+}
+
+enum ConversationCategory {
+    All
+    Active
+    Unread
+    Archived
+    Blocked
+}
+
+enum MessageType {
+    UserMessage
+    AddParticipant
+    ParticipantLeft
+    MessageStatus
+}
+
+type Message {
+    id: ID!
+    type: MessageType!
+    conversation_id: ID!
+    sender_id: ID!
+    text: String!
+    files: [FileMessage!]
+    received_by: [String!]!
+    seen_by: [String!]!
+    timestamp: Time!
+}
+
+type FileMessage {
+  file: String!
+  file_name: String!
+  file_size: Int!
+}
+
+type ChatReplyFile {
+    id: ID!
+    name: String!
+}
+type ChatReply {
+    id: ID!
+    title: String!
+    text: String!
+    files: [ChatReplyFile!]!
+}
+
+type ChatLabel {
+    id: ID!
+    name: String!
+    color: String!
+    count: Int!
+}
+
+
+enum BannerType {
+  user_profile_and_network
+  company_organization_and_network
+  user_job
+  company_organization_and_job
+}
+
+type Price {
+  amount: Float!
+  currency: String!
+}
+
+type Industry {
+  id: ID!
+  industry: String!
+}
+
+type Subindustry {
+  id: ID!
+  subindustry: String!
+}
+
+enum WeekDay {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
+}
+
+type CompanyAvarageRate {
+  avarage_rate: Float!
+  amount_reviews: Int!
+}
+
+# type CompanyRates {
+#   rates: [CompanyRate!]!
+# }
+
+# type CompanyRate {
+#   rate: CompanyScoreEnum!
+#   amount: Int!
+# }
+
+type NetworkInfoInUserProfile {
+  connections:               Int
+  followings:                Int
+  followers:                 Int
+  recommendations:           Int
+  reviews:                   Int
+  mutual_connections_amount: Int
+}
+
+type ListOfFriends {
+  profiles: [Profile!]!
+  amount: Int!
+}
+
+type ListOfCompanies{
+  profiles: [CompanyProfile!]!
+  amount: Int!
+}
+
+type NotificationSettings {
+  new_endorsement:        Boolean!
+  new_follow:             Boolean!
+  new_connection:         Boolean!
+  approved_connection:    Boolean!
+  recommendation_request: Boolean!
+  new_recommendation:     Boolean!
+  job_invitation:         Boolean!
+}
+
+type CompanyNotificationSettings {
+  new_follow:             Boolean!
+  new_review:             Boolean!
+  new_applicant:          Boolean!
+}
+
+enum NotificationOptions {
+  new_endorsement
+  new_follow
+  new_connection
+  approved_connection
+  recommendation_request
+  new_recommendation
+  job_invitation
+}
+
+enum CompanyNotificationOptions {
+  new_follow
+  new_review
+  new_applicant
+}
+
+type NotificationsList {
+  amount_not_seen: Int!
+  notification_json: [String!]!
+}
+
+type NetworkInfoInCompanyProfile {
+  followings:      Int
+  followers:       Int
+  employees:       Int
+}
+
+enum GetJobApplicantsSort {
+  first_name
+  last_name
+  posted_date
+  expeirence_years
+}
+
+type AmountsOfManageCandidates {
+  saved: Int!
+  skipped: Int!
+  alerts: Int!
+}
+
+enum JobBenefit {
+  other
+  labor_agreement
+  remote_working
+  floater
+  paid_timeoff
+  flexible_working_hours
+  additional_timeoff
+  additional_parental_leave
+  sick_leave_for_family_members
+  company_daycare
+  company_canteen
+  sport_facilities
+  access_for_handicapped_persons
+  employee_parking
+  shuttle_service
+  multiple_work_spaces
+  corporate_events
+  trainig_and_development
+  pets_allowed
+  corporate_medical_staff
+  game_consoles
+  snack_and_drink_selfservice
+  private_pension_scheme
+  health_insurance
+  dental_care
+  car_insurance
+  tution_fees
+  permfomance_related_bonus
+  stock_options
+  profit_earning_bonus
+  additional_months_salary
+  employers_matching_contributions
+  parental_bonus
+  tax_deductions
+  language_courses
+  company_car
+  laptop
+  discounts_on_company_products_and_services
+  holiday_vouchers
+  restraunt_vouchers
+  corporate_housing
+  mobile_phone
+  gift_vouchers
+  cultural_or_sporting_activites
+  employee_service_vouchers
+  corporate_credit_card
+  relocation_package
+}
+
+
+enum CompanyBenefitsEnum {
+  other
+  labor_agreement
+  remote_working
+  floater
+  paid_timeoff
+  flexible_working_hours
+  additional_timeoff
+  additional_parental_leave
+  sick_leave_for_family_members
+  company_daycare
+  company_canteen
+  sport_facilities
+  access_for_handicapped_persons
+  employee_parking
+  shuttle_service
+  multiple_work_spaces
+  corporate_events
+  trainig_and_development
+  pets_allowed
+  corporate_medical_staff
+  game_consoles
+  snack_and_drink_selfservice
+  private_pension_scheme
+  health_insurance
+  dental_care
+  car_insurance
+  tution_fees
+  permfomance_related_bonus
+  stock_options
+  profit_earning_bonus
+  additional_months_salary
+  employers_matching_contributions
+  parental_bonus
+  tax_deductions
+  language_courses
+  company_car
+  laptop
+  discounts_on_company_products_and_services
+  holiday_vouchers
+  restraunt_vouchers
+  corporate_housing
+  mobile_phone
+  gift_vouchers
+  cultural_or_sporting_activites
+  employee_service_vouchers
+  corporate_credit_card
+  childcare
+  transportation
+  relocation_package
+}
+
+
+type JobWithSeenStat {
+  id: ID!
+  title: String!
+  total_amount: Int!
+  unseen_amount: Int!
+  status: String!
+}
+
+type AmountOfApplicantsPerCategory {
+  total: Int!
+  unseen: Int!
+  favorite: Int!
+  in_review: Int!
+  disqualified: Int!
+}
+
+enum ApplicantCategoryEnum {
+  None
+  Favorite
+  In_review
+  Disqualified
+}
+
+enum ReportUserEnum {
+  other
+  report_violates_terms_of_use
+  not_real_individual
+  pretending_to_be_someone
+  may_be_hacked
+  avatar_is_not_person
+  avatar_is_offensive
+}
+
+type SearchCompaniesResult {
+  company: [CompanyProfile!]
+  amount_of_results: Int!
+}
+
+type FriendshipWithProfile{
+  id: ID!
+  my_request: Boolean
+  status: StatusFriendship!
+  description: String
+  categories: [String!]
+  following: Boolean
+  friend: NetworkUser!
+  friend_profile: Profile!
+  created_at: Float!
+  responded_at: Float!
+}
+
+// for search filters
+
+enum FilterType {
+  SearchUserFilterType
+  SearchJobFilterType
+  SearchCompanyFilterType
+  SearchCandidateFilterType
+}
+
+# type Filter {
+#   id: ID!
+#   name: String
+#   filters: FilterType
+# }
+
+interface SearchFilterInterface {
+  id: ID!
+  filter_name: String!
+}
+
+type UserSearchFilterFragment implements SearchFilterInterface {
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  isMyConnection: Boolean!
+  conenctionsOf: [String!]
+  country: [String!]
+  city: [City!]
+  city_id: [String!]
+  school: [String!]
+  degree: [String!]
+  filedOfStudy: [String!]
+  isStudent: Boolean!
+  currentCompany: [String!]
+  pastCompany: [String!]
+  industry: [String!]
+  position: [String!]
+  firstname: [String!]
+  lastname: [String!]
+  nickname: [String!]
+  isMale: Boolean!
+  isFemale: Boolean!
+  minAge: Int
+  maxAge: Int
+  skill: [String!]
+  language: [String!]
+  interest: [String!]
+  full_name: String
+}
+
+type SearchServiceFilterFragment implements  SearchFilterInterface {
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  currency: String
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  location_type: LocationEnum
+  country: [String!]
+  city: [String!]
+  skill: [String!]
+  is_always_open: Boolean!
+  week_days: [WeekDay!]
+  hour_from: String
+  hour_to: String
+  services_ownwer: ServiceOwenrEnum
+}
+
+type SearchServiceRequestFilterFragment implements  SearchFilterInterface {
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  project_type: [ProjectTypeEnum!]
+  currency: String
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  location_type: LocationEnum
+  country: [String!]
+  city: [String!]
+  skill: [String!]
+  tool: [String!]
+  language: [String!]
+  services_ownwer: ServiceOwenrEnum
+}
+
+type SearchCompanyFilterFragment implements SearchFilterInterface {
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  search_for_companies: Boolean!
+  search_for_organizations: Boolean!
+  with_jobs: Boolean!
+  name: [String!]
+  city: [City!]
+  city_id: [String!]
+  country: [String!]
+  industry: [String!]
+  subindustry: [String!]
+  size: CompanySizeEnum!
+  type: CompanyTypeEnum!
+  rating: [CompanyScoreEnum!]
+  business_hours: [WeekDay!]
+  founders_id: [String!]
+  founders_name: [String!]
+}
+
+type SearchJobFilterFragment implements SearchFilterInterface{
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  date_posted: DatePostedEnum!
+  experience_level: CareerInterestEnum!
+  degree: [String!]
+  country: [String!]
+  city: [City!]
+  city_id: [String!]
+  job_type: [String!]
+  language: [String!]
+  industry: [String!]
+  subindustry: [String!]
+  company_name: [String!]
+  company_size: CompanySizeEnum!
+  currency: String
+  period: String
+  min_salary: Int
+  max_salary: Int
+  skill: [String!]
+  is_following: Boolean!
+  without_cover_letter: Boolean!
+  with_salary: Boolean!
+}
+
+
+type SearchCandidateFilterFragment implements SearchFilterInterface{
+  id: ID!
+  filter_name: String!
+  keywords: [String!]
+  country: [String!]
+  city: [City!]
+  city_id: [String!]
+  current_company: [String!]
+  past_company: [String!]
+  industry: [String!]
+  sub_industry: [String!]
+  experience_level: CareerInterestEnum!
+  job_type: [String!]
+  skill: [String!]
+  language: [String!], school: [String!]
+  degree: [String!]
+  field_of_study: [String!]
+  is_student: Boolean!
+  currency: String
+  period: String
+  min_salary: Int
+  max_salary: Int
+  is_willing_to_travel: Boolean!
+  is_willing_to_work_remotly: Boolean!
+  is_possible_to_relocate: Boolean!
+}
+
+type DateType {
+  dayOfBirth: Int
+  monthOfBirth: Int
+  yearOfBirth: Int
+}
+
+type CompanyAdmin {
+  user: Profile!
+  role: CompanyAdminRoleEnum!
+}
+
+
+type PlanPrice {
+  country: String!
+  currency: String!
+  price_per_plan: PricePerPlan!
+  features: Features!
+}
+
+type PricePerPlan {
+  basic: Float!
+  start: Float!
+  standard: Float!
+  professional: Float!
+  professionalPlus: Float!
+  exclusive: Float!
+  premium: Float!
+}
+
+type Features {
+  anonymously: Float!
+  language: Float!
+  renewal: [Float!]!
+}
+
+enum ReportJobEnum {
+  other
+  scam
+  offensive
+  incorrect
+  expired
+}
+
+
+type JobInfo {
+  details: JobDetails!
+  meta: JobMeta!
+}
+
+
+type VOffice {
+  id: ID!
+  userID: ID!
+  companyID: ID
+  name: String!
+  isMe:Boolean
+  cover:String
+  cover_origin:String
+  location: Location
+  category: String
+  description: String
+  languages: [Language!]
+  created_at: String
+  isOut:Boolean
+  return_date:String
+}
+
+type VOffices {
+  v_offices: [VOffice!]!
+}
+
+type VofficeQualficationResponse {
+  id: ID!
+  qualifications: Qualifications
+}
+
+
+type ServicesRequest{
+  service_amount:Int!
+  services:[ServiceRequest!]!
+}
+
+type Proposals {
+  proposal_amount:Int!
+  proposals:[ProposalDetail!]!
+}
+
+type ProposalDetail {
+    id:ID!
+    user_profile:Profile
+    message:String!
+    price_type: PriceEnum!
+    price_amount: Int
+    currency: String
+    delivery_time: DeliveryTimeEnum!
+    expertaion_time:Int!
+    custom_date:String
+    min_price:Int
+    max_price:Int
+    service:Service!
+    status:OrderStatusEnum!
+    request:ServiceRequest
+}
+
+enum ReviewHire {
+  will_hire
+  not_answer
+	not_hire
+}
+
+
+type ServicesReview {
+  review_amount:Int!
+  reviews_avg:ServiceReviewAvg!
+  reviews:[Review!]!
+}
+
+type Review {
+  id:ID!
+  user_profile:Profile
+  company_profile:CompanyProfile
+  description:String
+  hire:ReviewHire!
+  clarity:Int!
+  communication:Int!
+  payment:Int!
+  review_avg:Float!
+  review_at:String!
+  request: ServiceRequest
+  service:Service!
+}
+
+
+type ServiceReviewAvg{
+  clarity_avg:Float!
+  communication_avg:Float!
+  payment_avg:Float!
+}
+
+type ServiceRequest{
+    id: ID!
+    userID: ID!
+    companyID: ID
+    title: String!
+    description: String!
+    currency: String!
+    status: StatusEnum!
+    category:Category!
+    location: Location
+    location_type: LocationEnum
+    category: Category!
+    description: String!
+    price:PriceEnum!
+    delivery_time:DeliveryTimeEnum!
+    fixed_price_amount:Int
+    min_price_amount:Int
+    max_price_amount:Int
+    files:[File!]
+    additional_details: RequestAdditionalDetails!
+    is_Draft: Boolean
+    is_Remote: Boolean!
+    is_Paued:Boolean!
+    is_Closed:Boolean!
+    proposal_amount:Int!
+    created_at:String
+    project_type:ProjectTypeEnum!
+    custom_date:String
+    has_liked:Boolean!
+
+}
+
+type RequestAdditionalDetails {
+  skills: [Skill!]
+  toolTechnology: [VOfficeToolTechnology!]
+  languages: [Language!]
+  service_provider: RequestServiceProviderEnum!
+}
+
+
+type UserPortfolios {
+  portfolio_amount: Int!
+  portfolios: [UserPortfolio!]
+}
+
+type UserPortfolioCommentResponse {
+  comments: [UserPortfolioComment!]!,
+  comments_amount:Int!
+}
+
+type UserPortfolioComment {
+  id:ID!
+  comment:String!
+  owner_id:ID!
+  profile_id:ID!
+  user_profile: Profile
+  company_profile: CompanyProfile
+  created_at: String!
+}
+
+
+type UserPortfolio {
+  id: ID!
+  content_type: ContentTypeEnum!
+  tools:[String!]
+  title: String
+  description: String
+  files: [File!]
+  created_at: String
+  view_count:Int!
+  saved_count: Int!
+  like_count:Int!
+  has_liked:Boolean!
+  share_count:Int!
+  is_comments_disabled:Boolean!
+}
+
+type PortfolioProfile {
+  id: ID!
+  userID: ID!
+  companyID: ID
+  officeID: ID!
+  contentType: ContentTypeEnum!
+  title: String
+  description: String
+  link: [Link!]
+  files: [File!]
+  created_at: String
+}
+
+  enum HireEnum {
+    will_hire
+    not_hire
+    not_answer
+  }
+
+
+
+type Service {
+  id: ID!
+  userID: ID!
+  companyID: ID
+  officeID: ID
+  title: String!
+  description: String!
+  category: Category!
+  delivery_time: DeliveryTimeEnum!
+  price: PriceEnum!
+  currency: String!
+  fixed_price_amount: Int
+  min_price_amount: Int
+  max_price_amount: Int
+  additional_details: AdditionalDetails
+  location_type: LocationEnum
+  location: Location
+  files: [File!]
+  is_Draft: Boolean!
+  is_Remote: Boolean!
+  is_Paused:Boolean!
+  has_liked:Boolean!
+  wokring_hour:WorkingHourType
+}
+
+type WorkingHourType {
+   is_always_open:Boolean!
+   working_date:[ServiceWorkingHour]!
+}
+
+type ServiceWorkingHour {
+  week_days: [WeekDay!]!
+  hour_from: String!
+  hour_to:   String!
+}
+
+type Services {
+  service_amount:Int!
+  services: [Service!]
+}
+
+type ServiceOrders {
+  order_amount:Int!
+  orders:[ServiceOrder!]!
+}
+
+type ServiceOrder {
+  id:ID!
+  user_profile:Profile
+  company_profile:CompanyProfile
+  files: [File!]
+  service:Service!
+  request:ServiceRequest
+  description:String!
+  price_type: PriceEnum!
+  price_amount: Int
+  min_price:Int
+  max_price:Int
+  custom_date:String
+  currency: String
+  delivery_time: DeliveryTimeEnum!
+  note:String
+  status:OrderStatusEnum!
+
+}
+
+
+enum OrderStatusEnum {
+  any
+  new
+  in_progress
+  out_of_schedule
+  delivered
+  completed
+  canceled
+  disputed
+}
+
+enum StatusEnum {
+  status_activated
+  status_pending
+  status_draft
+  status_paused
+  status_rejected
+  status_closed
+}
+
+enum OrderType {
+  seller
+  buyer
+}
+
+enum ServiceStatusEnum {
+  status_unknown
+  status_activate
+  status_deactivate
+  status_draft
+  status_paused
+  status_closed
+  status_rejected
+}
+
+type ListOfInvitations {
+  amount: Int!
+  invitations: [Invitation!]!
+}
+
+type Invitation {
+  name: String!
+  email: String!
+}
+
+type ApplicantQuailification {
+   experience: CareerInterestEnum!
+   languages: [Language!]
+   tools: [ToolsTechnologies!]
+   skills:[String!]
+   license:String!
+   education:[String!]
+   work: String!
+}
+
+type ToolsTechnologies {
+  id:ID!
+  tool:String!
+  rank: LevelEnum!
+}
+
+
+type ToolsTechnologiesProfile {
+  id: ID!
+  userID: ID!
+  companyID: ID!
+  tool_Technology: String!
+  rank: LevelEnum!
+  created_at: String
+}
+
+enum LevelEnum {
+  Level_Begginer
+  Level_Intermediate
+  Level_Advanced
+  Level_Master
+}
+
+type GalleryProfile {
+  id: ID!
+  userID: ID!
+  companyID: ID!
+  officeID: ID
+  files: [File!]
+  created_at: String
+}
+
+type IDs {
+  ids: [String!]!
+}
+
+type CreateVOfficeResponse {
+  sucess: Boolean!
+  id: ID
+}
+
+enum DeliveryTimeEnum {
+  Any
+  Up_To_24_Hours
+  Up_To_3_Days
+  Up_To_7_Days
+  Weeks_1_2
+  Weeks_2_4
+  Month_And_More
+  Custom
+}
+
+enum PriceEnum {
+  Any
+  Price_Fixed
+  Price_Hourly
+  Price_Negotiable
+}
+
+enum PurposeEnum {
+  Purpose_Promotional
+  Purpose_Corporate
+  Purpose_Real_Estate
+  Purpose_Travel
+  Purpose_Medical
+  Purpose_Academic
+  Purpose_Event
+}
+
+enum ServiceIncludesEnum {
+  Service_Includes_Source_File
+  Service_Include_Print_Ready
+  Service_Include_Photo_Editing
+  Service_Include_Custom_Graphics
+  Service_Include_Stock_Photos
+}
+
+enum RequestServiceIncludesEnum {
+  Responsive_Design
+  Fix_Documentation
+  Content_Upload
+  Design_Customization
+  Browser_Compatibility
+  Include_Source_Code
+  Bug_Investigation
+  Online_Consultants
+  Hosting
+  Detailed_Code_Comments
+  Server_Upload
+  Search_Engine_Optimization
+  Other
+}
+
+enum ServiceTypeEnum {
+  New_Website
+  Website_Refine
+}
+
+enum RequestServiceProviderEnum {
+  No_Preference
+  Company
+  Freelancer
+  Proffesional
+}
+
+enum LocationEnum {
+  Location_Any
+  Remote_only
+  On_Site_Work
+}
+
+enum ProjectTypeEnum{
+  One_Time_Project
+  On_Going_Project
+  Not_Sure
+}
+
+enum VisibilityEnum{
+  Anyone
+  Only_RightNao_Users
+  Only_Invited
+}
+
+enum AdvertPlace {
+  user
+  company
+  local_business
+  brands
+  groups
+}
+
+type Category {
+  main: String!
+  sub_Category: [String!]!
+}
+
+type Qualifications {
+  skills: [Skill!]
+  toolTechnology: [VOfficeToolTechnology!]
+  languages: [Language!]
+}
+
+type Skill {
+  id: ID
+  skill: String!
+}
+
+type Language {
+  id: ID!
+  language: String!
+  rank: LevelEnum!
+}
+
+type VOfficeToolTechnology{
+  id: ID
+  tool_Technology: String!
+  rank: LevelEnum!
+}
+
+type AdditionalDetails {
+  qualifications: Qualifications
+  purpose: PurposeEnum
+  service_includes: ServiceIncludesEnum
+}
+
+type AdvertGallery {
+  files: [File!]!
+  amount: Int!
+}
+
+type Advert {
+  id:              ID!
+  type_id:ID!
+  name:            String!
+  type:            AdvertType!
+  status:          AdvertStatusEnum!
+  start_date:      String!
+  end_date:        String!
+  impressions:Int!
+  clicks:Int!
+  forwarding:Int!
+  referals:Int!
+  ctr_avg:Float!
+  contents:[AdvertContent!]!
+  url:String!
+  files: [File!]!
+  formats:[AdvertFormatEnum!]!
+}
+
+type AdvertLocation {
+  city:String!
+  country:String!
+}
+
+type AdvertRecords {
+  ads: [Advert!]!
+  amount: Int!
+}
+
+enum AdvertStatusEnum {
+  draft
+  active
+  in_active
+  not_running
+  rejected
+  paused
+  complited
+}
+
+type AdvertBanner {
+  # is_responsive:   Boolean!
+  # url:             String!
+  contents:        [AdvertContent!]!
+  button_title:    String!
+}
+
+type AdvertContent {
+  title:           String!
+  description:     String!
+  destination_url: String!
+  custom_button: String!
+}
+
+enum AdvertType {
+  any
+  banner
+  candidate
+  job
+  office
+  shop
+  brand
+  auto
+  real_estate
+  product
+  service
+  organization
+  company
+  professional
+}
+
+type AdvertBannerDraft {
+  location:        [City!]!
+  format:          AdvertFormatEnum!
+  # places:          [AdvertPlace!]!
+  start_date:      String!
+  name:            String!
+  # destination_url: String!
+  is_responsive:   Boolean!
+  contents:        [AdvertBannerContent!]!
+  currency:        String!
+}
+
+type AdvertBannerContent {
+  file_id:         ID!
+  url:             String!
+  title:           String!
+  description:     String!
+}
+
+type NewsfeedPost {
+  id:                       ID!
+  user_profile:             Profile
+  company_profile:          CompanyProfile
+  text:                     String!
+  files:                    [File!]
+  created_at:               String!
+  changed_at:               String
+  hashtags:                 [String!]
+  shared_post_id:           ID
+  tags:                     [NewsfeedTag!]
+  is_comments_disabled:     Boolean!
+  is_notification_disabled: Boolean!
+  liked:                    String
+  likes_amount:             LikesAmount!
+  comments_amount:          Int!
+  shares_amount:            Int!
+}
+
+type Newsfeed {
+  posts:       [NewsfeedPost!]!
+  post_amount: Int!
+}
+
+enum PostCommentsSortEnum {
+  time_creation
+  amount_of_like
+}
+
+type NewsfeedPostComment {
+  id:                       ID!
+  user_profile:             Profile
+  company_profile:          CompanyProfile
+  text:                     String!
+  tags:                     [NewsfeedTag!]
+  files:                    [File!]
+  created_at:               String!
+  changed_at:               String
+  liked:                    String
+  likes_amount:             LikesAmount!
+  replies_amount:           Int!
+  parent_id:                ID
+}
+
+type NewsfeedPostComments {
+  comments: [NewsfeedPostComment!]
+  amount:   Int!
+}
+
+enum TagableEntity {
+  user
+  company
+  community
+  organization
+  group
+}
+
+type NewsfeedTag {
+  id:   ID!
+  type: TagableEntity!
+}
+
+enum LikableEntity {
+  user
+  company
+  organization
+}
+
+type NewsfeedTag {
+  id:   ID!
+  type: TagableEntity!
+}
+
+type Like {
+  id:   ID!
+  type: LikableEntity!
+  emoji: String!
+}
+
+type LikesAmount {
+  like:   Int!
+  heart:  Int!
+  stop:   Int!
+  hmm:    Int!
+  clap:   Int!
+  rocket: Int!
+  shit:   Int!
+}
+
+union LikableEntityUnion = UserLikedItem | CompanyLikedItem
+
+type UserLikedItem {
+  profile: Profile!
+  emoji:   String!
+}
+
+type CompanyLikedItem {
+  profile: CompanyProfile!
+  emoji:   String!
+}
+
+enum GroupPrivacyTypeEnum {
+  public
+  closed
+  secret
+}
+
+type Group {
+  id:                ID!
+  url:               String!
+  owner:             Profile
+  name:              String!
+  type:              String!
+  privacy_type:      GroupPrivacyTypeEnum!
+  amount_of_members: Int!
+  tagline:           String!
+  description:       String!
+  rules:             String!
+  location:          City
+  cover:             String
+  cover_origin:      String
+  created_at:        String
+}
+
+enum AdvertFormatEnum {
+  SINGLE_IMAGE
+  CAROUSEL
+  SLIDE
+  VIDEO
+
+  IMAGE
+  RESPONSIVE
+  SPOTLIGHT
+
+  SIDE_PIN
+  HEAD_PIN
+
+  BUSINESS_SEARCH
+  PROFESSIONAL_SEARCH
+  CANDIDATE_SEARCH
+  JOB_SEARCH
+  SERVICE_SEARCH
+}
+
+type CareerCenter {
+  title:                  String!
+  description:            String!
+  cv_button_enabled:      Boolean!
+  custom_button_enabled:  Boolean!
+  custom_button_title:    String!
+  custom_button_url:      String!
+}
+
+enum ProductTypeEnum {
+  New
+  Used
+  Handmade
+}
+
+enum SellerTypeEnum {
+  Manufacture
+  Reseller
+  Dealer
+}
+
+type Shop {
+  id:           ID!
+  user:         Profile
+  company:      CompanyProfile
+  title:        String!
+  category:     Category!
+  sellerType:   SellerTypeEnum!
+  productTypes: [String!]!
+  description:  String!
+  showcase:     String
+  logo:         String
+  cover:        String
+}
+
+type Product {
+  id:             ID!
+  title:          String!
+  category:       Category!
+  brand:          String
+  is_used:        Boolean!
+  productType:    ProductTypeEnum!
+  price:          Price!
+  sku:            String!
+  in_stock:       Boolean!
+  quantity:       Int!
+  specification:  Specification!
+  discount:       Discount!
+  images:         [File!]
+}
+
+type Specification {
+  size:       String!
+  color:      String!
+  material:   String!
+  variations: [Variation!]
+}
+
+type Variation {
+  price:    Price!
+  sku:      String!
+  in_stock: Boolean!
+  quantity: Int!
+}
+
+type Discount {
+  amountOfProducts: Int!
+  discountType:     String!
+  discountValue:    String!
+  startDate:        String!
+  endDate:          String!
+}
+
+enum ShopOrderStatusEnum {
+  Pending
+  Delivered
+  Canceled
+}
+
+type ShopAddress {
+  firstname:  String!
+  lastname:   String!
+  cityID:     ID!
+  zip_code:   String!
+  phone:      String!
+  address:    String!
+  comments:   String
+}
+
+type Order {
+  id:             ID!
+  // userID
+  // companyID
+  order_status:   ShopOrderStatusEnum!
+  product:        Product!
+  address:        ShopAddress!
+  created_at:     String!
+  delivery_time:  String
+  quantity:       Int!
+  price:          Price!
+}
+
+
+
+enum AdditionalFilterEnum {
+    Additional_Filter_Any
+    Additional_Filter_Electricity
+    Additional_Filter_Water
+    Additional_Filter_NaturalGas
+    Additional_Filter_Sewage
+    Additional_Filter_AireConditioning
+    Additional_Filter_Heating
+    Additional_Filter_OnCorner
+    Additional_Filter_SmokeExtractor
+    Additional_Filter_MotoBikeGarage
+    Additional_Filter_AutomaticDoor
+    Additional_Filter_SecuritySystem
+    Additional_Filter_SwimmingPool
+    Additional_Filter_Outbuildings
+}
+
+enum BuildingUseEnum {
+    Building_Use_Any
+    Building_Use_Indifferent
+    Building_Use_OnlyOffice
+    Building_Use_Mixed
+}
+
+enum ClimatControlEnum {
+    ClimatControl_Any
+    ClimatControl_AirConditioning
+    ClimatControl_Hearting
+    ClimatControl_WaterTank
+    ClimatControl_SolarPanels
+    ClimatControl_HighEnergyEfficiency
+    ClimatControlSolarHotWater
+    ClimatControl_ZonalHeating
+    ClimatControl_CentralHeating
+}
+
+enum CommercialPropertyEnum {
+    CommericalProperty_Any
+    CommericalProperty_OfficeSpace
+    CommericalProperty_CommercialPremises
+    CommericalProperty_IndustrialBuilding
+    CommericalProperty_Warehouse
+    CommericalProperty_FoodFacility
+    CommericalProperty_Garage
+    CommericalProperty_Basement
+    CommericalProperty_TradingPlace
+}
+enum CommericalPropertyLocationEnum {
+    CommericalPropertyLocation_Any
+    CommericalPropertyLocation_Indifferent
+    CommericalPropertyLocation_InShoppingCentre
+    CommericalPropertyLocation_Mezzanine
+    CommericalPropertyLocation_BelowGround
+    CommericalPropertyLocation_Other
+    CommericalPropertyLocation_Garage
+}
+enum DealTypeEnum {
+    DealType_Any
+    DealType_Rent
+    DealType_Lease
+    DealType_Share
+    DealType_Sell
+    DealType_Build
+    DealType_Materials
+    DealType_Renovation
+    DealType_Move
+}
+
+enum IndoorFeaturesEnum {
+    IndoorFeatures_Any
+    IndoorFeatures_Ensuit
+    IndoorFeatures_Study
+    IndoorFeatures_AlarmSystem
+    IndoorFeatures_Floorboards
+    IndoorFeatures_RumpusRoom
+    IndoorFeatures_StorageRoom
+    IndoorFeatures_Dishwasher
+    IndoorFeatures_Lift
+    IndoorFeatures_BuiltInRobes
+    IndoorFeatures_Broadband
+    IndoorFeatures_Gym
+    IndoorFeatures_Workshop
+}
+
+enum OutdoorFeaturesEnum {
+    OutdoorFeatures_Any
+    OutdoorFeatures_SwimmingPool
+    OutdoorFeatures_Balcony
+    OutdoorFeatures_UndercoverParking
+    OutdoorFeatures_FullyFenced
+    OutdoorFeatures_TennisCourt
+    OutdoorFeatures_Garden
+    OutdoorFeatures_Garage
+    OutdoorFeatures_OutdoorArea
+    OutdoorFeatures_Shed
+    OutdoorFeatures_OutdoorSpa
+    OutdoorFeatures_Outbuildings
+}
+
+enum LayoutEnum {
+    Layout_Any
+    Layout_Indifferent
+    Layout_OpenPlan
+    Layout_Walls
+}
+
+enum PostStatusEnum {
+    PostStatus_Any
+    PostStatus_Active
+    PostStatus_Expired
+    PostStatus_Hidden
+    PostStatus_Sold
+}
+
+enum PriceTypeEnum {
+    PriceType_Any
+    PriceType_Total
+    PriceType_MetreSquare
+    PriceType_FeetSquare
+
+}
+
+enum PropertyTypeEnum {
+    PropertyType_All
+    PropertyType_Any
+    PropertyType_NewHomes
+    PropertyType_Homes
+    PropertyType_Houses
+    PropertyType_Appartments
+    PropertyType_Garages
+    PropertyType_StorageRooms
+    PropertyType_Offices
+    PropertyType_CommercialProperties
+    PropertyType_Buildings
+    PropertyType_Land
+    PropertyType_BareLand
+    PropertyType_Barn
+    PropertyType_SummerCottage
+    PropertyType_RuralFarm
+    PropertyType_HotelRoom
+}
+enum StatusRentalEnum {
+    Status_Any
+    Status_OldBuild
+    Status_NewBuilding
+    Status_UnderConstruction
+    StatusDeveloped
+    Status_Buildable
+    Status_NonBuilding
+}
+
+enum LandTypeEnum{
+  StatusDeveloped
+  Status_Buildable
+  Status_NonBuilding
+}
+
+enum TypeOfPropertyEnum {
+    TypeOfProperty_Any
+    TypeOfProperty_Appartaments
+    TypeOfProperty_Houses
+    TypeOfProperty_CountryHomes
+    TypeOfProperty_Duplex
+    TypeOfProperty_Penthouses
+    TypeOfProperty_Bungalow
+
+}
+
+enum  WhoLiveEnum {
+  WhoLive_Any
+	WhoLive_Mortgagor
+	WhoLive_Owner
+}
+
+enum RealEstateMore {
+  electricity
+  water
+  natural_gaz
+  sewage
+}
+
+enum RealEstateLocationEnum {
+    Any_Location
+    Location_Local
+    Location_International
+}
+
+enum RealEstateServiceEnum {
+  Any_Service
+  Service_Auto_Transport
+  Service_Storage
+  Service_Moving_Supplies
+  Service_Furniture_Movers
+}
+
+enum RealEstateMaterial {
+    Any_Material 
+    Material_Lumber_Composites 
+    Material_Fencing 
+    Material_Decking 
+    Material_Fastners 
+    Material_Moulding_Millwork 
+    Material_Paint 
+    Material_Drywall 
+    Material_Doors_Windows
+    Material_Roofing_Gutters
+    Material_Ladders 
+    Material_Scaffolding 
+    Material_Plumbing 
+    Material_Siding 
+    Material_Insulation 
+    Material_Ceilings 
+    Material_Wall_Paneling 
+    Material_Flooring 
+    Material_Concrete_Cement_Masonry 
+    Material_Material_Handling_Equipment 
+    Material_Building_Hardware 
+    Material_Glass_and_Plastic_Sheets 
+    Material_Heating_venting_Cooling 
+    Material_Other 
+
+}
+
+enum RealEstateTiming {
+  Any_Timing
+  Timing_Flexible
+  Timing_6Months
+  Timing_Year
+}
+
+type Campaings {
+  total_amount:Int!
+  campaings:[AdvertCampaign!]!
+}
+
+type Adverts {
+  total_amount:Int!
+  capmaign:AdvertCampaign!
+  adverts:[Advert!]!
+}
+
+type AdvertCampaign {
+   id:ID!
+   status:AdvertStatusEnum!
+   name:String!
+   type:AdvertType!
+   start_date:String!
+   impressions:Int
+   clicks:Int!
+   forwarding:Int!
+   referals:Int!
+   ctr_avg:Float!
+   age_from:Int!
+   age_to:Int!
+   gender:GenderValue!
+   format:[AdvertFormatEnum!]!
+   languages:[String!]!
+   locations:[AdvertLocation!]!
+}
+
+enum RecommendationRelationEnum {
+  no_relation
+  experience
+  education
+  accomplishment
+}
+
+enum UnitSquareEnum {
+  meter2
+  foot2
+}
+
+
+type RentalLocation {
+   city: String!
+   country:String!
+   street:String
+   address:String
+}
+
+type RentalInfo {
+  deal_type:DealTypeEnum!
+  property_type:PropertyTypeEnum!
+  location:RentalLocation!
+  expired_days:Int!
+  post_currency:String!
+  created_at:String!
+}
+
+type RentalDetail {
+  id:ID!
+  title:String!
+  house_rules:String
+  description:String
+}
+
+
+type RentalPhone {
+    country_code_id: Int!
+    number:     String!
+}
+
+type RentalPrice {
+    price_type:PriceTypeEnum!
+    min_price:Int!
+    max_price:Int!
+    currency:String!
+}
+
+
+type RealEstates {
+  amount:Int!
+  estates:[RealEstateInterface!]!
+}
+
+interface RealEstateInterface {
+  id: ID!
+  user_id:ID!
+  company_id:ID!
+  rental_info:RentalInfo!
+  rental_details:[RentalDetail!]!
+  files:[File!]!
+  has_repossessed:Boolean!
+  alerts:Int!
+  offers:Int!
+  likes:Int!
+  metrict_type:PriceTypeEnum!
+  availability_from:String!
+  availability_to:String!
+  is_urgent:Boolean!
+}
+
+
+type Appartment implements RealEstateInterface{
+  id: ID!
+  user_id:ID!
+  company_id:ID!
+  rental_info:RentalInfo!
+  rental_details:[RentalDetail!]!
+  files:[File!]!
+  has_repossessed:Boolean!
+  alerts:Int!
+  offers:Int!
+  likes:Int!
+  metrict_type:PriceTypeEnum!
+  phones:[RentalPhone!]!
+  price:RentalPrice!
+  status:StatusRentalEnum!
+  badrooms:Int!
+  bathrooms:Int!
+  total_area:Int!
+  floor:Int!
+  floors:Int!
+  car_spaces:Int!
+  outdoor_features:[OutdoorFeaturesEnum!]!
+  indoor_features:[IndoorFeaturesEnum!]!
+  climat_control:[ClimatControlEnum!]!
+  is_agent:Boolean!
+  is_urgent:Boolean!
+  availability_from:String!
+  availability_to:String!
+}
+
+type StorageRoom implements RealEstateInterface{
+  id: ID!
+  user_id:ID!
+  company_id:ID!
+  rental_info:RentalInfo!
+  rental_details:[RentalDetail!]!
+  files:[File!]!
+  has_repossessed:Boolean!
+  alerts:Int!
+  offers:Int!
+  likes:Int!
+  metrict_type:PriceTypeEnum!
+  phones:[RentalPhone!]!
+  price:RentalPrice!
+  status:StatusRentalEnum!
+  total_area:Int!
+  is_agent:Boolean!
+  is_urgent:Boolean!
+  availability_from:String!
+  availability_to:String!
+}
+
+
+type Office implements RealEstateInterface{
+  id: ID!
+  user_id:ID!
+  company_id:ID!
+  rental_info:RentalInfo!
+  rental_details:[RentalDetail!]!
+  files:[File!]!
+  has_repossessed:Boolean!
+  alerts:Int!
+  offers:Int!
+  likes:Int!
+  metrict_type:PriceTypeEnum!
+  phones:[RentalPhone!]!
+  price:RentalPrice!
+  status:StatusRentalEnum!
+  total_area:Int!
+  is_agent:Boolean!
+  is_urgent:Boolean!
+  layout:LayoutEnum!
+  building_use:BuildingUseEnum!
+  availability_from:String!
+  availability_to:String!
+}
+
+type CommericalProperties implements RealEstateInterface{
+  id: ID!
+  user_id:ID!
+  company_id:ID!
+  rental_info:RentalInfo!
+  rental_details:[RentalDetail!]!
+  files:[File!]!
+  has_repossessed:Boolean!
+  alerts:Int!
+  offers:Int!
+  likes:Int!
+  metrict_type:PriceTypeEnum!
+  phones:[RentalPhone!]!
+  price:RentalPrice!
+  status:StatusRentalEnum!
+  total_area:Int!
+  is_agent:Boolean!
+  is_urgent:Boolean!
+  commercial_properties:[CommercialPropertyEnum!]!
+  commercial_locations:[CommericalPropertyLocationEnum!]!
+  additional_filters:[AdditionalFilterEnum!]!
+  availability_from:String!
+  availability_to:String!
+}

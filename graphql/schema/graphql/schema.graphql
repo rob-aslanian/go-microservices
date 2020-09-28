@@ -1,0 +1,10 @@
+
+scalar Time
+scalar JSON
+
+
+schema {
+  query:       Query
+  mutation:    Mutation
+  subscription: Subscription
+}

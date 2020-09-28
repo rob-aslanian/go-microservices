@@ -1,0 +1,102 @@
+syntax = "proto3";
+package infoRPC;
+
+// protoc --go_out=plugins=grpc:. info.proto
+
+service InfoService{
+  rpc GetListOfCities(GetCitiesRequest) returns (ListOfCities){};
+  rpc GetListOfAllCities(GetAllCitiesRequest) returns (ListOfCities){};
+  // rpc GetListOfCountries(Empty) returns (ListOfCountries){};
+  rpc GetListOfCountryCodes(Empty) returns (ListOfCountryCodes){};
+  // rpc GetListOfUiLanguages(Empty) returns (ListOfUiLanguages){};
+  rpc GetCountryCodeByID(CountryCode) returns (CountryCode){};
+  rpc GetCityByIP(Empty) returns (City){};
+  rpc GetCityInfoByID(IDWithLang) returns (City){};
+  // rpc GetListOfAllIndustries(Language) returns (ListOfIndustries){};
+  // rpc GetListOfAllSubindustries(IDWithLang) returns (ListOfSubindustries){};
+}
+
+message IDWithLang{
+  string ID = 1;
+  string Lang = 2;
+}
+
+message Language {
+  string Language = 1;
+}
+
+message Empty {}
+
+message ListOfCountryCodes {
+  repeated CountryCode CountryCodes = 1;
+}
+
+message CountryCode{
+  int32 Id = 1;
+  string CountryCode = 2;
+  string Country = 3;
+}
+
+message GetCitiesRequest {
+  string CountryIso = 1;
+  string FindCity = 2;
+  int32 First = 3;
+  string After = 4;
+}
+
+message GetAllCitiesRequest {
+    string FindCity = 1;
+    int32 First = 2;
+    string After = 3;
+}
+
+message ListOfCities {
+    repeated City Cities = 1;
+}
+
+message City {
+  int32 Id = 1;
+  string Title = 2;
+  string Subdivision = 3;
+  string Country = 4;
+  int32 CountryId = 5;
+  string CountryIso = 6;
+}
+
+message ListOfCountries {
+  // repeated Country Countries = 1;
+  repeated string Country = 1;
+}
+
+// message Country {
+//   string Id = 1;
+//   string Title = 2;
+//   string CountryIso = 3; // do we need it?
+// }
+
+message ListOfUiLanguages {
+  repeated string Languages = 1;
+}
+
+//message IpRequest {
+//  string Ip = 1;
+//}
+
+message ListOfIndustries {
+  repeated Industry Industry = 1;
+}
+
+message Industry {
+  string ID = 1;
+  string Industry = 2;
+}
+
+message ListOfSubindustries {
+  repeated Subindustry Subindustry = 1;
+}
+
+message Subindustry{
+  string ID = 1;
+  string Subindustry = 2;
+}
+

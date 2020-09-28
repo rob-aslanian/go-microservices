@@ -1,0 +1,5 @@
+/build
+*.exe
+*pb.go
+.idea
+*gen.go

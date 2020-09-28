@@ -1,0 +1,291 @@
+syntax = "proto3";
+package advertRPC;
+// import "userRPC/user.proto";
+// import "companyRPC/company.proto";
+
+// protoc --go_out=plugins=grpc:. advert.proto
+
+service AdvertService {
+  rpc SaveBanner (Banner) returns (ID);
+  rpc SaveBannerDraft (Banner) returns (ID);
+  rpc ChangeBanner (Banner) returns (Empty);
+  rpc Publish (IDWithCompanyID) returns (Empty);
+  rpc PutOnPause (IDWithCompanyID) returns (Empty);
+  rpc GetBannerDraft (IDWithCompanyID) returns (Banner);
+
+  rpc RemoveAdvertCampaign(PauseAdvertRequest) returns(Empty);
+  rpc RemoveAdvert (PauseAdvertRequest) returns (Empty);
+
+  rpc SaveJob (Job) returns (ID);
+  rpc SaveCandidate (Candidate) returns (ID);
+
+  rpc AddImageToGallery (File) returns (ID);
+  rpc GetGallery (GetGalleryRequest) returns (Files);
+
+  rpc GetMyAdverts (GetMyAdvertsRequest) returns (Adverts);
+  rpc GetBanners (GetBannersRequest) returns (Banners);
+  rpc GetCandidates (GetCandidatesRequest) returns (IDs);
+  rpc GetJobs (GetJobsRequest) returns (IDs);
+
+
+  rpc CreateAdvertCampaign(AdvertCampaign) returns (ID);
+  rpc CreateAdvertByCampaign(CampaignAdvert) returns(ID);
+
+  rpc PauseAdvertCampaign(PauseAdvertRequest) returns(Empty);
+  rpc ActiveAdvertCampaign(PauseAdvertRequest) returns(Empty);
+  rpc PauseAdvert(PauseAdvertRequest) returns(Empty);
+  rpc ActiveAdvert(PauseAdvertRequest) returns(Empty);
+
+
+  rpc GetAdvertCampaigns(AdvertGetRequest) returns (Campaigns);
+  rpc GetAdvertsByCampaignID(AdvertGetRequest) returns(Adverts);
+
+  rpc GetAdvert(GetAdvertRequest) returns (Advert);
+}
+
+
+message PauseAdvertRequest {
+  string CampaignID = 1;
+  string AdvertID = 2;
+}
+
+message GetAdvertRequest {
+  Type AdvertType = 1;
+}
+
+
+message AdvertGetRequest {
+  string CompanyID = 1;
+  string RequestID = 2;
+  uint32 First = 3;
+  string After = 4;
+  string CampaignID = 5;
+}
+
+message Empty {}
+
+enum Place {
+  User = 0;
+  Company = 1;
+  LocalBusiness = 2;
+  Brands = 3;
+  Groups = 4;
+}
+
+enum Format {
+  SINGLE_IMAGE = 0;
+  CAROUSEL = 1;
+  SLIDE = 2;
+  VIDEO = 3;
+  IMAGE = 4;
+  RESPONSIVE = 5;
+  SPOTLIGHT = 6;
+  SIDE_PIN = 7;
+  HEAD_PIN = 8;
+  BUSINESS_SEARCH = 9;
+  PROFESSIONAL_SEARCH = 10;
+  CANDIDATE_SEARCH = 11;
+  JOB_SEARCH = 12;
+  SERVICE_SEARCH = 13;
+}
+
+enum GenderEnum {
+  WITHOUT_GENDER = 0;
+  MALE = 1;
+  FEMALE = 2;
+}
+
+message AdvertCampaign {
+  string ID = 1;
+  string CompanyID = 2;
+  string StartDate = 3;
+  string Name = 4;
+  Type AdvertType = 5;
+  repeated Format Formats = 6;
+  repeated string Languages = 7;
+  repeated Location Locations = 8;
+  string Currency = 9;
+  int32 Impressions = 10;
+  int32 Clicks = 11;
+  int32 Forwarding = 12;
+  int32 Referals = 13;
+  double CrtAVG = 14;
+  Status Status = 15;
+  GenderEnum Gender = 16;
+  int32 AgeFrom = 17;
+  int32 AgeTo = 18;
+  
+}
+
+message Campaigns {
+  int32 TotalAmount = 1;
+  repeated AdvertCampaign AdvertCampaigns = 2;
+}
+
+message Banner {
+  Advert Advert = 1;
+  repeated Place Places = 2;
+  string DestinationURL = 3;
+  bool IsResponsive = 4;
+  repeated Content Contents = 5;
+}
+
+message ID {
+  string ID = 1;
+}
+
+enum Status {
+  Draft = 0;
+  Active = 1;
+  Paused = 2;
+  Completed = 3;
+  Not_running = 4;
+  Rejected = 5;
+  Scheduled = 6;
+  In_Active = 7;
+}
+
+message Advert {
+  string ID = 1;
+  string Name = 2;
+  Status AdStatus = 3;
+  float Budget = 4;
+  string Currency = 5;
+  string StartDate = 6;
+  string FinishDate = 7;
+  string CreatorID = 8;
+  string CompanyID = 9;
+  repeated Content Contents = 10;
+  Type AdType = 11;
+  string ButtonTitle = 12;
+  int32 Impressions = 13;
+  int32 Clicks = 14;
+  int32 Forwarding = 15;
+  int32 Referals = 16;
+  double CrtAVG = 17;
+  string URL = 18;
+  string Button = 19;
+  repeated File Files = 20;
+  string TypeID = 21;
+  repeated Format Formats = 22;
+}
+
+enum Type {
+  Banner_Type = 0;
+  Job_Type = 1;
+  Candidate_Type = 2;
+  Office_Type = 3;
+  Shop_Type = 4;
+  Professional_Type = 5;
+  Company_Type = 6;
+  Organization_Type = 7;
+  Service_Type = 8;
+  Product_Type = 9;
+  Real_Estate_Type = 10;
+  Auto_Type = 11;
+  Brand_Type = 12;
+  Advert_Any = 13;
+}
+
+message Location {
+  string CountryID = 1;
+  string CityID = 2;
+  string City = 3;
+  string Subdivision = 4;
+}
+
+
+message CampaignAdvert{
+  string ID = 1;
+  string OwnerID = 2;
+  string CampaignID = 3;
+  string Name = 4;
+  string URL = 5;
+  Type AdvertType = 6;
+  repeated Content Contents = 7;
+  string TypeID = 8;
+}
+message Content {
+  string FileID = 1;
+  string ImageURL = 2;
+  string Title = 3;
+  string Content = 4;
+  string DestinationURL = 5;
+  string CustomButton = 6;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string TargetID = 4;
+  string Name = 5;
+  string MimeType = 6;
+  string URL = 7;
+}
+
+message GetGalleryRequest {
+  string CompanyID = 1;
+  Pagination Pagination = 2;
+}
+
+message Pagination {
+  string First = 1;
+  string After = 2;
+}
+
+message Files {
+  uint32 Amount = 1;
+  repeated File Files = 2;
+}
+
+message IDWithCompanyID {
+  string ID = 1;
+  string CompanyID = 2;
+}
+
+message GetMyAdvertsRequest {
+  string CompanyID = 1;
+  Pagination Pagination = 2;
+}
+
+message Adverts {
+  int32 Amount = 1;
+  AdvertCampaign Campaign = 2;
+  repeated Advert Adverts = 3;
+}
+
+message Job {
+  Advert Advert = 1;
+}
+
+message Candidate {
+  Advert Advert = 1;
+}
+
+message Banners {
+  repeated Banner Banners = 1;
+}
+
+message GetBannersRequest {
+  string CountryID = 1;
+  Place Place = 2;
+  int32 Amount = 3;
+  Format Format = 4;
+}
+
+message IDs {
+  repeated string IDs = 1;
+}
+
+message GetCandidatesRequest {
+  string CountryID = 1;
+  int32 Amount = 2;
+  Format Format = 3;
+}
+
+
+message GetJobsRequest {
+  string CountryID = 1;
+  int32 Amount = 2;
+}

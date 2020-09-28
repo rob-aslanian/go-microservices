@@ -1,0 +1,28 @@
+syntax = "proto3";
+package statisticsRPC;
+
+// protoc --go_out=plugins=grpc:. statistics.proto
+
+service Statistics {
+    rpc PersistEvent (PersistEventRequest) returns (Empty) {
+    };
+    rpc IncrementCounter (IncrementCounterRequest) returns (Empty) {
+    }
+}
+
+message Empty {
+}
+
+message IncrementCounterRequest {
+    string TargetId = 1;
+    map<string, int32> Increments = 3;
+}
+
+message PersistEventRequest {
+    string ActorId = 1;
+    string ActorType = 2;
+    string Event = 3;
+    string TargetId = 4;
+    string TargetType = 5;
+    map<string, string> Data = 6;
+}

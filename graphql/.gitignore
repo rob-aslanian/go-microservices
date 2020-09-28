@@ -1,0 +1,9 @@
+*.exe
+.idea
+.tmp
+
+/resolver/*gql.go
+/schema/bindata.go
+
+/vendor
+/build

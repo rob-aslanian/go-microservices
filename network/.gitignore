@@ -1,0 +1,6 @@
+/build
+/vendor
+
+*.exe
+*pb.go
+.idea

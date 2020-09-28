@@ -1,0 +1,58 @@
+syntax = "proto3";
+package authRPC;
+
+// protoc --go_out=plugins=grpc:. auth.proto
+
+service AuthService {
+    rpc LoginUser (User) returns (Session);  // what for?
+    rpc GetUser (Session) returns (User);
+    rpc LogoutSession (Session) returns (Empty);
+    rpc LogoutOtherSession (Session) returns (Empty);
+    rpc SignOutFromAll (Session) returns (Empty);
+    rpc GetListOfSessions (ListOfSessionsQuery) returns (ListOfSessions);
+    rpc GetAmountOfSessions (Empty) returns (Amount);
+    rpc GetTimeOfLastActivity (User) returns (Time);
+}
+
+message Empty {}
+
+message Session {
+    string Token = 1;
+    string ID = 2;
+}
+
+
+message User {
+    string Id = 1;
+}
+
+message ListOfSessions {
+  repeated Sessions Sessions = 1;
+}
+
+message Sessions {
+  string ID = 1;
+  string OS = 2;
+  string OSVersion = 3;
+  string DeviceType = 4;
+  string Browser = 5;
+  string BrowserVersion = 6;
+  uint32 City = 7;
+  string CountryID = 8;
+  string LastActivityTime = 9;
+  bool CurrentSession = 10;
+}
+
+message Time {
+  int64 Time = 1;
+}
+
+message ListOfSessionsQuery{
+  string ID = 1;
+  int32 First = 2;
+  int32 After = 3;
+}
+
+message Amount {
+  int32 Amount = 1;
+}

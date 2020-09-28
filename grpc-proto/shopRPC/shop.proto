@@ -1,0 +1,272 @@
+syntax = "proto3";
+package shopRPC;
+
+// protoc --go_out=plugins=grpc:. shop.proto
+
+service ShopService {
+  rpc CreateShop (CreateShopRequest) returns (ID);
+  rpc GetShop (ID) returns (Shop);
+  rpc AddProduct (AddProductRequest) returns (ID);
+  rpc GetProduct (ID) returns (Product);
+  rpc GetProductsWithDeleted (IDs) returns (Products);
+  rpc ChangeShowcase (ChangeShowcaseRequest) returns (Empty);
+  rpc MakeOrder (MakeOrderRequest) returns (Empty);
+  rpc AddToWishlist (ID) returns (Empty);
+  rpc GetMyWishlist (IDWithPagination) returns (Products);
+  rpc GetOrdersForBuyer (IDWithPagination) returns (Orders);
+  rpc GetOrdersForSeller (GetOrdersForSellerRequest) returns (Orders);
+  rpc ChangeOrderStatus (ChangeOrderStatusRequest) returns (Empty);
+  rpc ChangeLogo (File) returns (Empty);
+  rpc ChangeCover (File) returns (Empty);
+  rpc RemoveLogo (RemoveLogoRequest) returns (Empty);
+  rpc RemoveCover (RemoveLogoRequest) returns (Empty);
+  rpc ChangeImagesInProduct (ChangeImagesInProductRequest) returns (Empty);
+  rpc ChangeProduct (Product) returns (Empty);
+  rpc RemoveProduct (RemoveProductRequest) returns (Empty);
+  rpc HideProduct (HideProductRequest) returns (Empty);
+  rpc GetMyShops (ID) returns (Shops);
+  rpc FindProducts (FindProductsRequest) returns (Products);
+}
+
+message Empty {}
+
+message ID {
+  string ID = 1;
+}
+
+message IDs {
+  repeated string ID = 1;
+}
+
+enum ProductsType {
+  New = 0;
+  Used = 1;
+  Handmade = 2;
+}
+
+enum SellerType {
+  Manufacture = 0;
+  Reseller = 1;
+  Dealer = 2;
+}
+
+message CreateShopRequest {
+  string CompanyID = 1;
+  string Title = 2;
+  string Category = 3;
+  string Description = 4;
+  repeated ProductsType ProductsType = 5;
+  SellerType SellerType = 6;
+  // Location
+  // Shipping
+}
+
+message AddProductRequest {
+  string ID = 1;
+  string ShopID = 2;
+  string CompanyID = 3;
+  string Title = 4;
+  Category Category = 5;
+  string Brand = 6;
+  bool IsUsed = 7;
+  ProductsType ProductType = 8;
+  Price Price = 9;
+  string SKU = 10;
+  bool InStock = 11;
+  uint32 Quantity = 12;
+  // Images = 12;
+  string Description = 13;
+  Specification Specification = 14;
+  Discount Discount = 15;
+}
+
+message Category {
+  string Main = 1;
+  string Sub = 2;
+}
+
+message Specification {
+  string Size = 1;
+  string Color = 2;
+  string Material = 3;
+  repeated Variation Variations = 4;
+}
+
+message Variation {
+  Price Price = 1;
+  string SKU = 2;
+  bool InStock = 3;
+  uint32 Quantity = 4;
+}
+
+message Price {
+  uint32 Amount = 1;
+  string Currency = 2;
+}
+
+message Discount {
+  uint32 AmountOfProducts = 1;
+  string DiscountType = 2;
+  string DiscountValue = 3;
+  string StartDate = 4;
+  string EndDate = 5;
+}
+
+message Product {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string ShopID = 4;
+  string Title = 5;
+  Category Category = 6;
+  string Brand = 7;
+  bool IsUsed = 8;
+  string ProductType = 9;
+  Price Price = 10;
+  string SKU = 11;
+  bool InStock = 12;
+  uint32 Quantity = 13;
+  string Description = 14;
+  Specification Specification = 15;
+  Discount Discount = 16;
+  repeated File Images = 17;
+}
+
+message Shop {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string Title = 4;
+  Category Category = 5;
+  SellerType SellerType = 6;
+  repeated string ProductsType = 7;
+  string Description = 8;
+  string Showcase = 9;
+  string Logo = 10;
+  string Cover = 11;
+}
+
+message ChangeShowcaseRequest {
+  string ShopID = 1;
+  string CompanyID = 2;
+  string Showcase = 3;
+}
+
+message MakeOrderRequest {
+  repeated string ProductIDs = 1;
+  Address Address = 2;
+}
+
+message Address {
+  string FirstName = 1;
+  string LastName = 2;
+  string CityID = 3;
+  string ZIPCode = 4;
+  string Phone = 5;
+  string Address = 6;
+  string Apartment = 7;
+  string Comments = 8;
+}
+
+message Products {
+  repeated Product Products = 1;
+}
+
+message IDWithPagination {
+  string ID = 1;
+  string First = 2;
+  string After = 3;
+}
+
+enum OrderStatus {
+  Pending = 0;
+  Delivered = 1;
+  Canceled = 2;
+}
+
+message Order {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  OrderStatus OrderStatus = 4;
+  string ProductID = 5;
+  Address Address = 6;
+  string CreatedAt = 7;
+  string DeliverTime = 8;
+  uint32 Quantity = 9;
+  Price Price = 10;
+}
+
+message Orders {
+  repeated Order Orders = 1;
+}
+
+message ChangeOrderStatusRequest {
+  string CompanyID = 1;
+  string OrderID = 2;
+  OrderStatus OrderStatus = 3;
+}
+
+message GetOrdersForSellerRequest {
+  string ShopID = 1;
+  string CompanyID = 2;
+  string First = 3;
+  string After = 4;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string TargetID = 4;
+  string ItemID = 5;
+  string Name = 6;
+  string MimeType = 7;
+  string URL = 8;
+  uint32 Position = 9;
+}
+
+message RemoveLogoRequest {
+  string CompanyID = 1;
+  string ShopID = 2;
+}
+
+message ChangeImagesInProductRequest {
+  string CompanyID = 1;
+  string ProductID = 2;
+  repeated File Files = 3;
+}
+
+message RemoveProductRequest {
+  string CompanyID = 1;
+  string ProductID = 2;
+}
+
+message HideProductRequest {
+  string CompanyID = 1;
+  string ProductID = 2;
+  bool Value = 3;
+}
+
+message Shops {
+  repeated Shop Shops = 1;
+}
+
+message FindProductsRequest {
+  string ShopID = 1;
+  SearchFilter SearchFilter = 2;
+  string First = 3;
+  string After = 4;
+}
+
+message SearchFilter {
+  string Keyword = 1;
+  repeated string CategoryMain = 2;
+  repeated string CategorySub = 3;
+  uint32 PriceMax = 4;
+  uint32 PriceMin = 5;
+  bool InStock = 6;
+  bool IsInStockNull = 7;
+  bool IsUsed = 8;
+  bool IsIsUsedNull = 9;
+}

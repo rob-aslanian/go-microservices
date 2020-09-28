@@ -1,0 +1,170 @@
+syntax = "proto3";
+package notificationsRPC;
+
+// protoc --go_out=plugins=grpc:. notifications.proto
+
+service NotificationsService {
+  rpc GetSettings (Empty) returns (Settings);
+  rpc ChangeSettings (ChangeSettingsRequest) returns (Empty);
+  rpc GetNotifications (Pagination) returns (NotificationList);
+  rpc GetUnseenNotifications (Pagination) returns (NotificationList);
+  rpc RemoveNotification (IDs) returns (Empty);
+  rpc MarkAsSeen (IDs) returns (Empty);
+
+  rpc GetCompanySettings (ID) returns (CompanySettings);
+  rpc ChangeCompanySettings (ChangeCompanySettingsRequest) returns (Empty);
+  rpc GetCompanyNotifications (PaginationWithID) returns (NotificationList);
+  rpc RemoveNotificationForCompany (IDWithIDs) returns (Empty);
+  rpc MarkAsSeenForCompany (IDWithIDs) returns (Empty);
+
+  // rpc SendNotification (Notification) returns (Empty) {
+  // }
+  // rpc GetMyNotifications (Pagination) returns (NotificationsArr) {
+  // }
+  // rpc SetNotificationSeen (SetNotificationSeenRequest) returns (Empty) {
+  // }
+  // rpc GetNotificationSettings (Empty) returns (NotificationSettingsForUsers) {
+  // }
+  // rpc ChangeNotificationSetting (ChangeNotificationSettingRequest) returns (Empty) {
+  // }
+}
+
+message Empty {}
+
+message Settings {
+  bool NewEndorsement = 1;
+  bool NewFollow = 2;
+  bool NewConnection = 3;
+  bool ApprovedConnection = 4;
+  bool RecommendationRequest = 5;
+  bool NewRecommendation = 6;
+  bool NewJobInvitation = 7;
+}
+
+message ChangeSettingsRequest {
+  enum PropertyOption {
+    UnknownProperty = 0;
+    NewEndorsement = 1;
+    NewFollow = 2;
+    NewConnection = 3;
+    ApprovedConnection = 4;
+    RecommendationRequest = 5;
+    NewRecommendation = 6;
+    NewJobInvitation = 7;
+  }
+
+  PropertyOption Property = 1;
+  bool Value = 2;
+}
+
+message ChangeCompanySettingsRequest {
+  enum PropertyOption {
+    UnknownProperty = 0;
+    NewFollow = 1;
+    NewReview = 2;
+    NewApplicant = 3;
+  }
+
+  string CompanyID = 1;
+  PropertyOption Property = 2;
+  bool Value = 3;
+}
+
+message Pagination {
+  string First = 1;
+  string After = 2;
+}
+
+message Notification {
+  string Notification = 1;
+  // map<string, string> Notification = 1;
+}
+
+message NotificationList {
+  repeated Notification Notifications = 1;
+  int32 Amount = 2;
+}
+
+message IDs {
+  repeated string ID = 1;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message CompanySettings {
+  bool NewFollow = 1;
+  bool NewReview = 2;
+  bool NewApplicant = 3;
+}
+
+message PaginationWithID {
+  string ID = 1;
+  string First = 2;
+  string After = 3;
+}
+
+message IDWithIDs {
+  string ID = 1;
+  repeated string IDs = 2;
+}
+
+// message SetNotificationSeenRequest {
+//     string NotificationId = 1;
+//     bool Seen = 2;
+// }
+//
+// message NotificationsArr {
+//     repeated Notification Notifications = 1;
+// }
+//
+// message Notification {
+//     string Id = 1;
+//     string SubscriberId = 2;
+//     bool Seen = 3;
+//     NotificationData NotificationData = 4;
+// }
+//
+// message NotificationData {
+//     NotificationType Type = 1;
+//     string Text = 2;
+//     string UserId = 3;
+// }
+//
+// enum NotificationType {
+//     general_notification = 0;
+//     connection_request = 1;
+//     accept_invitation = 2;
+//     new_followers = 3;
+//     new_chat_message = 4;
+//     birthdays = 5;
+//     endorsements = 6;
+//     email_updates = 7;
+//     job_changes_in_network = 8;
+//     import_contacts_joined = 9;
+//     job_recommendations = 10;
+// }
+//
+// message ChangeNotificationSettingRequest {
+//     NotificationType Type = 1;
+//     bool Value = 2;
+// }
+//
+// message NotificationSettingsForUsers {
+//     bool ConnectionRequest = 1;
+//     bool AcceptInvitation = 2;
+//     bool NewFollowers = 3;
+//     bool NewChatMessage = 4;
+//     bool Birthdays = 5;
+//     bool Endorsements = 6;
+//     bool EmailUpdates = 7;
+//     bool JobChangesInNetwork = 8;
+//     bool ImportContactsJoined = 9;
+//     bool JobRecommendations = 10;
+// }
+//
+// message Pagination {
+//     int32 Amount = 1;
+//     int32 After = 2;
+// }

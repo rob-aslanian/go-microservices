@@ -1,0 +1,4 @@
+cmd/company/company
+cmd/mock/mock
+*pb.go
+build/

@@ -1,0 +1,206 @@
+syntax = "proto3";
+package newsfeedRPC;
+
+// protoc --go_out=plugins=grpc:. newsfeed.proto
+
+service NewsfeedService {
+  rpc AddPost (Post) returns (ID);
+  rpc ChangePost (Post) returns (Empty);
+  rpc RemovePost (RemovePostRequest) returns (Empty);
+  rpc GetNewsfeed (GetNewsfeedRequest) returns (Newsfeed);
+  rpc AddComment (Comment) returns (ID);
+  rpc ChangeComment (Comment) returns (Empty);
+  rpc RemoveComment (RemoveCommentRequest) returns (Empty);
+  rpc GetComments (GetCommentsRequest) returns (Comments);
+  rpc GetCommentReplies (GetCommentRepliesRequest) returns (Comments);
+  rpc GetSharedPosts (GetSharedPostsRequest) returns (Newsfeed);
+  rpc GetPostByID (ID) returns (Post);
+  rpc AddFileInPost (File) returns (ID);
+  rpc RemoveFileInPost (RemoveFileInPostRequest) returns (Empty);
+  rpc Like (LikeRequest) returns (Empty);
+  rpc Unlike (UnlikeRequest) returns (Empty);
+  rpc GetLikedList (GetLikedListRequest) returns (GetLikedListResponse);
+  rpc SearchAmongPosts (SearchAmongPostsRequest) returns (Newsfeed);
+}
+
+message Empty {}
+
+message Post {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string NewsFeedUserID = 4;
+  string NewsFeedCompanyID = 5;
+  string Text = 6;
+  repeated File Files = 7;
+  string CreatedAt = 8;
+  string ChangedAt = 9;
+  repeated string Hashtags = 10;
+  string SharedPostID = 11;
+  repeated Tag Tags = 12;
+  bool IsPinned = 13;
+  bool IsCommentedDisabled = 14;
+  bool IsNotificationDisabled = 15;
+  string Liked = 16;
+  LikesAmount LikesAmount = 17;
+  uint32 CommentsAmount = 18;
+  uint32 SharesAmount = 19;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message Newsfeed {
+  repeated Post Posts = 1;
+  uint32 amount = 2;
+}
+
+message Pagination {
+  string first = 1;
+  string after = 2;
+}
+
+message GetNewsfeedRequest {
+  string ID = 1;
+  string CompanyID = 2;
+  bool Pinned = 3;
+  Pagination Pagination = 4;
+}
+
+message Comment {
+  string ID = 1;
+  string PostID = 2;
+  string UserID = 3;
+  string CompanyID = 4;
+  string Text = 5;
+  string ParentID = 6;
+  repeated Tag Tags = 7;
+  repeated File Files = 8;
+  string CreatedAt = 9;
+  string ChangedAt = 10;
+  string Liked = 11;
+  LikesAmount LikesAmount = 12;
+  uint32 RepliesAmount = 13;
+}
+
+message GetCommentsRequest {
+  string ID = 1;
+  string CompanyID = 2;
+
+  enum SortOption {
+    ByCreationTime = 0;
+    ByTopLiked = 1;
+  }
+
+  SortOption Sort = 3;
+  Pagination Pagination = 4;
+}
+
+message Comments {
+  repeated Comment Comments = 1;
+  uint32 Amount = 3;
+}
+
+message GetCommentRepliesRequest {
+  string PostID = 1;
+  string CommentID = 2;
+  string CompanyID = 3;
+  Pagination Pagination = 4;
+}
+
+message RemovePostRequest {
+  string PostID = 1;
+  string CompanyID = 2;
+}
+
+message GetSharedPostsRequest {
+  string ID = 1;
+  string CompanyID = 2;
+  Pagination Pagination = 3;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string TargetID = 4;
+  string ItemID = 5;
+  string Name = 6;
+  string MimeType = 7;
+  string URL = 8;
+  uint32 Position = 9;
+}
+
+enum EntityType {
+  User = 0;
+  Company = 1;
+  Organization = 2;
+  Group = 3;
+  Community = 4;
+}
+
+message Tag {
+  string ID = 1;
+  EntityType Entity = 2;
+}
+
+message RemoveCommentRequest {
+  string PostID = 1;
+  string CommentID = 2;
+  string CompanyID = 3;
+}
+
+message RemoveFileInPostRequest {
+  string PostID = 1;
+  string CommentID = 2;
+  string CompanyID = 3;
+  string FileID = 4;
+}
+
+message LikeRequest {
+  string PostID = 1;
+  string CommentID = 2;
+  Like Like = 3;
+}
+
+message Like {
+  string ID = 1;
+  EntityType Entity = 2;
+  string Emoji = 3;
+}
+
+message LikesAmount {
+  uint32 Like = 1;
+  uint32 Heart = 2;
+  uint32 Stop = 3;
+  uint32 Hmm = 4;
+  uint32 Clap = 5;
+  uint32 Rocket = 6;
+  uint32 Shit = 7;
+}
+
+message UnlikeRequest {
+  string PostID = 1;
+  string CommentID = 2;
+  string ID = 3;
+}
+
+message GetLikedListRequest{
+  string PostID = 1;
+  string CommentID = 2;
+  string CompanyID = 3;
+  string Emoji = 4;
+  Pagination Pagination = 5;
+}
+
+message GetLikedListResponse {
+  repeated Like Likes = 1;
+}
+
+message SearchAmongPostsRequest {
+  string CompanyID = 1;
+  string NewsfeedID = 2;
+  string Keyword = 3;
+  Pagination Pagination = 4;
+}

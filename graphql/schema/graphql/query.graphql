@@ -1,0 +1,253 @@
+type Query {
+  // User
+
+  #Check if beckend could identify location by IP address. It returns country. For example "GE"
+  identifyCountry: String
+
+  ## Profile
+  checkToken(): Boolean!
+  checkUsername(username: String!): Boolean!
+  getAccount(): Account
+  getNotificationSettings(): NotificationSettings!
+  getNotifications(pagination: PaginationInput!): NotificationsList!
+  getUnseenNotifications(pagination: PaginationInput!): NotificationsList!
+  getProfile(url: String!, lang: String): Profile
+  getProfileByID(user_id: String!, lang: String): Profile
+  getMyCompanies(): [CompanyProfile!]
+  checkPassword(password: String!): Success
+
+  GetOriginAvatar(): String
+
+  GetUserPortfolioInfo(user_id:ID!) : PortfolioInfo!
+  GetUserPortfolios(company_id: ID , user_id:String! , content_type:ContentTypeEnum! , pagination: PaginationInput! ) : UserPortfolios!
+  GetUserPortfolioByID(company_id: ID , user_id:ID! , portfolio_id:ID!) : UserPortfolio!
+
+  GetUserPortfolioComments(portfolio_id:ID! , pagination: PaginationInput!) : UserPortfolioCommentResponse!
+
+  GetListOfUnuploadFilesInExperience: [File!]
+  GetListOfUnuploadFilesInEducation: [File!]
+  GetUnuploadImageInInterest: File
+  ## Info
+  GetOriginImageInInterest(interest_id: ID!): String
+
+  // Info
+  getListOfCities(search_city: SearchCityInput! pagination: PaginationInput!): [City!]
+  getListOfAllCities(search_city: SearchAllCityInput!): [City!]
+  // getListOfCountries(): [String!]
+  ## Network
+  getListOfCountryCodes(): [CountryCode!]
+  // getListOfUiLanguages(): [String!]
+  getCityInfo(city_id: ID!): City
+
+  GetCategoryTree: [CategoryItem!]!
+  GetFollowingsCategoryTree: [CategoryItem!]!
+  GetFollowingsCategoryTreeForCompany(companyId: ID!): [CategoryItem!]!
+  // getListOfAllIndustries:[Industry!]
+  // getListOfAllSubindustries(id: ID!):[Subindustry!]
+
+  getFriendRequests(status: String sent: Boolean): [Friendship!]!
+  getFriendships(query: String category: String letter: String sort_by: String companies: [String!]): [FriendshipWithProfile!]!
+  getFollowers(query: String category: String letter: String sort_by: String companies: [String!]): [FollowInfoWithProfile!]!
+  getFollowings(query: String category: String letter: String sort_by: String companies: [String!]): [FollowInfoWithProfile!]!
+  ### ---
+  getFriendSuggestions(pagination: PaginationInput!): [UserSuggestion!]!
+
+  getFollowerCompanies(query: String category: String letter: String sort_by: String): [CompanyFollowInfo!]!
+  getFollowingCompanies(query: String category: String letter: String sort_by: String): [CompanyFollowInfo!]!
+  ### ---
+  getSuggestedCompanies(pagination: PaginationInput!): [CompanySuggestion!]!
+
+  getBlockedUsersOrCompanies: [BlockedUserOrCompany!]!
+  getBlockedUsersForCompany(company_id: ID!): [BlockedUserOrCompany!]
+
+  getFollowingsForCompany(companyId: String! query: String category: String letter: String sort_by: String companies: [String!]): [FollowInfoWithProfile!]!
+  getFollowersForCompany(companyId: String! query: String category: String letter: String sort_by: String companies: [String!]): [FollowInfoWithProfile!]!
+  getFollowingCompaniesForCompany(companyId: String! query: String category: String letter: String sort_by: String): [CompanyFollowInfo!]!
+  ### ---
+  getFollowerCompaniesForCompany(companyId: String! query: String category: String letter: String sort_by: String): [CompanyFollowInfo!]!
+
+  getSuggestedPeopleForCompany(companyId: String!): [UserSuggestion!]!
+  ### ---
+  getSuggestedCompaniesForCompany(companyId: String!, pagination: PaginationInput!): [CompanySuggestion!]!
+
+  getConnectionsOfUser(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+  getFollowsOfUser(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+  getFollowersOfUser(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+
+  getFollowsCompaniesOfUser(user_id: ID! pagination: PaginationInput!): ListOfCompanies!
+  getFollowersCompaniesOfUser(user_id: ID! pagination: PaginationInput!): ListOfCompanies!
+  getMutualConnectionsOfUser(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+
+  getFollowsOfCompany(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+  getFollowersOfCompany(user_id: ID! pagination: PaginationInput!): ListOfFriends!
+
+  getFollowsCompaniesOfCompany(user_id: ID! pagination: PaginationInput!): ListOfCompanies!
+  getFollowersCompaniesOfCompany(user_id: ID! pagination: PaginationInput!): ListOfCompanies!
+
+  ## Company Account
+  GetInvitation(): ListOfInvitations!
+  GetInvitationForCompany(company_id: ID!): ListOfInvitations!
+
+  // Company account managment
+  ### ---
+  CheckIfURLForCompanyIsTaken(url: String!): Boolean!
+  GetCompanyAccount(company_id: ID!): CompanyAccount
+  getCompanyNotificationSettings(company_id: ID!): CompanyNotificationSettings!
+  GetCompanyAdmins(company_id: ID!): [CompanyAdmin!]!
+  ## Company Profile
+  getCompanyNotifications(company_id: ID! pagination: PaginationInput!): NotificationsList!
+
+  // Company profile management
+
+  GetOriginCompanyAvatar(company_id: ID!): String!
+  GetOriginCompanyCover(company_id: ID!): String!
+
+  GetCompanyProfile(url: String!, lang: String): CompanyProfile
+  GetCompanyProfileByID(company_id: ID!): CompanyProfile
+  GetCompanyRate(company_id: ID!): CompanyAvarageRate!
+  GetAmountOfEachRate(company_id: ID!): CompanyScore!
+  GetCompanyReviews(company_id: ID!, pagination: PaginationInput!): [CompanyReview!]
+  GetCompanyReviewsOfUser(user_id: ID!, pagination: PaginationInput!): [CompanyReviewForUser!]
+
+  ## Search
+  GetCompanyReports(company_id: ID!): [CompanyReport!]
+
+  // Search
+  searchUsers(input: SearchUserQuery!, pagination: PaginationInput!): SearchUserResult!
+  searchCompanies(input: SearchCompaniesQuery!, pagination: PaginationInput!): SearchCompaniesResult!
+  searchJobs(input: SearchJobQuery!, pagination: PaginationInput!): SearchJobResult!
+  searchServices(input: SearchServiceQuery!, pagination: PaginationInput!): SearchServiceResult!
+  searchServiceRequests(input: SearchServiceRequestQuery!, pagination: PaginationInput!): SearchServiceRequestResult!
+
+  getAllFilters: [SearchFilterInterface!]
+  getAllFiltersForCompany(company_id: ID!): [SearchFilterInterface!]
+  ## Jobs
+  # for user
+  searchCandidate(company_id: ID, input: SearchCandidateQuery!, pagination: PaginationInput!): SearchCandidateResult!
+
+  GetJobProfile: CandidateProfile!
+  GetRecommendedJobs(pagination: PaginationInput!): [JobPosting!]!
+  GetJob(jobId: ID!): JobPosting
+  GetDraft(companyId: String!, draftId: String!): JobInfo!
+  GetPost(companyId: String!, draftId: String!): JobDetails!
+  //SearchJob(filter: JobSearchFilterInput!): [JobPosting!]!
+  GetAppliedJobs(pagination: PaginationInput!): [JobPosting!]!
+  GetSavedJobs(pagination: PaginationInput!): [JobPosting!]!
+  GetInvitedJobs(pagination: PaginationInput!): [JobPosting!]!
+  GetSkippedJobs(pagination: PaginationInput!): [JobPosting!]!
+  # GetSavedJobSearchFilters: [NamedJobSearchFilter!]!
+  # for company
+  # GetJobAlerts: [JobAlert!]!
+
+  GetPlanPrices(company_id: ID!, countries: [String!]!, currency: String!): [PlanPrice!]
+  GetPricingFor(companyId: ID!, meta: JobMetaInput!): TotalPricingResult!
+  GetPostedJobs(companyId: ID!): [JobPosting!]!
+  GetJobForCompany(companyId: ID!, jobId: ID!): JobPosting
+  GetJobApplicants(companyId: String!, jobId: String!, sort: GetJobApplicantsSort, pagination: PaginationInput!): [JobApplicant!]!
+  GetAmountsOfManageCandidates(company_id: ID!): AmountsOfManageCandidates!
+  GetCandidates(companyId: ID!, pagination: PaginationInput): [CandidateProfile!]!
+  //SearchCandidates(companyId: ID!, filter: CandidateSearchFilterInput!): [CandidateProfile!]!
+  GetListOfJobsWithSeenStat(company_id: ID!, pagination: PaginationInput!): [JobWithSeenStat!]
+  GetAmountOfApplicantsPerCategory(company_id: ID!): AmountOfApplicantsPerCategory!
+  GetSavedCandidates(companyId: ID!, first: Int, after: Int): [CandidateProfile!]!
+  GetSkippedCandidates(companyId: ID!, first: Int, after: Int): [CandidateProfile!]!
+  // GetSavedCandidateSearchFilters(companyId: ID!): [NamedCandidateSearchFilter!]!
+  ## Messages
+  # for user
+  # GetCandidateAlerts(companyId: ID!): [CandidateAlert!]!
+
+  GetActiveConnections:[Profile!]!
+  GetMyConversations(category: ConversationCategory, labelId: ID, participantId: ID, text: String): [Conversation!]!
+  GetConversation(id: ID!): Conversation
+  GetMessages(conversationId: ID!): [Message!]!
+  SearchInConversation(conversationId: ID!, query: String!, file: String!): [Message!]!
+  GetMyReplies(query: String): [ChatReply!]!
+  # for company
+  GetAllLabels: [ChatLabel!]!
+
+  GetMyConversationsForCompany(companyId: ID!, category: ConversationCategory, labelId: ID, participantId: ID, text: String): [Conversation!]!
+  GetConversationForCompany(companyId: ID!, id: ID!): Conversation
+  GetMessagesForCompany(companyId: ID!, conversationId: ID!): [Message!]!
+  SearchInConversationForCompany(companyId: ID!, conversationId: ID!, query: String!, file: String!): [Message!]!
+  GetMyRepliesForCompany(companyId: ID!, query: String): [ChatReply!]!
+  GetAllLabelsForCompany(companyId: ID!): [ChatLabel!]!
+
+  // services
+  GetVOffice(company_id: ID, user_id: ID): VOffices!
+  GetVOfficeByID(company_id: ID, office_id: ID!): VOffice!
+  GetServicesRequest(company_id: ID , owner_id:ID ): [ServiceRequest!]
+  GetServiceRequest(company_id: ID, service_id:ID!): ServiceRequest!
+  GetSavedServicesRequest(company_id:ID , pagination:PaginationInput) : ServicesRequest!
+  GetReceivedProposals(company_id:ID , request_id:ID ,  pagination:PaginationInput!) : Proposals!
+  GetSendedProposals(company_id:ID , pagination:PaginationInput!) : Proposals!
+
+
+  GetServiceOrders(owner_id:ID! ,  office_id:ID ,  order_type:OrderType! , order_status:OrderStatusEnum! , pagination:PaginationInput!) : ServiceOrders!
+
+  ## Advert
+  GetVOfficeServices(company_id: ID, office_id: ID): Services!
+  GetVOfficeService (company_id: ID, office_id: ID , service_id:ID!): Service!
+  GetAllServices(company_id: ID): Services!
+  GetSavedVOfficeServices(company_id:ID , pagination:PaginationInput) : Services!
+
+
+
+  GetServicesReview(company_id:ID , office_id:ID! , pagination:PaginationInput!) : ServicesReview!
+  GetServicesRequestReview(owner_id:ID , company_id:ID, pagination:PaginationInput!) : ServicesReview!
+
+
+
+  // advert
+  GetAdvertGallery(company_id: ID, first: String!, after: String!): AdvertGallery!
+  GetMyAdvert(company_id: ID, first: String!, after: String!): AdvertRecords!
+  GetAdvertBanners(countryID: ID!, format: AdvertFormatEnum!, amount: Int!): [AdvertBanner!]!
+  GetAdvertCandidates(countryID: ID!, format: AdvertFormatEnum!, amount: Int!): [Profile!]!
+  GetAdvertJobs(countryID: ID!, amount: Int!): [CompanyProfile!]!
+  ## Newsfeed
+  GetAdvertBannerDraft(company_id: ID, banner_id: ID!): AdvertBannerDraft!
+  GetAdvertCampaigns(company_id:ID , pagination:PaginationInput!) : Campaings!
+  GetAdvertsByCampaignID(company_id:ID , campaign_id:ID! , pagination:PaginationInput!) : Adverts!
+  GetAdvert(type:AdvertType!) : Advert!
+
+  // newsfeed
+  GetNewsfeed(id: ID, company_id: ID, pinned: Boolean, first: String!, after: String!): Newsfeed
+  GetCommentsOfNewsfeedPost(post_id: ID!, company_id: String, sort: PostCommentsSortEnum first: String!, after: String!): NewsfeedPostComments
+  GetCommentRepliesOfNewsfeedPost(post_id: ID!, company_id: String, commentID: ID!, first: String!, after: String!): NewsfeedPostComments
+  GetSharedPost(id: ID!, company_id: ID, first: String!, after: String!): Newsfeed
+  GetNewsfeedPost(id: ID!): NewsfeedPost
+  GetListOfLikedInNewsfeed(post_id: ID!, comment_id: ID, company_id: ID, emoji: String, first: String!, after: String!): [LikableEntityUnion]
+  ## Groups
+  SearchAmongNewsfeedPosts(company_id: ID, newsfeed_id: ID, keyword: String!, first: String!, after: String!): Newsfeed
+
+  // Groups
+  IsGroupURLBusy(url: String!): Boolean!
+  GetGroupByURL(url: String!): Group
+  ## Stuff
+  GetMembersOfGroup(group_id: ID!, pagination: PaginationInput!): [Profile!]
+
+  // Stuff
+  GetAllUsersForAdmin(pagination:PaginationInput!) : Users!
+  GetAllFeedBack(pagination:PaginationInput!) : FeedBacks!
+  GetAccoutWalletAmount(user_id:ID!) : WalletAmount!
+  ## Service Center
+  GetWalletTransactions(user_id:ID!, pagination:PaginationInput! , type:TransactionTypeEnum!) : WalletTransactions!
+
+  // Service Center
+  ## Shop
+  GetSavedCVs(companyId: ID!, pagination: PaginationInput): [CandidateProfile!]!
+
+  // Shop
+  getShop(id: ID!): Shop
+  getProduct(id: ID!): Product
+  getMyWishlist(pagination: PaginationInput!): [Product!]
+  getOrdersForBuyer(pagination: PaginationInput!): [Order!]
+  getOrdersForSeller(company_id: ID, shop_id: ID!, pagination: PaginationInput!): [Order!]
+  getMyShops(companyID: ID): [Shop!]
+  searchProduct(shop_id: ID, filter: SearchProductInput, pagination: PaginationInput): [Product!]
+
+  ## House Rental
+  GetRealEstates(deal_type:DealTypeEnum!, pagination:PaginationInput!): RealEstates!
+  // House Rental
+
+
+}

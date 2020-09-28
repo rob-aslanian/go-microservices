@@ -1,0 +1,149 @@
+syntax = "proto3";
+package groupsRPC;
+
+// protoc --go_out=plugins=grpc:. groups.proto
+
+service GroupsService {
+  rpc RegisterGroup (RegisterGroupRequest) returns (ID);
+  rpc ChangeTagline (ChangeTaglineRequest) returns (Empty);
+  rpc ChangeGroupDescription (ChangeGroupDescriptionRequest) returns (Empty);
+  rpc ChangeGroupName (ChangeGroupNameRequest) returns (Empty);
+  rpc ChangeGroupPrivacyType (ChangeGroupPrivacyTypeRequest) returns (Empty);
+  rpc IsGroupURLBusy (URL) returns (BooleanValue);
+  rpc ChangeGroupURL (ChangeGroupURLRequest) returns (Empty);
+  rpc AddAdmin (AddAdminRequest) returns (Empty);
+  rpc JoinGroup (ID) returns (Empty);
+  rpc LeaveGroup (ID) returns (Empty);
+  rpc RemoveMemberFromGroup (RemoveMemberFromGroupRequest) returns (Empty);
+  rpc SentInvitations (SentInvitationsRequest) returns (Empty);
+  rpc AcceptInvitation (ID) returns (Empty);
+  rpc DeclineInvitation (ID) returns (Empty);
+  rpc SentJoinRequest (ID) returns (Empty);
+  rpc ApproveJoinRequest (ApproveJoinRequestRequest) returns (Empty);
+  rpc DeclineJoinRequest (DeclineJoinRequestRequest) returns (Empty);
+  rpc GetGroupByURL (URL) returns (Group);
+  rpc GetMembers (GetMembersRequest) returns (Members);
+}
+
+message Empty {}
+
+enum GroupPrivacyType {
+  Public = 0;
+  Closed = 1;
+  Secret = 2;
+}
+
+message RegisterGroupRequest {
+  string Name = 1;
+  string Type = 2;
+  GroupPrivacyType PrivacyType = 3;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message ChangeTaglineRequest {
+  string ID = 1;
+  string Tagline = 2;
+}
+
+message ChangeGroupDescriptionRequest {
+  string ID = 1;
+  string Description = 2;
+  string Rules = 3;
+  Location Location = 4;
+}
+
+message Location {
+  string CityID = 1;
+  string CityName = 2;
+  string CitySubdivision = 3;
+  string CountryID = 4;
+}
+
+message ChangeGroupNameRequest {
+  string ID = 1;
+  string Name = 2;
+}
+
+message ChangeGroupPrivacyTypeRequest{
+  string ID = 1;
+  GroupPrivacyType Type = 2;
+}
+
+message URL {
+  string URL = 1;
+}
+
+message BooleanValue {
+  bool Value = 1;
+}
+
+message ChangeGroupURLRequest {
+  string ID = 1;
+  string URL = 2;
+}
+
+message AddAdminRequest {
+  string ID = 1;
+  string UserID = 2;
+}
+
+message RemoveMemberFromGroupRequest {
+  string ID = 1;
+  string UserID = 2;
+}
+
+message SentInvitationsRequest {
+  string ID = 1;
+  repeated string UserID = 2;
+}
+
+message ApproveJoinRequestRequest {
+  string ID = 1;
+  string UserID = 2;
+}
+
+message DeclineJoinRequestRequest {
+  string ID = 1;
+  string UserID = 2;
+}
+
+message Group {
+  string ID = 1;
+  string URL = 14;
+  string OwnerID = 2;
+  string Name = 3;
+  string Type = 4;
+  GroupPrivacyType PrivacyType = 5;
+  uint32 AmountOfMembers = 6;
+  string TagLine = 7;
+  string Description = 8;
+  string Rules = 9;
+  Location Location = 10;
+  string Cover = 11;
+  string OriginCover = 12;
+  // bool PostApproval
+  string CreatedAt = 13;
+}
+
+message GetMembersRequest {
+  string ID = 1;
+  Pagination Pagination = 2;
+}
+
+message Pagination {
+  uint32 First = 1;
+  string After = 2;
+}
+
+message Member {
+  string UserID = 1;
+  string CreatedAt = 2;
+  bool IsAdmin = 3;
+}
+
+message Members {
+  repeated Member Members = 1;
+}

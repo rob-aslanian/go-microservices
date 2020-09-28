@@ -1,0 +1,5 @@
+type Subscription {
+  addedPost(id: ID!): NewsfeedPost
+  addedPostComment(post_id: ID!): NewsfeedPostComment
+  addedPostLike(post_id: ID!, comment_id: ID): Like
+}

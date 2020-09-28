@@ -1,0 +1,13 @@
+package rental
+
+// WhoLive ...
+type WhoLive string
+
+const (
+	// WhoLiveAny ...
+	WhoLiveAny WhoLive = "any"
+	// WhoLiveMortgagor ...
+	WhoLiveMortgagor WhoLive = "mortgagor"
+	// WhoLiveOwner ...
+	WhoLiveOwner WhoLive = "owner"
+)

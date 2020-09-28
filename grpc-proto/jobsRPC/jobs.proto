@@ -1,0 +1,857 @@
+syntax = "proto3";
+package jobsRPC;
+
+// import "userRPC/user.proto";
+
+// protoc --go_out=plugins=grpc:. jobs.proto
+
+service JobsService {
+    rpc GetProfile (Empty) returns (CandidateProfile);
+    rpc SetCareerInterests (CareerInterests) returns (Empty);
+    rpc SetOpenFlag (BoolValue) returns (Empty);
+
+    rpc PostJob (PostJobRequest) returns (ID);
+    rpc ChangePost (PostJobRequest) returns (ID);
+    rpc DeleteExpiredPost (DeleteExpiredPostRequest) returns (Empty);
+    rpc GetPost (PostIDs) returns (PostJobRequest);
+    rpc SaveDraft (PostJobRequest) returns (ID);
+    rpc ChangeDraft (PostJobRequest) returns (ID);
+    rpc GetDraft (PostIDs) returns (PostJobRequest);
+    rpc ActivateJob (CompanyIdWithJobId) returns (Empty);
+    rpc PauseJob (CompanyIdWithJobId) returns (Empty);
+    rpc ApplyJob (ApplyJobRequest) returns (Empty);
+    rpc IgnoreInvitation (ID) returns (Empty);
+    rpc AddJobView (ID) returns (Empty);
+
+    rpc GetRecommendedJobs (Pagination) returns (JobViewForUserArr);
+    rpc GetJob (ID) returns (JobViewForUser);
+    rpc GetJobApplicants (GetJobApplicantsRequest) returns (JobApplicantArr);
+
+    rpc SaveJob (ID) returns (Empty);
+    rpc UnsaveJob (ID) returns (Empty);
+    rpc SkipJob (ID) returns (Empty);
+    rpc UnskipJob (ID) returns (Empty);
+    rpc GetSavedJobs (Pagination) returns (JobViewForUserArr);
+    rpc GetSkippedJobs (Pagination) returns (JobViewForUserArr);
+    rpc GetAppliedJobs (Pagination) returns (JobViewForUserArr);
+
+    rpc SetJobApplicationSeen (SetJobApplicationSeenRequest) returns (Empty);
+    rpc SetJobApplicationCategory (SetJobApplicationCategoryRequest) returns (Empty);
+
+    rpc GetCandidates (PaginationWithId) returns (CandidateViewForCompanyArr);
+    // rpc SearchCandidates (CompanyIdWithCandidateSearchFilter) returns (CandidateViewForCompanyArr) {}
+    rpc GetAmountsOfManageCandidates (ID) returns (AmountsOfManageCandidates);
+    rpc SaveCandidate (CompanyIdWithCandidateId) returns (Empty);
+    rpc UnsaveCandidate (CompanyIdWithCandidateId) returns (Empty);
+    rpc SkipCandidate (CompanyIdWithCandidateId) returns (Empty);
+    rpc UnskipCandidate (CompanyIdWithCandidateId) returns (Empty);
+    rpc GetListOfJobsWithSeenStat (PaginationWithId) returns (ViewJobWithSeenStatArr);
+    rpc GetAmountOfApplicantsPerCategory (ID) returns (AmountOfApplicantsPerCategory);
+    rpc GetSavedCandidates (PaginationWithId) returns (CandidateViewForCompanyArr);
+    rpc GetSkippedCandidates (PaginationWithId) returns (CandidateViewForCompanyArr);
+
+    rpc GetPostedJobs (ID) returns (JobViewForCompanyArr);
+    rpc GetJobForCompany (CompanyIdWithJobId) returns (JobViewForCompany);
+    rpc InviteUserToApply (InviteUserToApplyRequest) returns (Empty);
+    rpc GetInvitedJobs (Pagination) returns (JobViewForUserArr);
+
+    rpc ReportJob (ReportJobRequest) returns (Empty);
+    rpc ReportCandidate (ReportCandidateRequest) returns (Empty);
+
+    //rpc SearchJob (JobSearchFilter) returns (JobViewForUserArr) {}
+    rpc SaveJobSearchFilter (NamedJobSearchFilter) returns (Empty);
+    rpc GetSavedJobSearchFilters (Empty) returns (NamedJobSearchFilterArr);
+    // rpc SaveJobAlert (JobAlert) returns (Empty);
+    // rpc GetJobAlerts (Empty) returns (JobAlertArr);
+    rpc SaveCandidateSearchFilter (SaveCandidateSearchFilterRequest) returns (Empty);
+    rpc GetSavedCandidateSearchFilters (ID) returns (NamedCandidateSearchFilterArr);
+    // rpc SaveCandidateAlert (SaveCandidateAlertRequest) returns (ID);
+    // rpc GetCandidateAlerts (ID) returns (CandidateAlertArr);
+    // rpc DeleteCandidateAlert (CompanyIdWithId) returns (Empty);
+
+    rpc GetPlanPrices (GetPlanPricesRequest) returns (GetPlanPricesResult);
+    rpc GetPricingFor (GetPricingRequest) returns (GetPricingResult);
+    rpc GetAmountOfActiveJobsOfCompany (ID) returns (Amount);
+
+    rpc UploadFileForApplication (File) returns (ID);
+    rpc UploadFileForJob (File) returns (ID);
+
+
+    // internal
+    rpc GetCareerInterestsByIds (IDs) returns (CareerInterestsArr);
+
+    rpc AddCVInCareerCenter (AddCVInCareerCenterRequest) returns (Empty);
+    rpc GetSavedCVs (GetSavedCVsRequest) returns (CandidateViewForCompanyArr);
+    rpc RemoveCVs (IDs) returns (Empty);
+    rpc MakeFavoriteCVs (MakeFavoriteCVsRequest) returns (Empty);
+}
+
+message Pagination {
+    int32 First = 1;
+    int32 After = 2;
+}
+
+message PaginationWithId {
+    string Id = 1;
+    Pagination Pagination = 2;
+}
+
+message DeleteExpiredPostRequest {
+    string Id = 1;
+    string PostID = 2;
+}
+
+message GetPricingResult {
+    float Total = 1;
+    string Currency = 2;
+    repeated PricingResultByCountry Countries = 3;
+}
+
+message PricingResultByCountry {
+    string Country = 1;
+    float PlanPrice = 2;
+    float RenewalPrice = 3;
+    float PublishAnonymouslyPrice = 4;
+    float LanguagePrice = 5;
+    float TotalPrice = 6;
+}
+
+message GetPricingRequest {
+    string CompanyId = 1;
+    JobMeta Meta = 2;
+}
+
+message CareerInterestsArr {
+    repeated CareerInterests List = 1;
+}
+
+message IDs {
+    repeated string Ids = 1;
+    string ID = 2;
+}
+
+message PostIDs{
+    string CompanyID = 1;
+    string PostID = 2;
+}
+
+message CandidateAlertArr {
+    repeated CandidateAlert List = 1;
+}
+
+message SaveCandidateAlertRequest {
+    string CompanyId = 1;
+    CandidateAlert Alert = 2;
+}
+
+message CandidateAlert {
+    string Id = 1;
+    string Name = 2;
+    string Interval = 3;
+    bool NotifyEmail = 4;
+    bool NotifyNotification = 5;
+    CandidateSearchFilter Filter = 6;
+}
+
+message SaveCandidateSearchFilterRequest {
+    string CompanyId = 1;
+    NamedCandidateSearchFilter Filter = 2;
+}
+
+message NamedCandidateSearchFilterArr {
+    repeated NamedCandidateSearchFilter List = 1;
+}
+
+message NamedCandidateSearchFilter {
+    string Id = 1;
+    string Name = 2;
+    CandidateSearchFilter Filter = 3;
+}
+
+
+message CompanyIdWithCandidateSearchFilter {
+    string CompanyId = 1;
+    CandidateSearchFilter Filter = 2;
+}
+
+message CandidateSearchFilter {
+    repeated string Keywords = 3;
+
+    repeated string Country = 4;
+    repeated string City = 5;
+
+    repeated string CurrentCompany = 6;
+    repeated string PastCompany = 7;
+
+    repeated string Industry = 8;
+    repeated string SubIndustry = 9;
+
+    ExperienceEnum ExperienceLevel = 10;
+    repeated string JobType = 11;
+
+    repeated string Skill = 12;
+    repeated string Language = 13;
+
+    repeated string School = 14;
+    repeated string Degree = 15;
+    repeated string FieldOfStudy = 16;
+    bool IsStudent = 17;
+
+    string Currency = 18;
+    string Period = 19;
+    uint32 MinSalary = 20;
+    uint32 MaxSalary = 21;
+
+    bool IsWillingToTravel = 22;
+    bool IsWillingToWorkRemotly = 23;
+    bool IsPossibleToRelocate = 24;
+}
+
+message JobAlertArr {
+    repeated JobAlert List = 1;
+}
+
+message JobAlert {
+    string Id = 1;
+    string Name = 2;
+    string Interval = 3;
+    bool NotifyEmail = 4;
+    bool NotifyNotification = 5;
+    JobSearchFilter Filter = 6;
+}
+
+message NamedJobSearchFilterArr {
+    repeated NamedJobSearchFilter List = 1;
+}
+
+message NamedJobSearchFilter {
+    string Id = 1;
+    string Name = 2;
+    JobSearchFilter Filter = 3;
+}
+
+message Date {
+    uint32 Day = 1;
+    uint32 Month = 2;
+    uint32 Year = 3;
+}
+
+enum DatePostedEnum {
+    Past24Hours = 0;
+    PastWeek = 1;
+    PastMonth = 2;
+    Anytime = 3;
+  }
+
+message JobSearchFilter {
+    repeated string Keyword = 1;
+    DatePostedEnum DatePosted = 2;
+    ExperienceEnum ExperienceLevel = 3;
+    repeated string Degree = 4;
+    repeated string Country = 5;
+    repeated string City = 6;
+    repeated string JobType = 7;
+    repeated string Language = 8;
+    repeated string Industry = 9;
+    repeated string Subindustry = 10;
+    repeated string CompanyName = 11;
+    CompanySize CompanySize = 12;
+    string Currency = 13;
+    string Period = 14;
+    uint32 MinSalary = 15;
+    uint32 MaxSalary = 16;
+    repeated string Skill = 17;
+    bool IsFollowing = 18;
+    bool WithoutCoverLetter = 19;
+    bool WithSalary = 20;
+}
+
+message ReportCandidateRequest {
+    string CompanyId = 1;
+    string CandidateId = 2;
+    string Text = 3;
+}
+
+message ReportJobRequest {
+    string JobId = 1;
+    string Text = 2;
+
+    enum ReportJobTypeEnum {
+      other = 0;
+      scam = 1;
+      offensive = 2;
+      incorrect = 3;
+      expired = 4;
+    }
+
+    ReportJobTypeEnum Type = 3;
+}
+
+message Empty {}
+
+message InviteUserToApplyRequest {
+    string CompanyId = 1;
+    string UserId = 2;
+    string JobId = 3;
+    string InvitationText = 4;
+}
+
+message JobViewForCompanyArr {
+    repeated JobViewForCompany List = 1;
+}
+
+message JobViewForCompany {
+    string Id = 1;
+    string UserId = 2;
+    JobDetails JobDetails = 3;
+    JobMeta Metadata = 4;
+    int64 CreatedAt = 5;
+    string Status = 6;
+    int32 NumberOfApplications = 7;
+    int32 NumberOfViews = 8;
+}
+
+message CompanyIdWithCandidateId {
+    string CompanyId = 1;
+    // userRPC.Profile User = 1; // TODO:
+    string CandidateId = 2;
+}
+
+message CandidateViewForCompanyArr {
+    repeated CandidateViewForCompany List = 1;
+}
+message CandidateViewForCompany {
+    string UserId = 1;
+    CareerInterests CareerInterests = 2;
+    bool IsSaved = 3;
+}
+
+message SetJobApplicationSeenRequest {
+    string CompanyId = 1;
+    string JobId = 2;
+    string ApplicantId = 3;
+    bool Seen = 4;
+}
+
+message SetJobApplicationCategoryRequest {
+    string CompanyId = 1;
+    string JobId = 2;
+    string ApplicantId = 3;
+    ApplicantCategoryEnum Category = 4;
+}
+
+message ID {
+    string Id = 1;
+}
+
+message CompanyIdWithId {
+    string CompanyId = 1;
+    string Id = 2;
+}
+
+message CompanyIdWithJobId {
+    string CompanyId = 1;
+    string JobId = 2;
+}
+
+message ApplicationMeta {
+    bool Seen = 1;
+     ApplicantCategoryEnum Category = 2;
+}
+message JobApplicant {
+    string UserId = 1;
+    CareerInterests CareerInterests = 2;
+    Application Application = 3;
+}
+
+message JobApplicantArr {
+    repeated JobApplicant List = 1;
+}
+
+message JobViewForUserArr {
+    repeated JobViewForUser List = 1;
+}
+message JobViewForUser {
+    string Id = 1;
+    CompanyDetails CompanyInfo = 2;
+    JobDetails JobDetails = 3;
+    JobMeta Metadata = 4;
+    Application Application = 5;
+    bool IsSaved = 6;
+    bool IsApplied = 7;
+    string InvitationText = 8;
+}
+
+message CompanyDetails {
+    string CompanyId = 1;
+    string Avatar = 2;
+    string URL = 3;
+    string Industry = 4;
+    string Subindustry = 5;
+}
+
+message ApplyJobRequest {
+    string JobId = 1;
+    string Email = 2;
+    string Phone = 3;
+    repeated string Documents = 4;
+    // repeated File Documents = 4;
+    string CoverLetter = 5;
+
+    ApplicationMeta Metadata = 6;
+}
+
+message Application {
+    string JobId = 1;
+    string Email = 2;
+    string Phone = 3;
+    repeated File Documents = 4;
+    string CoverLetter = 5;
+
+    ApplicationMeta Metadata = 6;
+    string CreatedAt = 7;
+}
+
+message PostJobRequest {
+    string CompanyId = 1;
+    string DraftId = 2;
+    JobDetails Details = 3;
+    JobMeta Metadata = 4;
+}
+
+
+
+enum ExperienceEnum {
+    UnknownExperience = 0;
+    WithoutExperience = 1;
+    LessThenOneYear = 2;
+    OneTwoYears = 3;
+    TwoThreeYears = 4;
+    ThreeFiveYears = 5;
+    FiveSevenyears = 6;
+    SevenTenYears = 7;
+    TenYearsAndMore = 8;
+}
+
+message JobDetails {
+    string Title = 1;
+    string Country = 2;
+    string Region = 3;
+    string City = 4;
+    repeated JobFunction JobFunctions = 5;
+    repeated JobType EmploymentTypes = 6;
+    repeated JobDescription Descriptions = 7;
+
+    ApplicationQuailification Required = 8;
+    ApplicationQuailification Preterred = 9;
+    repeated File Files = 10;
+
+    string SalaryCurrency = 14;
+    int32 SalaryMin = 15;
+    int32 SalaryMax = 16;
+    SalaryInterval SalaryInterval = 17;
+
+    enum JobBenefit{
+      other = 0;
+      labor_agreement = 1;
+      remote_working = 2;
+      floater = 3;
+      paid_timeoff = 4;
+      flexible_working_hours = 5;
+      additional_timeoff = 6;
+      additional_parental_leave = 7;
+      sick_leave_for_family_members = 8;
+      company_daycare = 9;
+      company_canteen = 10;
+      sport_facilities = 11;
+      access_for_handicapped_persons = 12;
+      employee_parking = 13;
+      shuttle_service = 14;
+      multiple_work_spaces = 15;
+      corporate_events = 16;
+      trainig_and_development = 17;
+      pets_allowed = 18;
+      corporate_medical_staff = 19;
+      game_consoles = 20;
+      snack_and_drink_selfservice = 21;
+      private_pension_scheme = 22;
+      health_insurance = 23;
+      dental_care = 24;
+      car_insurance = 25;
+      tution_fees = 26;
+      permfomance_related_bonus = 27;
+      stock_options = 28;
+      profit_earning_bonus = 29;
+      additional_months_salary = 30;
+      employers_matching_contributions = 31;
+      parental_bonus = 32;
+      tax_deductions = 33;
+      language_courses = 34;
+      company_car = 35;
+      laptop = 36;
+      discounts_on_company_products_and_services = 37;
+      holiday_vouchers = 38;
+      restraunt_vouchers = 39;
+      corporate_housing = 40;
+      mobile_phone = 41;
+      gift_vouchers = 42;
+      cultural_or_sporting_activites = 43;
+      employee_service_vouchers = 44;
+      corporate_credit_card = 45;
+      relocation_package = 46;
+    }
+
+    repeated JobBenefit Benefits = 40;
+
+    int32 NumberOfPositions = 18;
+    int32 PublishDay = 19;
+    int32 PublishMonth = 20;
+    int32 PublishYear = 21;
+    int32 DeadlineDay = 22;
+    int32 DeadlineMonth = 23;
+    int32 DeadlineYear = 24;
+    int32 HiringDay = 25;
+    int32 HiringMonth = 26;
+    int32 HiringYear = 27;
+    bool CoverLetter = 28;
+    bool IsWillingToWorkRemotly = 29;
+    string HeaderUrl = 30;
+    repeated AdditionalCompensation AdditionalCompensation = 31;
+    LocationType LocationType = 32;
+    AdditionalInfo AdditionalInfo = 33;
+
+
+    Location Location = 41;
+}
+
+message ApplicationQuailification {
+    repeated string Educations = 1;
+    string License = 2;
+    string Work = 3;
+    ExperienceEnum Experience = 4;
+    repeated ApplicantLanguage Languages = 5;
+    repeated string Skills = 6;
+    repeated ApplcantToolsAndTechnology Tools = 7;
+
+}
+
+message ApplicantLanguage {
+    string ID = 1;
+    string Language = 2;
+    ApplicationLevel Rank = 3;
+}
+
+message ApplcantToolsAndTechnology {
+    string ID = 1;
+    string Tool = 2;
+    ApplicationLevel Rank = 3;
+}
+
+enum ApplicationLevel {
+    Level_Unknown = 0;
+    Level_Begginer = 1;
+    Level_Intermediate = 2;
+    Level_Advanced = 3;
+    Level_Master = 4;
+}
+
+message JobMeta {
+    repeated string AdvertisementCountries = 1;
+    int32 Renewal = 2;
+    // JobPlan JobPlan = 3;
+    int32 AmountOfDays = 3;
+    bool Anonymous = 4;
+    int32 NumOfLanguages = 5;
+    string Currency = 6;
+    JobHighlight Highlight = 7;
+}
+
+message AdditionalInfo {
+    repeated SuitableFor SuitableFor = 1;
+    TravelRequirement TravelRequirement = 2;
+
+}
+
+enum LocationType {
+    On_Site = 0;
+    Remote = 1;
+}
+
+enum TravelRequirement {
+    All_time = 0;
+    Once_week = 1;
+    Once_month = 2;
+    Few_times = 3;
+    Once_year = 4;
+    Travel_req_none = 5;
+
+}
+
+enum JobFunction {
+    None_Job_Func = 0;
+    Accounting = 1;
+    Administrative = 2;
+    Arts_Design = 3;
+    Business_Development = 4;
+    Community_Social_Services = 5;
+    Consulting = 6;
+    Education = 7;
+    Engineering = 8;
+    Entrepreneurship = 9;
+    Finance = 10;
+    Healthcare_Services = 11;
+    Human_Resources = 12;
+    Information_Technology = 13;
+    Legal = 14;
+    Marketing = 15;
+    Media_Communications = 16;
+    Military_Protective_Services = 17;
+    Operations = 18;
+    Product_Management = 19;
+    Program_Product_Management = 20;
+    Purchasing = 21;
+    Quality_Assurance = 22;
+    Real_Estate = 23;
+    Rersearch = 24;
+    Sales = 25;
+    Support = 26;
+}
+
+
+
+enum SuitableFor {
+    None_Suitable = 0;
+    Student = 2;
+    Person_With_Disability = 3;
+    Single_Parent = 4;
+    Veterans = 5;
+}
+
+
+enum JobHighlight {
+    None = 0;
+    Blue = 1;
+    White = 2;
+}
+
+enum JobPlan {
+    Basic = 0;
+    Start = 1;
+    Standard = 2;
+    Professional = 3;
+    ProfessionalPlus = 4;
+    Exclusive = 5;
+    Premium = 6;
+}
+
+message JobDescription {
+    string Language = 1;
+    string Description = 2;
+    string WhyUs = 3;
+}
+
+message BoolValue {
+    bool Value = 1;
+}
+
+enum JobType {
+    UnknownJobType = 0;
+    FullTime = 1;
+    PartTime = 2;
+    Partner = 3;
+    Contractual = 4;
+    Volunteer = 5;
+    Temporary = 6;
+    Consultancy = 7;
+    Internship = 8;
+}
+
+enum SalaryInterval {
+    Unknown = 0;
+    Hour = 1;
+    Month = 4;
+    Year = 5;
+}
+
+enum AdditionalCompensation {
+    Bonus = 0;
+    Sales_Commission = 1;
+    Tips_Gratuities = 2;
+    Profit_Sharing = 3;
+    Any = 4;
+}
+
+enum CompanySize {
+    SIZE_UNDEFINED = 0;
+    SIZE_SELF_EMPLOYED = 1;
+    SIZE_1_10_EMPLOYEES = 2;
+    SIZE_11_50_EMPLOYEES = 3;
+    SIZE_51_200_EMPLOYEES = 4;
+    SIZE_201_500_EMPLOYEES = 5;
+    SIZE_501_1000_EMPLOYEES = 6;
+    SIZE_1001_5000_EMPLOYEES = 7;
+    SIZE_5001_10000_EMPLOYEES = 8;
+    SIZE_10001_PLUS_EMPLOYEES = 9;
+}
+
+message CareerInterests {
+    string UserID = 1;
+    repeated string Jobs = 2;
+    string Industry = 3;
+    repeated string Subindustry = 4;
+    CompanySize CompanySize = 5;
+    repeated JobType JobTypes = 6;
+
+    string SalaryCurrency = 7;
+    int32 SalaryMin = 8;
+    int32 SalaryMax = 9;
+    SalaryInterval SalaryInterval = 10;
+
+    bool Relocate = 11;
+    bool Remote = 12;
+    bool Travel = 13;
+
+    ExperienceEnum Experience = 14;
+    repeated Location Locations = 15;
+    bool IsInvited = 16;
+    bool IsSaved = 17;
+    repeated SuitableFor SuitableFor = 18;
+}
+
+message CandidateProfile {
+    bool IsOpen = 1;
+    CareerInterests CareerInterests = 2;
+}
+
+message Amount {
+  int32 Amount = 1;
+}
+
+message GetJobApplicantsRequest {
+  string CompanyID = 1;
+  string JobID = 2;
+
+  enum JobApplicantsSort {
+    Firstname = 0;
+    Lastname = 1;
+    PostedDate = 2;
+    ExpeirenceYears = 3;
+  }
+
+  JobApplicantsSort Sort = 3;
+  int32 First = 4;
+  int32 After = 5;
+}
+
+message AmountsOfManageCandidates {
+  int32 Saved = 1;
+  int32 Skipped = 2;
+  int32 Alerts = 3;
+}
+
+message ViewJobWithSeenStatArr {
+  repeated ViewJobWithSeenStat List = 1;
+}
+
+message ViewJobWithSeenStat {
+  string ID = 1;
+  string Title = 2;
+  int32 TotalAmount = 3;
+  int32 UnseenAmount = 4;
+  string Status = 5;
+}
+
+
+message AmountOfApplicantsPerCategory {
+  int32 Total = 1;
+  int32 Unseen = 2;
+  int32 Favorite = 3;
+  int32 InReview = 4;
+  int32 Disqualified = 5;
+}
+
+
+enum ApplicantCategoryEnum {
+  ApplicantCategoryNone = 0;
+  ApplicantCategoryFavorite = 1;
+  ApplicantCategoryInReview = 2;
+  ApplicantCategoryDisqualified = 3;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+
+  enum TargetType {
+    Experience = 0;
+    Education = 1;
+    Interest = 2;
+  }
+  TargetType Type = 3;
+
+  string TargetID = 4;
+  string Name = 5;
+  string MimeType = 6;
+  string URL = 7;
+  string CompanyID = 8;
+}
+
+message GetPlanPricesRequest {
+  string companyID = 1;
+  repeated string Countries = 2;
+  string Currency = 3;
+}
+
+
+message GetPlanPricesResult {
+  repeated PlanPrice Prices = 1;
+}
+
+message PlanPrice {
+  string Country = 1;
+  string Currency = 2;
+  PricesPerPlan PricesPerPlan = 3;
+  Features Features = 4;
+}
+
+message PricesPerPlan {
+  float Basic = 1;
+  float Start = 2;
+  float Standard = 3;
+  float Professional = 4;
+  float ProfessionalPlus = 5;
+  float Exclusive = 6;
+  float Premium = 7;
+}
+
+message Features {
+  float Anonymously = 1;
+  float Language = 2;
+  repeated float Renewal = 3;
+}
+
+
+message Location {
+  string CityID = 1;
+  string CityName = 2;
+  string Subdivision = 3;
+  string Country = 4;
+}
+
+message AddCVInCareerCenterRequest {
+  string CompanyID = 1;
+  bool ExpierencedProfessionals = 2;
+  bool NewJobSeekers = 3;
+  bool YoungProfessionals = 4;
+}
+
+message GetSavedCVsRequest {
+  string Id = 1;
+  Pagination Pagination = 2;
+}
+
+message MakeFavoriteCVsRequest {
+  string ID = 1;
+  repeated string IDs = 2;
+  bool IsFavourite = 3;
+}

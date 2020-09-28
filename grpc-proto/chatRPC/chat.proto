@@ -1,0 +1,306 @@
+syntax = "proto3";
+package chatRPC;
+
+// protoc --go_out=plugins=grpc:. chat.proto
+
+service ChatService {
+    rpc CreateConversation (Conversation) returns (Conversation);
+    rpc CreateConversationForCompany (CompanyIdWithConversation) returns (Conversation);
+    rpc CreateUnverifiedConversation (Conversation) returns (Conversation);
+    rpc GetMyConversations (ConversationFilter) returns (ConversationArr);
+    rpc GetMyConversationsForCompany (CompanyIdWithConversationFilter) returns (ConversationArr);
+    rpc GetConversation (Conversation) returns (Conversation);
+    rpc GetConversationForCompany (CompanyIdWithConversationId) returns (Conversation);
+    rpc GetMessages (Conversation) returns (MessageArr);
+    rpc GetMessagesForCompany (CompanyIdWithConversationId) returns (MessageArr);
+    rpc GetActiveConnections (Empty) returns (IDs);
+
+    rpc SendMessage (Message) returns (Empty);
+    rpc SendUnverifiedMessage (Message) returns (Empty);
+
+    rpc AddParticipants (AddParticipantsRequest) returns (Conversation);
+    rpc AddParticipantsForCompany (AddParticipantsForCompanyRequest) returns (Conversation);
+
+    rpc LeaveConversation (Conversation) returns (Empty);
+    rpc LeaveConversationForCompany (CompanyIdWithConversationId) returns (Empty);
+
+    rpc DeleteConversation (Conversation) returns (Empty);
+    rpc DeleteConversationForCompany (CompanyIdWithConversationId) returns (Empty);
+
+    rpc SetConversationUnreadFlag (SetConversationUnreadFlagRequest) returns (Empty);
+    rpc SetConversationUnreadFlagForCompany (CompanyIdWithConversationIdAndBool) returns (Empty);
+
+    rpc SearchInConversation (SearchInConversationRequest) returns (MessageArr);
+    rpc SearchInConversationForCompany (SearchInConversationForCompanuRequest) returns (MessageArr);
+
+    rpc MuteConversation (ConversationIdWithBool) returns (Empty);
+    rpc MuteConversationForCompany (CompanyIdWithConversationIdAndBool) returns (Empty);
+
+    rpc BlockConversetionByParticipants (BlockRequest) returns (Empty);
+    rpc BlockConversation (ConversationIdWithBool) returns (Empty);
+    rpc BlockConversationForCompany (CompanyIdWithConversationIdAndBool) returns (Empty);
+
+    rpc ArchiveConversation (ConversationIdWithBool) returns (Empty);
+    rpc ArchiveConversationForCompany (CompanyIdWithConversationIdAndBool) returns (Empty);
+
+    rpc RenameConversation (ConversationIdWithString) returns (Empty);
+    rpc RenameConversationForCompany (CompanyIdWithConversationIdAndString) returns (Empty);
+
+    rpc ChangeConversationAvatar (ConversationIdWithString) returns (Empty);
+    rpc ChangeConversationAvatarForCompany (CompanyIdWithConversationIdAndString) returns (Empty);
+
+    rpc CreateReply (Reply) returns (Reply);
+    rpc CreateReplyForCompany (CreateReplyForCompanyRequest) returns (Reply);
+    rpc UpdateReply (Reply) returns (Reply);
+    rpc UpdateReplyForCompany (CreateReplyForCompanyRequest) returns (Reply);
+    rpc DeleteReply (Reply) returns (Empty);
+    rpc DeleteReplyForCompany (CompanyIdWithId) returns (Empty);
+    rpc GetMyReplies (StringValue) returns (ReplyArr);
+    rpc GetMyRepliesForCompany (CompanyIdWithString) returns (ReplyArr);
+
+    rpc CreateLabel (ConversationLabel) returns (ConversationLabel);
+    rpc CreateLabelForCompany (CompanyIdWithConversationLabel) returns (ConversationLabel);
+    rpc UpdateLabel (ConversationLabel) returns (Empty);
+    rpc UpdateLabelForCompany (CompanyIdWithConversationLabel) returns (Empty);
+    rpc DeleteLabel (ConversationLabel) returns (Empty);
+    rpc DeleteLabelForCompany (CompanyIdWithId) returns (Empty);
+    rpc GetAllLabel (Empty) returns (ConversationLabelArr);
+    rpc GetAllLabelForCompany (CompanyId) returns (ConversationLabelArr);
+    rpc AddLabelToConversation (ConversationIdWithLabelId) returns (Empty);
+    rpc AddLabelToConversationForCompany (CompanyIdWithConversationIdAndLabelId) returns (Empty);
+    rpc RemoveLabelFromConversation (ConversationIdWithLabelId) returns (Empty);
+    rpc RemoveLabelFromConversationForCompany (CompanyIdWithConversationIdAndLabelId) returns (Empty);
+
+    rpc ReportConversation (ConversationIdWithString) returns (Empty);
+    rpc ReportConversationForCompany (ReportConversationForCompanyRequest) returns (Empty);
+
+    // internal
+    rpc IsUserLive (IsUserLiveRequest) returns (BoolValue);
+    rpc SetParticipantOffline (BoolValue) returns (Empty);
+    rpc SetParticipantOfflineForCompany (CompanyIdWithBool) returns (Empty);
+}
+
+message Empty {
+}
+
+message CompanyIdWithConversation {
+    string CompanyId = 1;
+    Conversation Conversation = 2;
+}
+message CompanyIdWithConversationFilter {
+    string CompanyId = 1;
+    ConversationFilter Filter = 2;
+}
+message CompanyIdWithConversationId {
+    string CompanyId = 1;
+    string ConversationId = 2;
+}
+message AddParticipantsForCompanyRequest {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    repeated string Participants = 3;
+}
+message CompanyIdWithConversationIdAndBool {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    bool Value = 3;
+}
+message CompanyIdWithConversationIdAndString {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    string Value = 3;
+}
+message SearchInConversationForCompanuRequest {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    string Query = 3;
+    string File = 4;
+}
+message CreateReplyForCompanyRequest {
+    string CompanyId = 1;
+    Reply Reply = 2;
+}
+message CompanyIdWithId {
+    string CompanyId = 1;
+    string Id = 2;
+}
+message CompanyIdWithString {
+    string CompanyId = 1;
+    string Value = 2;
+}
+message CompanyIdWithBool {
+    string CompanyId = 1;
+    bool Value = 2;
+}
+message CompanyId {
+    string CompanyId = 1;
+}
+message CompanyIdWithConversationLabel {
+    string CompanyId = 1;
+    ConversationLabel Label = 2;
+}
+message CompanyIdWithConversationIdAndLabelId {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    string LabelId = 3;
+}
+
+message IsUserLiveRequest {
+    string UserId = 1;
+}
+
+message BoolValue {
+    bool Value = 1;
+}
+message StringValue {
+    string Value = 1;
+}
+
+message ReportConversationForCompanyRequest {
+    string CompanyId = 1;
+    string ConversationId = 2;
+    string Text = 3;
+}
+
+
+message ReplyArr {
+    repeated Reply Replies = 1;
+}
+message Reply {
+    string Id = 1;
+    string Title = 2;
+    string Text = 3;
+    repeated ReplyFile Files = 4;
+}
+message ReplyFile {
+    string Id = 1;
+    string Name = 2;
+}
+
+message ConversationIdWithString {
+    string ConversationId = 1;
+    string Value = 2;
+}
+
+message ConversationIdWithBool {
+    string ConversationId = 1;
+    bool Value = 2;
+}
+
+message SearchInConversationRequest {
+    string ConversationId = 1;
+    string Query = 2;
+    string File = 3;
+}
+
+message ConversationFilter {
+    ConversationCategory Category = 1;
+    string LabelId = 2;
+    string ParticipantId = 3;
+    string Text = 4;
+}
+
+enum ConversationCategory {
+    All = 0;
+    Active = 1;
+    Unread = 2;
+    Archived = 3;
+}
+
+message SetConversationUnreadFlagRequest {
+    string ConversationId = 1;
+    bool Value = 2;
+}
+
+enum MessageType {
+    UserMessage = 0;
+    AddParticipant = 1;
+    ParticipantLeft = 2;
+    MessageStatus = 3;
+    TotalUnreadCount = 4;
+}
+
+message MessageArr {
+    repeated Message Messages = 1;
+}
+
+message Message {
+    string Id = 1;
+    MessageType Type = 2;
+    string ConversationId = 3;
+    string SenderId = 4;
+    string Text = 5;
+    repeated File Files = 6;
+    // string File = 6;
+    // string FileName = 7;
+    // int64 FileSize = 8;
+    repeated string ReceivedBy = 9;
+    repeated string SeenBy = 10;
+    int64 Timestamp = 11;
+}
+
+message File {
+  string File = 1;
+  string FileName = 2;
+  int64 FileSize = 3;
+}
+
+message AddParticipantsRequest {
+    string ConversationId = 1;
+    repeated string Participants = 2;
+}
+
+message ConversationArr {
+    repeated Conversation Conversations = 1;
+}
+
+message Conversation {
+    string Id = 1;
+    string Name = 2;
+    repeated Participant Participants = 3;
+    string Avatar = 4;
+    bool IsGroup = 5;
+    Message LastMessage = 6;
+
+    bool Unread = 7;
+    bool Muted = 8;
+    bool Blocked = 9;
+    bool Archived = 10;
+    bool HasLeft = 11;
+    repeated string Labels = 12;
+}
+
+message Participant {
+    string Id = 1;
+    bool IsCompany = 2;
+    bool IsAdmin = 3;
+    bool Unread = 4;
+    bool HasLeft = 5;
+    bool IsActive = 6;
+}
+
+message ConversationLabelArr {
+    repeated ConversationLabel List = 1;
+}
+
+message ConversationLabel {
+    string Id = 1;
+    string Name = 2;
+    string Color = 3;
+    int32 Count = 4;
+}
+
+message ConversationIdWithLabelId {
+    string ConversationId = 1;
+    string LabelId = 2;
+}
+
+message IDs {
+  repeated string IDs = 1;
+}
+
+message BlockRequest {
+    string SenderID = 1;
+    string TargetID = 2;
+    bool Value = 3;
+}

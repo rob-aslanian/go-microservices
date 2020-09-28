@@ -1,0 +1,970 @@
+syntax = "proto3";
+package servicesRPC;
+
+// protoc --go_out=plugins=grpc:. services.proto
+
+service ServicesService {
+    rpc CheckIfURLForVOfficeIsTaken (URL) returns (BooleanValue);
+    rpc IsOutOfOffice(IsOutOfOfficeRequest) returns (Empty);
+    rpc CreateVOffice(CreateVOfficeRequest) returns (ID);
+    rpc ChangeVOffice(CreateVOfficeRequest) returns (Empty);
+    rpc GetVOffice(GetOfficeRequest) returns (VOffices);
+    rpc GetVOfficeByID(GetVOfficeByIDRequest) returns (VOffice);
+    rpc RemoveVOffice(RemoveVOfficeRequest) returns(Empty);
+
+    rpc ChangeVOfficeName(ChangeVOfficeNameRequest) returns (Empty){};
+    // rpc ChangeVOfficeLocation(ChangeVOfficeLocationRequest) returns (Empty); // TODO Uncomment
+
+    rpc AddVOfficeService(AddChangeVOfficeServiceRequest) returns (ID);
+    rpc ChangeVOfficeService(AddChangeVOfficeServiceRequest) returns (ID);
+    rpc GetVOfficeServices(GetVOfficeServicesRequest) returns (GetVOfficeServicesResponse);
+    rpc GetVOfficeService(GetVOfficeServicesRequest) returns (Service);
+    rpc GetAllServices(GetVOfficeServicesRequest) returns (GetVOfficeServicesResponse);
+
+    rpc RemoveVOfficeService(RemoveRequest) returns (Empty);
+    rpc ChangeVOfficeServiceStatus(ChangeVOfficeServiceStatusRequest) returns (Empty);
+
+    rpc AcceptOrderService(AcceptOrderServiceRequest) returns (Empty);
+    rpc OrderService(OrderServiceRequest) returns (ID);
+    rpc OrderProposalForServiceRequest(IgnoreProposalRequest) returns (Empty);
+    rpc GetVOfficerServiceOrders(GetVOfficerServiceOrdersRequest) returns (OrderServices);
+    rpc DeclineServiceOrder(CancelServiceOrderRequest) returns (Empty);
+    rpc CancelServiceOrder(CancelServiceOrderRequest) returns (Empty);
+    rpc DeliverServiceOrder(CancelServiceOrderRequest) returns (Empty);
+    rpc AcceptDeliverdServiceOrder(CancelServiceOrderRequest) returns (Empty);
+    rpc CancelDeliverdServiceOrder(CancelServiceOrderRequest) returns (Empty);
+
+    rpc AddNoteForOrderService(AddNoteForOrderServiceRequest) returns (Empty);
+    rpc AddServicesRequest(AddServiceRequest) returns (ID);
+    rpc ChangeServicesRequest (ChangeServicesRequestRequest) returns (ID);
+    rpc GetServicesRequest(GerServiceRequst) returns (GetServicesResponse);
+    rpc GetServiceRequest(GerServiceRequst) returns (GetServiceResponse);
+    rpc ChangeServicesRequestStatus(GerServiceRequst) returns (Empty);
+
+    rpc RemoveServicesRequest(RemoveRequest) returns (Empty);
+
+
+
+    rpc AddVOfficePortfolio (AddChangeVOfficePortfolioPortfolioRequest) returns (VofficeAddPortfolioResponse);
+    rpc ChangeVOfficePortfolio (AddChangeVOfficePortfolioPortfolioRequest) returns (ID);
+
+    rpc RemoveVOfficePortfolio (RemoveVOfficePortfolioRequest) returns (Empty);
+    rpc RemoveFilesInVOfficeService(RemoveFilesRequest) returns (Empty);
+    rpc RemoveFilesInVOfficePortfolio(RemoveFilesRequest) returns (Empty);
+    rpc RemoveFilesInServiceRequest(RemoveFilesRequest) returns (Empty);
+    rpc RemoveLinksInVOfficePortfolio(RemoveLinksRequest) returns (Empty);
+
+    rpc ChangeVofficeCover (File) returns(ID);
+    rpc ChangeVofficeOriginCover (File) returns (ID);
+    rpc RemoveVofficeCover (RemoveCover) returns (Empty);
+
+    rpc AddFileInVofficeService (File) returns (ID);
+    rpc AddFileInVOfficePortfolio(File) returns (ID);
+
+    rpc AddFileInServiceRequest(File) returns (ID);
+    rpc AddFileInOrderService(File) returns (ID);
+
+
+    
+    // rpc AddLinks (AddLinksRequest) returns (Empty);
+    // rpc ChangeLink(ChangeLinkRequest) returns (Empty);
+    // rpc RemoveLinks (RemoveLinksRequest) returns (Empty);
+    // rpc AddFile (File) returns (ID);
+    // rpc RemoveFiles (RemoveFilesRequest) returns (Empty);
+
+    // rpc GetCompanyGalleries (RequestGalleries) returns (GalleryList); // TODO Uncomment
+    // rpc ChangeOrderOfGallery(Gallery) returns (Empty);
+    // rpc GetUploadedFiles(ID) returns (Files); // TODO Uncomment
+    
+    // rpc GetDashboardSeller(ID) returns (DashboardSeller); // TODO Uncomment
+    // rpc GetDashBoardBuyer(ID) returns (DashboardBuyer); // TODO Uncomment
+
+    rpc AddChangeVOfficeDescription(AddChangeDescriptionRequest) returns(Empty);
+
+    rpc AddVOfficeLanguages(ChangeVOfficeQualificationsRequest) returns (IDs);
+    rpc ChangeVOfficeLanguage(ChangeVOfficeQualificationsRequest) returns(Empty);
+    rpc RemoveVOfficeLanguages(RemoveLanguagesRequest) returns (Empty);
+
+
+    rpc GetSavedVOfficeServices(GetSavedVOfficeServicesRequest) returns(GetVOfficeServicesResponse);
+    
+    rpc SaveVOfficeService(VOfficeServiceActionRequest) returns (Empty);
+    rpc UnSaveVOfficeService(VOfficeServiceActionRequest) returns (Empty);
+
+
+    rpc GetReceivedProposals(GetReceivedProposalsRequest) returns(ProposalsResponse);
+    rpc GetSendedProposals(GetReceivedProposalsRequest) returns (ProposalsResponse);
+    rpc SendProposalForServiceRequest(SendProposalRequest) returns(ID);
+    rpc IgnoreProposalForServiceRequest(IgnoreProposalRequest) returns (Empty);
+    rpc GetSavedServicesRequest(GetSavedVOfficeServicesRequest) returns(GetServicesResponse);
+    rpc SaveServiceRequest(VOfficeServiceActionRequest) returns (Empty);
+    rpc UnSaveServiceRequest(VOfficeServiceActionRequest) returns (Empty);
+
+    rpc WriteReviewForService(WriteReviewRequest) returns(ID);
+    rpc WriteReviewForServiceRequest(WriteReviewRequest) returns(ID);
+    rpc GetServicesReview(GetReviewRequest) returns (GetReviewResponse);
+    rpc GetServicesRequestReview(GetReviewRequest) returns (GetReviewResponse);
+
+    
+
+
+}
+
+message IgnoreProposalRequest {
+    string CompanyID = 1;
+    string ProposalID = 2;
+}
+
+message GetReviewRequest {
+    string CompanyID = 1;
+    string OfficeID = 2;
+    uint32 First = 3;
+    string After = 4;
+    string OwnerID = 5;
+}
+
+message GetReviewResponse {
+    int32 review_amount = 1;
+    ServiceReviewAVG ServiceReviewAVG = 2;
+    repeated ReviewDetail Reviews = 3;
+
+}
+
+message ServiceReviewAVG {
+    double ClarityAVG = 1;
+    double CommunicationAVG = 2;
+    double PaymentAVG = 3;
+
+}
+
+message WriteReviewRequest {
+    string CompanyID = 1;
+    string OwnerID = 2;
+    string ServiceID = 3;
+    string OfficeID = 4;
+    string RequestID = 5;
+    ReviewDetail ReviewDetail = 6;
+    bool IsOwnerCompany = 7;
+}
+
+
+message AcceptOrderServiceRequest {
+    string CompanyID = 1;
+    string ServiceID = 2;
+    string OrderID = 3;
+}
+
+
+message SendProposalRequest { 
+    string OwnerID = 1;
+    string RequestID = 2; 
+    bool IsOwnerCompany = 3;
+    ProposalDetail ProposalDetail = 4;
+}
+
+
+message GetReceivedProposalsRequest {
+    string CompanyID = 1;
+    string RequestID = 2;
+    uint32 First = 3;
+    string After = 4;
+}
+
+message ProposalsResponse{
+    int32 ProposalsAmount = 1;
+    repeated ProposalDetail Proposals = 2;
+}
+
+message ProposalDetail {
+    string ServiceID = 1;
+    string ProfileID = 2;
+    bool IsCompany = 3;
+    string Message = 4;
+    string Currency = 5;
+    int32 PriceAmount = 6;
+    PriceEnum PriceType = 7;
+    DeliveryTimeEnum DeliveryTime = 8;
+    string CreateAt = 9;
+    string ID = 10;
+    int32 ExperationTime = 11;
+    string CustomDate = 12;
+    OrderStatusEnum OrderStatus = 13;
+    Service Service = 14;
+    Request Request = 15;
+    int32 MinPriceAmmount = 16;
+    int32 MaxPriceAmmount = 17;
+    string OfficeID = 18;
+    
+}
+
+
+message  GetSavedVOfficeServicesRequest {
+    string CompanyID = 1;
+    uint32 First = 2;
+    string After = 3;
+}
+
+message VOfficeServiceActionRequest {
+    string ServiceID = 1;
+    string CompanyID = 2;
+}
+
+message GerServiceRequst {
+    string CompanyID = 1;
+    string ServiceID = 2;
+    string OwnerID = 3;
+    ServiceStatusEnum ServiceStatus = 4;
+}
+
+message GetServicesResponse {
+    int32 ServiceAmount = 1;
+    repeated Request Request = 2;
+}
+
+message GetServiceResponse {
+    Request Request = 1;
+}
+
+message ChangeServicesRequestRequest {
+    string CompanyID = 1;
+    string ServiceID = 2;
+    Request Request = 3;
+}
+
+message Empty {}
+
+message ID {
+    string ID = 1;
+}
+message VofficeQualificationResponse {
+    string ID = 1;
+    Qualifications Qualifications = 3;
+}
+
+message VofficeAddPortfolioResponse{
+    string ID = 1;
+    repeated Link Links = 2;
+}
+
+message IsOutOfOfficeRequest{
+    string CompanyID = 1;
+    string OfficeID = 2;
+    bool IsOut = 3;
+    string ReturnDate = 4;
+}
+
+message RemoveCover{
+    string ID = 1;
+    string CompanyID = 2;
+}
+
+message RemoveVOfficeRequest {
+    string OfficeID = 1;
+    string CompanyID = 2;
+}
+
+message VOffice {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string SellerDashboardID = 4;
+    string Name = 5;
+    Location Location = 6;
+    string Description = 7;
+    string Category = 8;
+    repeated Language Languages = 9;
+    string CreatedAt = 10;
+    bool isMe = 11;
+    string Cover = 12;
+    string CoverOrigin = 13;
+    bool isOut = 14;
+    string return_date = 15;
+
+}
+
+message VOffices  {
+    repeated VOffice VOffice = 1;
+}
+
+message DashboardSeller {
+    string ID = 1;
+    // string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    repeated Service Services = 5;
+    repeated Invitation Invitations = 6;
+    repeated Offer SentOffers = 7;
+    repeated Order Orders = 8;
+    repeated Request SavedRequests = 9;
+}
+
+message DashboardBuyer {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    repeated Request Requests = 4;
+    repeated Offer Offers = 5;
+    repeated Invitation SentInvitations = 6;
+    repeated Order Orders = 7;
+    repeated Service SavedServices = 8;
+
+}
+
+message OrderServiceRequest {
+    string OwnerID = 1;
+    string ServiceID = 2;
+    OrderService OrderDetail = 3;
+    bool IsOwnerCompany = 4;
+    string OfficeID = 5;
+}
+
+message AddNoteForOrderServiceRequest {
+    string OrderID = 1;
+    string CompanyID = 2;
+    string Text = 3;
+}
+
+message GetVOfficerServiceOrdersRequest {
+    string OwnerID = 1;
+    uint32 First = 2;
+    string After = 3;
+    OrderStatusEnum OrderStatus = 4;
+    string OfficeID = 5;
+    OrderType OrderType = 6;
+}
+
+message OrderServices {
+    int32 OrdersAmount = 1;
+    repeated OrderService OrderServices = 2;
+}
+
+message CancelServiceOrderRequest {
+    string OrderID = 1;
+    string CompanyID = 2;
+}
+
+message OrderService {
+    string ProfileID = 1;
+    bool   IsCompany = 2;
+    OrderStatusEnum OrderStatus = 3;
+    string Description = 4;
+    string Currency = 5;
+    int32 PriceAmount = 6;
+    PriceEnum PriceType = 7;
+    DeliveryTimeEnum DeliveryTime = 8;
+    repeated File Files = 9;
+    string Note = 10;
+    string CreateAt = 11;
+    string ID = 12;
+    Service Service = 13;
+    string CustomDate = 14;
+    int32 MinPriceAmmount = 15;
+    int32 MaxPriceAmmount = 16;
+    Request Request = 17;
+}
+
+
+// TODO Missing Delivery Time. Need to add if after update
+message Request {
+    string Tittle = 1;
+    StatusEnum Status = 2;
+    ServiceCategory Category = 3;
+    string Currency = 4;
+    PriceEnum Price = 5;
+    int32 FixedPriceAmmount = 6;
+    int32 MinPriceAmmount = 7;
+    int32 MaxPriceAmmount = 8;
+    RequestAdditionalDetails AdditionalDetails = 9;
+    bool IsRemote = 10;
+    Location Location = 11;
+    string Date = 12;
+    string CreatedAt = 13;
+    bool IsSaved = 14;
+    int32 Invited = 15;
+    ActionEnum Action = 16;
+    repeated File Files = 17;
+    bool IsDraft = 18;
+    RequestProjectTypeEnum ProjectType = 19;
+    DeliveryTimeEnum DeliveryTime = 20;
+    LocationEnum LocationType = 21;
+    string Description = 22;
+    VisibilityEnum Visibility = 23;
+    string ID = 24;
+    string UserID = 25;
+    string CompanyID = 26;
+    string CustomDate = 27;
+    bool IsClosed = 28;
+    int32 ProposalAmount = 29;
+    bool HasLiked = 30;
+    bool IsPaused = 31;
+
+}
+
+message Category {
+    repeated string Main = 1;
+    repeated string Subs = 2;
+}
+
+message MainCategory {
+    repeated string Main = 1;
+}
+
+message ServiceCategory {
+    string Main = 1;
+    repeated string Sub = 2;
+}
+
+enum ActionEnum {
+    Action_Pause = 0;
+    Action_Edit = 1;
+    Action_Delete = 2;
+    Action_Share = 3;
+}
+
+enum PriceEnum {
+    Price_Any = 0;
+    Price_Fixed = 1;
+    Price_Hourly = 2;
+    Price_Negotiable = 3;
+}
+
+enum StatusEnum {
+    Status_Active = 0;
+    Status_Pending = 1;
+    Status_Draft = 2;
+    Status_Paused = 3;
+    Status_Rejected = 4;
+    Status_Closed = 5;
+}
+
+ enum OrderStatusEnum {
+    Status_New = 0;
+    Status_In_Progress = 1;
+    Status_Out_Of_Schedule = 2;
+    Status_Delivered = 3;
+    Status_Completed = 4;
+    Status_Disputed = 5;
+    Status_Canceled = 6;
+    Status_Any = 7;
+}
+
+enum OrderType {
+    SELLER = 0;
+    BUYER = 1;
+}
+
+enum VisibilityEnum {
+    Anyone = 0;
+    Only_RightNao_User = 1;
+    Invited_Only = 2;
+}
+
+message Order {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    string ServiceID = 5;
+    enum OrderStatusEnum {
+        Status_New = 0;
+        Status_In_Progress = 1;
+        Status_Out_Of_Schedule = 2;
+        Status_Delivered = 3;
+        Status_Completed = 4;
+        Status_Disputed = 5;
+        Status_Canceled = 6;
+    }
+    OrderStatusEnum OrderStatus = 6;
+    string Note = 7;
+    enum OrderActionEnum {
+        Action_Accept = 0;
+        Action_Decline = 1;
+    }
+    OrderActionEnum OrderAction = 8;
+    string CreatedAt = 9;
+    AdditionalDetails AdditionalDetails = 10;
+}
+
+enum PurposeEnum {
+    Purpose_Promotional = 0;
+    Purpose_Corporate = 1;
+    Purpose_Real_Estate = 2;
+    Purpose_Travel = 3;
+    Purpose_Medical = 4;
+    Purpose_Academic = 5;
+    Purpose_Event = 6;
+}
+enum ServiceIncludesEnum {
+    Service_Includes_Source_File = 0;
+    Service_Include_Print_Ready = 1;
+    Service_Include_Photo_Editing = 2;
+    Service_Include_Custom_Graphics = 3;
+    Service_Include_Stock_Photos  = 4;
+}
+
+enum ServiceStatusEnum {
+    UNKNOWN_SERVICE_STATUS = 0;
+    SERVICE_ACTIVE = 1;
+    SERVICE_DEACTIVATE = 2;
+    SERVICE_DRAFT = 3;
+    SERVICE_PAUSED = 4;
+    SERVICE_CLOSED = 5;
+    SERVICE_REJECTED = 6;
+}
+
+message ChangeVOfficeServiceStatusRequest {
+    string CompanyID = 1;
+    string OfficeID = 2;
+    string ServiceID = 3;
+    ServiceStatusEnum ServiceStatus = 4;
+}
+
+message AdditionalDetails {
+    Qualifications Qualifications = 1;
+    PurposeEnum Purpose = 2;
+    ServiceIncludesEnum ServiceIncludes = 6;
+}
+
+message RequestAdditionalDetails {
+    enum ServiceTypeEnum {
+        New_Website = 0;
+        Website_Refine = 1;
+    }
+    ServiceTypeEnum ServiceType = 1;
+    repeated ToolTechnology Tools = 2;
+    repeated Language Languages = 3;
+    RequestServiceIncludesEnum ServiceIncludes = 4;
+    ServiceProviderEnum ServiceProvider = 5;
+    repeated Skill Skills = 6;
+}
+
+enum RequestServiceIncludesEnum {
+    Responsive_Design = 0;
+    Fix_Documentation = 1;
+    Content_Upload = 2;
+    Design_Customization = 3;
+    Browser_Compatibility = 4;
+    Include_Source_Code = 5;
+    Bug_Investigation = 6;
+    Online_Consultants = 7;
+    Hosting = 8;
+    Detailed_Code_Comments = 9;
+    Server_Upload = 10;
+    Search_Engine_Optimization = 11;
+    Other = 12;
+}
+
+enum ServiceProviderEnum {
+    No_Preference = 0;
+    Company = 1;
+    Freelancer = 2;
+    Professional = 3;
+}
+
+message AddVOfficeQualificationsRequest {
+    string CompanyID = 1;
+    string OfficeID = 2;
+    Qualifications Qualifications = 3;
+}
+
+message ChangeVOfficeQualificationsRequest {
+    string CompanyID = 1;
+    string OfficeID = 2;
+    string ID = 3;
+    repeated Language Languages = 4;
+}
+
+message Qualifications {
+    repeated Skill Skills = 5;
+    repeated ToolTechnology Tools = 6;
+    repeated Language Languages = 7;
+}
+
+message Skill {
+    string ID = 1;
+    string Skill = 2;
+    int32 Position = 3;
+    Level Rank = 4;
+}
+
+
+
+message ToolTechnology {
+    string ID = 1;
+    string ToolTechnology = 2;
+    Level Rank = 3;
+    string CreatedAt = 4;
+}
+
+
+enum Level {
+    Beginner = 0;
+    Intermediate = 1;
+    Advanced = 2;
+    Master = 3;
+}
+
+message RequestToolTechnology {
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message ToolTechnologyList {
+    repeated ToolTechnology ToolsTechnologies = 1;
+} 
+
+message ToolsTechnologiesList{
+  repeated ToolTechnology ToolsTechnologies = 1;
+}
+
+message IDs {
+  repeated string IDs = 1;
+}
+
+message Language {
+    string ID = 1;
+    string Language = 2;
+    Level Rank = 3;
+}
+
+message RemoveLanguagesRequest {
+    repeated string ID = 1;
+    string CompanyID = 2;
+    string OfficeID = 3;
+}
+
+
+message Location {
+    Country Country = 1;
+    City City = 2;
+}
+
+message City {
+  string Id = 1;
+  string Title = 2;
+  string Subdivision = 3;
+}
+
+message Country{
+  string Id = 1;
+}
+
+message Invitation {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    string RequestID = 5;
+    string Title = 6;
+    string CreatedAt = 7;
+}
+
+message Offer {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    string ServiceID = 5;
+    int64 ExpirationDate = 6;
+    string Title = 7;
+    string CreatedAt = 8;
+}
+
+enum HireEnum {
+    Will_Hire = 0;
+    Not_Hire = 1;
+    Not_Answer = 2;
+}
+
+message ReviewDetail {
+    string ID = 1;
+    string ProfileID = 2;
+    bool IsCompany = 3;
+    uint32 Clarity = 4;
+    uint32 Communication = 5;
+    uint32 Payment = 6;
+    HireEnum Hire = 7;
+    string Description = 8;
+    string CreatedAt = 9;
+    Request Request = 10;
+    Service Service = 11;
+    double ReviewAVG = 12;
+}
+
+message AddChangeVOfficePortfolioPortfolioRequest {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    Portfolio Portfolio = 5;
+}
+
+message Portfolio {
+    enum ContentTypeEnum {
+        Content_Type_Image = 0;
+        Content_Type_Article = 1;
+        Content_Type_Code = 2;
+        Content_Type_Video = 3;
+        Content_Type_Audio = 4;
+        Content_Type_Other = 5;
+    }
+    ContentTypeEnum ContentType = 1;
+    string Tittle = 2;
+    string Description = 3;
+    repeated File Files = 4;
+    string CreatedAt = 5;
+    repeated Link Links = 6;
+    string id = 7;
+    string userID = 8;
+    string companyID = 9; 
+
+}
+
+message File {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string OfficeID = 4;
+    string TargetID = 5;
+    string Name = 6;
+    string MimeType = 7;
+    string URL = 8;
+    string ItemID = 9;
+}
+
+message Files {
+    repeated File Files = 1;
+}
+
+message CreateVOfficeRequest {
+    string Name = 1;
+    string Category = 2;
+    Location Location = 3;
+    string Description = 4;
+    repeated Language Languages = 5;
+    string CompanyID = 6;
+    string ID = 7;
+}
+
+message ChangeVOfficeNameRequest {
+    string CompanyID = 1;
+    string VOfficeID = 2;
+    string Name = 3;
+}
+
+message ChangeVOfficeImageRequest {
+    string CompanyID = 1;
+    string VOfficeID = 2;
+    File File = 3;
+}
+
+message ChangeVOfficeLocationRequest {
+    string CompanyID = 1;
+    string VOfficeID = 2;
+    Location Location = 3;
+}
+
+
+message AddChangeDescriptionRequest {
+    string VOfficeID = 1;
+    string CompanyID = 2;
+    string Description = 3;
+}
+
+message AddChangeVOfficeServiceRequest {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string ServiceID = 4;
+    string VOfficeID = 5;
+    Service Service = 6;
+}
+
+message GetVOfficeServicesRequest {
+    string OfficeID = 1;
+    string CompanyID = 2;
+    string ServiceID = 3;
+}
+
+message GetVOfficeServicesResponse {
+    int32 ServiceAmount = 1;
+    repeated Service Services = 2;
+}
+
+message Service {
+    string Tittle = 1;
+    string Description = 2;
+    ServiceCategory Category = 3;
+    string Currency = 4;
+    PriceEnum Price = 5;
+    int32 FixedPriceAmmount = 6;
+    int32 MinPriceAmmount = 7;
+    int32 MaxPriceAmmount = 8;
+    AdditionalDetails AdditionalDetails = 9;
+    DeliveryTimeEnum DeliveryTime = 10;
+    LocationEnum LocationType = 11;
+    Location Location = 12;
+    repeated File Files = 13;
+    int32 Cancellations = 14;
+    string CreatedAt = 15;
+    bool IsSaved = 16;
+    ActionEnum Action = 17;
+    int32 Clicks = 18;
+    int32 Views = 19;
+    bool IsDraft = 20;
+    bool isRemote = 21;
+    string ID = 22;
+    string OfficeID = 23;
+    string userID = 24;
+    string companyID = 25;
+    bool IsPaused = 26;
+    WorkingHour WorkingDate = 27;
+    bool HasLiked = 28;
+
+
+}
+
+message WorkingHour {
+    bool IsAlwaysOpen = 1;
+    repeated WorkingDate WorkingHours = 2;
+}
+
+message WorkingDate {
+    repeated WeekDays WeekDays = 1;
+    string FromDate = 2;
+    string ToDate = 3;
+}
+
+enum WeekDays {
+    MONDAY = 0;
+    TUESDAY = 1;
+    WEDNESDAY = 2;
+    THURSDAY = 3;
+    FRIDAY = 4; 
+    SATURDAY = 5;
+    SUNDAY = 6;
+}
+
+message AddServiceRequest {
+    string CompanyID  = 1;
+    string ServiceID = 2;
+    Request Request = 3;
+}
+message AddChangeServiceRequestRequest {
+    string ID = 1;
+    string UserID = 2;
+    string CompanyID = 3;
+    string RequestID = 4;
+    Request Request = 5;
+}
+
+enum RequestProjectTypeEnum {
+    One_Time_Project = 0;
+    On_Going_Project = 1;
+    Not_Sure = 2;
+}
+
+enum DeliveryTimeEnum {
+    Up_To_24_Hours = 0;
+    Up_To_3_Days = 1;
+    Up_To_7_Days = 2;
+    Weeks_1_2 = 3;
+    Weeks_2_4 = 4;
+    Month_And_More = 5;
+    Custom = 6;
+    Delivery_Time_Any = 7;
+}
+
+enum LocationEnum {
+    Location_Any = 0;
+    Remote_only = 1;
+    On_Site_Work = 2;
+}
+
+message AddImageRequest {
+    string ID = 1;
+    File File = 2;
+}
+
+
+message Link {
+    string ID = 1;
+    string URL = 2;
+}
+
+message PortfolioFile {
+  string ID = 1;
+  string FileID = 2;
+  uint32 Position = 3;
+}
+
+message AddLinksRequest {
+  string ID = 1;
+  repeated Link Links = 2;
+}
+
+message ChangeLinkRequest {
+  string ID = 1;
+  Link Link = 2;
+}
+
+message RemoveLinksRequest {
+    string CompanyID = 1;
+    string FirstTargetID = 2;
+    string SecondTargetID = 3;
+    repeated Link Links = 4;
+}
+
+message RemoveFilesRequest {
+    string CompanyID = 1;
+    string FirstTargetID = 2;
+    string SecondTargetID = 3;
+    repeated File Files = 4;
+}
+
+message RequestGalleries {
+    string UserID = 1;
+    string companyID = 2;
+    uint32 First = 3;
+    string After = 4;
+}
+
+message Gallery {
+  string ID = 1;
+  Files Files = 2;
+  uint32 Position = 3;
+}
+
+message GalleryList {
+  repeated Gallery Galleries = 1;
+}
+
+message URL {
+    string URL = 1;
+}
+
+message BooleanValue {
+    bool Value = 1;
+} 
+
+message RemoveRequest {
+    string CompanyID = 1;
+    string TargetID = 2;
+}
+
+message RemoveVOfficePortfolioRequest {
+    string CompanyID = 1;
+    string VOfficeID = 2;
+    string PortfolioID = 3;
+}
+
+message GetVOfficeByIDRequest {
+    string OfficeID = 1;
+    string CompanyID = 2;
+}
+message GetOfficeRequest {
+    string CompanyID = 1;
+    string UserID = 2;
+}

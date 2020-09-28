@@ -1,0 +1,1116 @@
+syntax = "proto3";
+package companyRPC;
+
+// protoc --go_out=plugins=grpc:. company.proto
+
+service CompanyService {
+  // Account management
+  rpc CheckIfURLForCompanyIsTaken (URL) returns (BooleanValue);
+  rpc RegisterCompany (RegisterCompanyRequest) returns (RegisterCompanyResponse);
+  rpc DeactivateCompany (DeactivateCompanyRequest) returns (Empty);
+
+  rpc GetCompanyAccount (ID) returns (Account);
+
+  rpc ChangeCompanyName (ChangeCompanyNameRequest) returns (Empty);
+  rpc ChangeCompanyURL (ChangeCompanyUrlRequest) returns (Empty);
+  rpc ChangeCompanyFoundationDate (ChangeCompanyFoundationDateRequest) returns (Empty);
+  rpc ChangeCompanyIndustry (ChangeCompanyIndustryRequest) returns (Empty);
+
+  rpc ChangeCompanyType (ChangeCompanyTypeRequest) returns (Empty);
+  rpc ChangeCompanySize (ChangeCompanySizeRequest) returns (Empty);
+
+  rpc AddCompanyEmail (AddCompanyEmailRequest) returns (ID);
+  rpc DeleteCompanyEmail (DeleteCompanyEmailRequest) returns (Empty);
+  rpc ChangeCompanyEmail (ChangeCompanyEmailRequest) returns (Empty); // only can make primary
+
+  rpc AddCompanyPhone (AddCompanyPhoneRequest) returns (ID);
+  rpc DeleteCompanyPhone (DeleteCompanyPhoneRequest) returns (Empty);
+  rpc ChangeCompanyPhone (ChangeCompanyPhoneRequest) returns (Empty); // only can make primary
+
+  rpc AddCompanyAddress (AddCompanyAddressRequest) returns (ID);
+  rpc DeleteCompanyAddress (DeleteCompanyAddressRequest) returns (Empty);
+  rpc ChangeCompanyAddress (ChangeCompanyAddressRequest) returns (Empty);
+
+  rpc AddCompanyWebsite (AddCompanyWebsiteRequest) returns (ID);
+  rpc DeleteCompanyWebsite (DeleteCompanyWebsiteRequest) returns (Empty);
+  rpc ChangeCompanyWebsite (ChangeCompanyWebsiteRequest) returns (Empty);
+
+  rpc ChangeCompanyParking (ChangeCompanyParkingRequest) returns (Empty);
+  rpc ChangeCompanyBenefits (ChangeCompanyBenefitsRequest) returns (Empty);
+
+  rpc AddCompanyAdmin (AddCompanyAdminRequest) returns (Empty);
+  rpc DeleteCompanyAdmin (DeleteCompanyAdminRequest) returns (Empty);
+
+  //Profile managemant
+  rpc GetCompanyProfile (GetCompanyProfileRequest) returns (GetCompanyProfileResponse);
+  rpc GetCompanyProfileByID (ID) returns (GetCompanyProfileResponse);
+  rpc GetCompanyProfiles (GetCompanyProfilesRequest) returns (GetCompanyProfilesResponse);
+
+  rpc ChangeCompanyAboutUs (ChangeCompanyAboutUsRequest) returns (Empty);
+
+  rpc GetFounders (GetFoundersRequest) returns (Founders);
+  rpc AddCompanyFounder (AddCompanyFounderRequest) returns (ID);
+  rpc DeleteCompanyFounder (DeleteCompanyFounderRequest) returns (Empty);
+  rpc ChangeCompanyFounder (ChangeCompanyFounderRequest) returns (Empty);
+  rpc ChangeCompanyFounderAvatar  (File) returns(ID);
+  rpc ApproveFounderRequest (ApproveFounderRequestRequest) returns (Empty);
+  rpc RemoveFounderRequest (RemoveFounderRequestRequest) returns (Empty);
+
+  rpc AddCompanyAward (AddCompanyAwardRequest) returns (ID);
+  rpc DeleteCompanyAward (DeleteCompanyAwardRequest) returns (Empty);
+  rpc ChangeCompanyAward (ChangeCompanyAwardRequest) returns (Empty);
+  rpc AddLinksInCompanyAward (AddLinksRequest) returns (Empty);
+  rpc ChangeLinkInCompanyAward (ChangeLinkRequest) returns (Empty);
+  rpc RemoveLinksInCompanyAward (RemoveLinksRequest) returns (Empty);
+  rpc AddFileInCompanyAward (File) returns (ID);
+  rpc RemoveFilesInCompanyAward (RemoveFilesRequest) returns (Empty);
+  rpc GetUploadedFilesInCompanyAward (ID) returns (Files);
+
+  rpc AddCompanyMilestone (AddCompanyMilestoneRequest) returns (ID);
+  rpc DeleteCompanyMilestone (DeleteCompanyMilestoneRequest) returns (Empty);
+  rpc ChangeCompanyMilestone (ChangeCompanyMilestoneRequest) returns (Empty);
+  rpc ChangeImageMilestone (File) returns(ID);
+  rpc RemoveImageInMilestone (RemoveImageInMilestoneRequest) returns (Empty);
+
+  // rpc RemoveCompanyBenefits (CompanyBenefitsRequest) returns (ID);
+
+  rpc AddCompanyProduct (AddCompanyProductRequest) returns (ID);
+  rpc DeleteCompanyProduct (DeleteCompanyProductRequest) returns (Empty);
+  rpc ChangeCompanyProduct (ChangeCompanyProductRequest) returns (Empty);
+  rpc ChangeImageProduct (File) returns(ID);
+  rpc RemoveImageInProduct (RemoveImageInProductRequest) returns (Empty);
+
+  rpc AddCompanyService (AddCompanyServiceRequest) returns (ID);
+  rpc DeleteCompanyService (DeleteCompanyServiceRequest) returns (Empty);
+  rpc ChangeCompanyService (ChangeCompanyServiceRequest) returns (Empty);
+  rpc ChangeImageService (File) returns(ID);
+  rpc RemoveImageInService (RemoveImageInServiceRequest) returns (Empty);
+
+  rpc AddCompanyReview (AddCompanyReviewRequest) returns (ID);
+  rpc DeleteCompanyReview (DeleteCompanyReviewRequest) returns (Empty);
+  rpc GetCompanyReviews (GetCompanyReviewsRequest) returns (GetCompanyReviewsResponse);
+  rpc GetUsersReviews (GetCompanyReviewsRequest) returns (GetCompanyReviewsResponse);
+
+  rpc GetCompanyGallery (RequestGallery) returns (GalleryFiles);
+  rpc AddFileInCompanyGallery (GalleryFile) returns (ID);
+  rpc RemoveFilesInCompanyGallery (RemoveGalleryFileRequest) returns (Empty);
+  // rpc ChangeOrderOfGallery(Gallery) returns (Empty){};
+  rpc GetUploadedFilesInCompanyGallery (ID) returns (GalleryFiles);
+
+  rpc GetAvarageRateOfCompany (ID) returns (Rate);
+  rpc GetAmountOfEachRate (ID) returns (AmountOfRates);
+  rpc GetAmountOfReviewsOfUser (ID) returns (Amount);
+
+  rpc AddCompanyReport (AddCompanyReportRequest) returns (Empty);
+  rpc AddCompanyReviewReport (AddCompanyReviewReportRequest) returns (Empty);
+
+  rpc ChangeAvatar (File) returns(ID);
+  rpc ChangeOriginAvatar (File) returns (ID);
+  rpc GetOriginAvatar (ID) returns (File);
+  rpc RemoveAvatar (ID) returns (Empty);
+
+  rpc ChangeCover (File) returns(ID);
+  rpc ChangeOriginCover (File) returns (ID);
+  rpc GetOriginCover (ID) returns (File);
+  rpc RemoveCover (ID) returns (Empty);
+
+  rpc SaveCompanyProfileTranslation (ProfileTranslation) returns (Empty);
+  rpc SaveCompanyMilestoneTranslation (MilestoneTranslation) returns (Empty);
+  rpc SaveCompanyAwardTranslation (AwardTranslation) returns (Empty);
+  // rpc ChangeCompanyCover (ChangeCompanyCoverRequest) returns (ChangeCompanyCoverResponse);
+
+  // rpc DeleteCompanyReport (DeleteCompanyReportRequest) returns (DeleteCompanyReportResponse);  // unnecessery
+  // rpc GetCompanyReports (GetCompanyReportsRequest) returns (GetCompanyReportsResponse); // unnecessery
+
+  rpc AddGoldCoinsToWallet (WalletAddGoldCoins) returns (Empty);
+
+  rpc OpenCareerCenter (OpenCareerCenterRequest) returns (Empty);
+}
+
+// ---------------
+message Empty {}
+
+message ID {
+  string ID = 1;
+}
+
+message Account {
+  string ID = 1;
+  string OwnerID = 2;
+  string Name = 3;
+  string URL = 4;
+  Industry Industry = 5;
+  Type Type = 6;
+  Size Size = 7;
+  repeated Address Addresses = 8;
+  string FoundationDate = 9;
+  repeated Email Emails = 10;
+  repeated Phone Phones = 11;
+  int64 CreatedAt = 12;
+  Status Status = 13;
+  repeated Website Websites = 14;
+  Parking Parking = 15;
+  repeated BusinessHoursItem BusinessHours = 16;
+}
+
+
+message WalletAddGoldCoins{
+  string UserID = 1;
+  int32  coins  = 2;
+  string Type   = 3;
+}
+
+
+// ---------------
+
+enum Status {
+  STATUS_NOT_ACTIVATED = 0;
+  STATUS_ACTIVATED = 1;
+  STATUS_DEACTIVATED = 2;
+}
+
+enum IndustryId {
+  INDUSTRY_UNKNOWN = 0;
+  INDUSTRY_INFORMATION_TECHNOLOGY = 1;
+}
+
+enum SubindustryId {
+  SUBINDUSTRY_UNKNOWN = 0;
+  SUBINDUSTRY_WEB_DEVEVELOPMENT = 1;
+  SUBINDUSTRY_IT_MANAGEMENT = 2;
+}
+
+enum Type {
+  TYPE_UNKNOWN = 0;
+  TYPE_SELF_EMPLOYED = 1;
+  TYPE_EDUCATIONAL_INSTITUTION = 2;
+  TYPE_GOVERNMENT_AGENCY = 3;
+  TYPE_SOLE_PROPRIETORSHIP = 4;
+  TYPE_PRIVATELY_HELD = 5;
+  TYPE_PARTNERSHIP = 6;
+  TYPE_PUBLIC_COMPANY = 7;
+}
+
+enum Size {
+  SIZE_UNKNOWN = 0;
+  SIZE_SELF_EMPLOYED = 1;
+  SIZE_1_10_EMPLOYEES = 2;
+  SIZE_11_50_EMPLOYEES = 3;
+  SIZE_51_200_EMPLOYEES = 4;
+  SIZE_201_500_EMPLOYEES = 5;
+  SIZE_501_1000_EMPLOYEES = 6;
+  SIZE_1001_5000_EMPLOYEES = 7;
+  SIZE_5001_10000_EMPLOYEES = 8;
+  SIZE_10001_PLUS_EMPLOYEES = 9;
+}
+
+enum Parking {
+  PARKING_UNKNOWN = 0;
+  PARKING_NO_PARKING = 1;
+  PARKING_PARKING_LOT = 2;
+  PARKING_STREET_PARKING = 3;
+}
+
+enum AdminRole {
+  ROLE_UNKNOWN = 0;
+  ROLE_ADMIN = 1;
+  ROLE_JOB_EDITOR = 2;
+  ROLE_COMMERCIAL_ADMIN = 3;
+  ROLE_V_SHOP_ADMIN = 4;
+  ROLE_V_SERVICE_ADMIN = 5;
+}
+
+enum Score {
+  SCORE_UNKNOWN = 0;
+  SCORE_POOR = 1;
+  SCORE_FAIR = 2;
+  SCORE_GOOD = 3;
+  SCORE_VERY_GOOD = 4;
+  SCORE_EXCELLENT = 5;
+}
+
+enum ReviewReportEnum {
+  REVIEW_REPORT_UNKNOWN = 0;
+  REVIEW_REPORT_SPAM = 1;
+  REVIEW_REPORT_SCAM = 2;
+  REVIEW_REPORT_INAPPROPRIATE_OFFENSIVE = 3;
+  REVIEW_REPORT_FALSE_FAKE = 4;
+  REVIEW_REPORT_OFF_TOPIC = 5;
+  REVIEW_REPORT_SOMTHING_ELSE = 6;
+}
+
+enum ReportEnum {
+  REPORT_UNKNOWN = 0;
+  REPORT_VIOLATES_TERMS_OF_USE = 1;
+  REPORT_NOT_REAL_ORGANIZATION = 2;
+  REPORT_MAY_HAVE_BEEN_HACKED = 3;
+  REPORT_PICTURE_IS_NOT_LOGO = 4;
+  REPORT_DUPLICATE = 5;
+  REPORT_SOMTHING_ELSE = 6;
+}
+
+message RegisterCompanyRequest {
+  string Name = 1;
+  string URL = 2;
+  Industry Industry = 3;
+  Type Type = 4;
+  string StreetAddress = 5;
+  string Apartment = 6;
+  string ZipCode = 7;
+  int32 CityId = 8;
+  string State = 9;
+  string FoundationDate = 10;
+  repeated string Websites = 14;
+  string Email = 11;
+  Phone  Phone = 12;
+  string VAT = 13;
+  string InvitedBy = 15;
+}
+message RegisterCompanyResponse {
+  string Id = 1;
+  string URL = 2;
+}
+
+message DeactivateCompanyRequest {
+  string Id = 1;
+  string Password = 2;
+}
+message DeactivateCompanyResponse {}
+
+message GetCompanyAccountRequest {
+  string Id = 1;
+}
+message GetCompanyAccountResponse {
+  string Id = 1;
+  string OwnerId = 2;
+  string Name = 3;
+  string Url = 4;
+  Industry Industry = 5;
+  Type Type = 6;
+  Size Size = 7;
+  repeated Address Addresses = 8;
+  string FoundationDate = 9;
+  repeated Email Emails = 10;
+  repeated Phone Phones = 11;
+  int64 CreatedAt = 12;
+  Status Status = 13;
+  repeated Website Websites = 14;
+  Parking Parking = 15;
+}
+
+message Website {
+  string Id = 1;
+  string Website = 2;
+}
+
+message ChangeCompanyNameRequest {
+  string Id = 1;
+  string Name = 2;
+}
+message ChangeCompanyNameResponse {}
+
+message ChangeCompanyFoundationDateRequest {
+  string Id = 1;
+  string FoundationDate = 2;
+}
+message ChangeCompanyFoundationDateResponse {}
+
+message ChangeCompanyIndustryRequest {
+  string ID = 1;
+  Industry Industry = 2;
+}
+message ChangeCompanyIndustryResponse {}
+
+message Industry {
+  string Main = 1;
+  repeated string Subs = 2;
+}
+
+message AddCompanyEmailRequest {
+  string ID = 1;
+  Email Email = 2;
+}
+message AddCompanyEmailResponse {
+  int32 EmailId = 1;
+}
+
+message DeleteCompanyEmailRequest {
+  string Id = 1;
+  string EmailId = 2;
+}
+message DeleteCompanyEmailResponse {}
+
+message ChangeCompanyEmailRequest {
+  string Id = 1;
+  string EmailId = 2;
+  bool EmailIsPrimary = 3;
+}
+message ChangeCompanyEmailResponse {}
+
+message Email {
+  string ID = 1;
+  string Email = 2;
+  bool IsPrimary = 3;
+  bool IsActivated = 4;
+}
+
+message AddCompanyPhoneRequest {
+  string Id = 1;
+  Phone Phone = 2;
+}
+message AddCompanyPhoneResponse {
+  int32 PhoneId = 1;
+}
+
+message DeleteCompanyPhoneRequest {
+  string Id = 1;
+  string PhoneId = 2;
+}
+message DeleteCompanyPhoneResponse {}
+
+message ChangeCompanyPhoneRequest {
+  string Id = 1;
+  string PhoneId = 2;
+  bool PhoneIsPrimary = 3;
+}
+message ChangeCompanyPhoneResponse {}
+
+message Phone {
+  string ID = 1;
+  string Number = 2;
+  CountryCode CountryCode = 3;
+  string CountryAbbreviation = 4;
+  bool IsActivated = 5;
+  bool IsPrimary = 6;
+}
+
+message CountryCode {
+  int32 Id = 1;
+  string Code = 2;
+}
+
+message AddCompanyAddressRequest {
+  string Id = 1;
+  Address Address = 2;
+}
+message AddCompanyAddressResponse {}
+
+message DeleteCompanyAddressRequest {
+  string Id = 1;
+  string AddressId = 2;
+}
+message DeleteCompanyAddressResponse {}
+
+message ChangeCompanyAddressRequest {
+  string Id = 1;
+  Address Address = 3;
+}
+message ChangeCompanyAddressResponse {}
+
+message Address {
+  string ID = 1;
+  string Name = 2;
+  string ZipCode = 3;
+  string Apartment = 4;
+  string StreetAddress = 5;
+  // int32 CityId = 6;
+  // string CountryId = 7;
+  // string State = 8;
+  Location Location = 6;
+  repeated Phone Phones = 7;
+  repeated BusinessHoursItem BusinessHours = 8;
+  GeoPos GeoPos = 9;
+  bool IsPrimary = 10;
+}
+
+message Location {
+  Country Country = 1;
+  City City = 2;
+}
+
+message City {
+  string Id = 1;
+  string Title = 2;
+  string Subdivision = 3;
+}
+
+message Country{
+  string Id = 1;
+  //string Title = 2;
+}
+
+message GeoPos {
+  double Lantitude = 1;
+  double Longitude = 2;
+}
+
+message BusinessHoursItem {
+  string ID = 1;
+  repeated string WeekDays = 2;
+  string HourFrom = 3;
+  string HourTo = 4;
+}
+
+message ChangeCompanyUrlRequest {
+  string Id = 1;
+  string Url = 2;
+}
+message ChangeCompanyUrlResponse {}
+
+message ChangeCompanyTypeRequest {
+  string Id = 1;
+  Type Type = 2;
+}
+message ChangeCompanyTypeResponse {}
+
+message ChangeCompanySizeRequest {
+  string Id = 1;
+  Size Size = 2;
+}
+message ChangeCompanySizeResponse {}
+
+message AddCompanyWebsiteRequest {
+  string Id = 1;
+  string Website = 2;
+}
+message AddCompanyWebsiteResponse {}
+
+message DeleteCompanyWebsiteRequest {
+  string Id = 1;
+  string WebsiteId = 2;
+}
+message DeleteCompanyWebsiteResponse {}
+
+message ChangeCompanyWebsiteRequest {
+  string Id = 1;
+  string WebsiteId = 2;
+  string Website = 3;
+}
+message ChangeCompanyWebsiteResponse {
+}
+
+message ChangeCompanyParkingRequest {
+  string Id = 1;
+  Parking Parking = 2;
+}
+message ChangeCompanyParkingResponse {}
+
+message AddCompanyAdminRequest {
+  string Id = 1;
+  string Password = 2;
+  string UserId = 3;
+  AdminRole Role = 4;
+}
+message AddCompanyAdminResponse {}
+
+message DeleteCompanyAdminRequest {
+  string Id = 1;
+  string Password = 2;
+  string UserId = 3;
+}
+message DeleteCompanyAdminResponse {}
+
+
+//Profile managemant
+
+message Profile {
+  string Id = 1;
+  string Description = 2;
+  string Mission = 3;
+  Industry Industry = 4;
+  Type Type = 5;
+  Size Size = 6;
+  string FoundationDate = 7;
+  Parking Parking = 8;
+  repeated BusinessHoursItem BusinessHours = 9;
+  // repeated Founder Founders = 10;
+  repeated Award Awards = 11;
+  repeated Milestone Milestones = 12;
+  repeated Product Products = 13;
+  repeated Service Services = 14;
+  repeated Address Addresses = 15;
+  string Cover = 16;
+
+  EmailProfile Email = 17;
+  PhoneProfile Phone = 18;
+
+  string Name = 19;
+  string URL = 20;
+  repeated string Websites = 21;
+
+  AdminRole Role = 22;
+
+  int32 AmountOfFollowings = 23;
+  int32 AmountOfFollowers = 24;
+  int32 AmountOfEmployees = 25;
+  int32 AmountOfJobs = 26;
+  float AvarageRating = 27;
+
+  bool WasAboutUsSet = 28;
+  string Avatar = 29;
+
+  bool IsFollow = 30;
+  bool IsFavorite = 31;
+  bool IsOnline = 32;
+  bool IsBlocked = 33;
+
+  repeated string Emails = 34;
+  repeated string Phones = 35;
+
+  repeated BenefitEnum Benefits = 36;
+
+  string CurrentTranslation = 37;
+  repeated string AvailableTranslations = 38;
+
+  repeated Gallery Galleries = 39;
+  CareerCenter CareerCenter = 40;
+}
+
+message EmailProfile {
+  string Email = 1;
+}
+
+message PhoneProfile {
+  string Number = 1;
+  CountryCode CountryCode = 2;
+  string CountryAbbreviation = 3;
+}
+
+message Founder {
+  string ID = 1;
+  string UserID = 2;
+  string Name = 3;
+  string PositionTitle = 4;
+  string Avatar = 5;
+  bool IsApproved = 6;
+}
+
+message Award {
+  string ID = 1;
+  string Title = 2;
+  string Issuer = 3;
+  int32 Year = 4;
+  repeated File Files = 5;
+  repeated Link Links = 6;
+}
+
+message Milestone {
+  string Id = 1;
+  string Image = 2;
+  int32  Year = 3;
+  string Title = 4;
+  string Description = 5;
+}
+
+message Product {
+  string ID = 1;
+  string Image = 2;
+  string Name = 3;
+  string Website = 4;
+}
+
+message Service {
+  string ID = 1;
+  string Image = 2;
+  string Name = 3;
+  string Website = 4;
+}
+
+message GetCompanyProfileRequest {
+  string Url = 1;
+  string Lang = 2;
+}
+message GetCompanyProfileResponse {
+  Profile Profile = 1;
+}
+
+message GetCompanyProfilesRequest {
+  repeated string Ids = 1;
+}
+message GetCompanyProfilesResponse {
+  repeated Profile Profiles = 1;
+}
+
+
+//About us
+message ChangeCompanyAboutUsRequest {
+  string Id = 1;
+  string Description = 2;
+  string Mission = 3;
+  Industry Industry = 4;
+  Type Type = 5;
+  Size Size = 6;
+  string FoundationDate = 7;
+  Parking Parking = 8;
+  repeated BusinessHoursItem BusinessHours = 9;
+
+  bool IsDescriptionNull = 10;
+  bool IsMissionNull = 11;
+  bool IsTypeNull = 12;
+  bool IsSizeNull = 13;
+  bool IsParkingNull = 14;
+  bool IsSubindustryNull = 15;
+}
+message ChangeCompanyAboutUsResponse {}
+
+
+//Founders
+message AddCompanyFounderRequest {
+  string ID = 1;
+  Founder Founder = 2;
+}
+
+message AddCompanyFounderResponse {}
+
+message DeleteCompanyFounderRequest {
+  string Id = 1;
+  string FounderId = 2;
+}
+message DeleteCompanyFounderResponse {}
+
+message ChangeCompanyFounderRequest {
+  string Id = 1;
+  Founder Founder = 2;
+}
+message ChangeCompanyFounderResponse {}
+
+
+//Awards
+message AddCompanyAwardRequest {
+  string ID = 1;
+  Award Award = 2;
+  // string Title = 2;
+  // string Issuer = 3;
+  // int32 Year = 4;
+}
+message AddCompanyAwardResponse {}
+
+message DeleteCompanyAwardRequest {
+  string Id = 1;
+  string AwardId = 2;
+}
+message DeleteCompanyAwardResponse {}
+
+message ChangeCompanyAwardRequest {
+  string Id = 1;
+  Award Award = 2;
+}
+message ChangeCompanyAwardResponse {}
+
+
+//Milestones
+message AddCompanyMilestoneRequest {
+  string ID = 1;
+  Milestone Milestone = 2;
+  // string Id = 1;
+  // string Image = 2;
+  // int32  Year = 3;
+  // string Title = 4;
+  // string Description = 5;
+}
+message AddCompanyMilestoneResponse {}
+
+message DeleteCompanyMilestoneRequest {
+  string Id = 1;
+  string MilestoneId = 2;
+}
+message DeleteCompanyMilestoneResponse {}
+
+message ChangeCompanyMilestoneRequest {
+  string Id = 1;
+  Milestone Milestone = 2;
+}
+message ChangeCompanyMilestoneResponse {}
+
+
+//Products
+message AddCompanyProductRequest {
+  string Id = 1;
+  Product Product = 2;
+  // string Image = 2;
+  // string Name = 3;
+  // string Website = 4;
+}
+message AddCompanyProductResponse {}
+
+message DeleteCompanyProductRequest {
+  string Id = 1;
+  string ProductId = 2;
+}
+message DeleteCompanyProductResponse {}
+
+message ChangeCompanyProductRequest {
+  string Id = 1;
+  Product Product = 2;
+}
+message ChangeCompanyProductResponse {}
+
+
+//Services
+message AddCompanyServiceRequest {
+  string ID = 1;
+  Service Service = 2;
+  // string Image = 2;
+  // string Name = 3;
+  // string Website = 4;
+}
+message AddCompanyServiceResponse {}
+
+message DeleteCompanyServiceRequest {
+  string Id = 1;
+  string ServiceId = 2;
+}
+message DeleteCompanyServiceResponse {}
+
+message ChangeCompanyServiceRequest {
+  string Id = 1;
+  Service Service = 2;
+}
+
+message ChangeCompanyServiceResponse {}
+
+//Reviews
+message Review {
+  string Id = 1;
+  // Score Score = 2;
+  uint32 Rate = 2;
+  string Headline = 3;
+  string Description = 4;
+  string AuthorID = 5;
+  Profile Company = 6;
+  string Date = 7;
+  // ReviewReportEnum Report = 5;
+  // string Explanation = 6;
+}
+
+message AddCompanyReviewRequest {
+  string Id = 1;
+  Review Review = 2;
+  // Score Score = 2;
+  // string Headline = 3;
+  // string Description = 4;
+}
+message AddCompanyReviewResponse {}
+
+message DeleteCompanyReviewRequest {
+  string ID = 1;
+  string ReviewID = 2;
+}
+message DeleteCompanyReviewResponse {}
+
+message AddCompanyReviewReportRequest {
+  ReviewReport ReviewReport = 1;
+}
+
+message ReviewReport {
+  string ID = 1;
+  string CompanyID = 2;
+  string ReviewId = 3;
+  ReviewReportEnum Report = 4;
+  string Explanation = 5;
+}
+
+message AddCompanyReviewReportResponse {}
+
+message GetCompanyReviewsRequest {
+  string ID = 1;
+  uint32 First = 2;
+  string After = 3;
+}
+message GetCompanyReviewsResponse {
+  repeated Review Reviews = 1;
+}
+
+
+//Cover
+message ChangeCompanyCoverRequest {
+  string Id = 1;
+  string Cover = 2;
+}
+message ChangeCompanyCoverResponse {}
+
+
+//Reports
+message Report {
+  int32 Id = 1;
+  ReportEnum Report = 2;
+  string Explanation = 3;
+}
+
+message AddCompanyReportRequest {
+  string ID = 1;
+  Report Report = 2;
+  // string Id = 1;
+  // ReportEnum Report = 2;
+  // string Explanation = 3;
+}
+message AddCompanyReportResponse {}
+
+message DeleteCompanyReportRequest {
+  string Id = 1;
+  int32 ReportId = 2;
+}
+message DeleteCompanyReportResponse {}
+
+message GetCompanyReportsRequest {
+  string Id = 1;
+}
+message GetCompanyReportsResponse {
+  repeated Report Reports = 1;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+
+  enum TargetType {
+    Milestone = 0;
+  }
+  TargetType Type = 4;
+
+  string TargetID = 5;
+  string Name = 6;
+  string MimeType = 7;
+  string URL = 8;
+}
+
+message RemoveImageInMilestoneRequest{
+  string UserID = 1;
+  string CompanyID = 2;
+  string TargetID = 3;
+  string ID = 4;
+  string MimeType = 5;
+  string Name = 6;
+  string URL = 7;
+}
+
+message RemoveImageInProductRequest {
+  string UserID = 1;
+  string CompanyID = 2;
+  string TargetID = 3;
+  string ID = 4;
+  string MimeType = 5;
+  string Name = 6;
+  string URL = 7;
+}
+
+message RemoveImageInServiceRequest {
+  string UserID = 1;
+  string CompanyID = 2;
+  string TargetID = 3;
+  string ID = 4;
+  string MimeType = 5;
+  string Name = 6;
+  string URL = 7;
+}
+
+message Rate {
+  float AvarageRate = 1;
+  uint32 AmountReviews = 2;
+}
+
+message AmountOfRates {
+  map<uint32, uint32> Rate = 1;
+}
+
+message GetFoundersRequest {
+  string CompanyID = 1;
+  int32 First = 2;
+  string After = 3;
+}
+
+message Founders {
+  repeated Founder Founders = 1;
+}
+
+message ApproveFounderRequestRequest {
+  string CompanyID = 1;
+  string RequestID = 2;
+}
+
+message RemoveFounderRequestRequest {
+  string CompanyID = 1;
+  string RequestID = 2;
+}
+
+message URL {
+  string URL = 1;
+}
+
+message BooleanValue {
+  bool Value = 1;
+}
+
+
+enum BenefitEnum {
+  other = 0;
+  labor_agreement = 1;
+  remote_working = 2;
+  floater = 3;
+  paid_timeoff = 4;
+  flexible_working_hours = 5;
+  additional_timeoff = 6;
+  additional_parental_leave = 7;
+  sick_leave_for_family_members = 8;
+  company_daycare = 9;
+  company_canteen = 10;
+  sport_facilities = 11;
+  access_for_handicapped_persons = 12;
+  employee_parking = 13;
+  shuttle_service = 14;
+  multiple_work_spaces = 15;
+  corporate_events = 16;
+  trainig_and_development = 17;
+  pets_allowed = 18;
+  corporate_medical_staff = 19;
+  game_consoles = 20;
+  snack_and_drink_selfservice = 21;
+  private_pension_scheme = 22;
+  health_insurance = 23;
+  dental_care = 24;
+  car_insurance = 25;
+  tution_fees = 26;
+  permfomance_related_bonus = 27;
+  stock_options = 28;
+  profit_earning_bonus = 29;
+  additional_months_salary = 30;
+  employers_matching_contributions = 31;
+  parental_bonus = 32;
+  tax_deductions = 33;
+  language_courses = 34;
+  company_car = 35;
+  laptop = 36;
+  discounts_on_company_products_and_services = 37;
+  holiday_vouchers = 38;
+  restraunt_vouchers = 39;
+  corporate_housing = 40;
+  mobile_phone = 41;
+  gift_vouchers = 42;
+  cultural_or_sporting_activites = 43;
+  employee_service_vouchers = 44;
+  corporate_credit_card = 45;
+  childcare = 46;
+  transportation = 47;
+  relocation_package = 48;
+}
+
+message ChangeCompanyBenefitsRequest {
+  string ID = 1;
+  repeated BenefitEnum CompanyBenefit = 2;
+}
+
+message Gallery {
+  string ID = 1;
+  repeated GalleryFile File = 2;
+  uint32 Position = 3;
+}
+
+message GalleryFiles {
+  repeated GalleryFile GalleryFiles = 1;
+}
+
+message GalleryFile {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string GalleryID = 4;
+  string Name = 5;
+  string MimeType = 6;
+  string URL = 7;
+}
+
+message RemoveGalleryFileRequest {
+  string ID = 1;
+  repeated GalleryFile Files = 2;
+}
+
+message RequestGallery {
+  string companyID = 1;
+  uint32 First = 2;
+  uint32 After = 3;
+}
+
+message GalleryList {
+  repeated Gallery Galleries = 1;
+}
+
+message Link {
+  string ID = 1;
+  string URL = 2;
+}
+
+message AddLinksRequest {
+  string ID = 1;
+  string AwardID = 2;
+  repeated Link Links = 3;
+}
+
+message ChangeLinkRequest {
+  string ID = 1;
+  string AwardID = 2;
+  Link Link = 3;
+}
+
+message RemoveLinksRequest {
+  string ID = 1;
+  string AwardID = 2;
+  repeated Link Links = 3;
+}
+
+message RemoveFilesRequest {
+  string ID = 1;
+  string AwardID = 2;
+  repeated File Files = 3;
+}
+
+message Files {
+  repeated File Files = 1;
+}
+
+message ProfileTranslation {
+  string CompanyID = 1;
+  string Language = 2;
+  string Name = 3;
+  string Mission = 4;
+  string Description = 5;
+}
+
+message Amount {
+  int32 Amount = 1;
+}
+
+message MilestoneTranslation {
+  string CompanyID = 1;
+  string MilestoneID = 2;
+  string Language = 3;
+  string Title = 4;
+  string Desciption = 5;
+}
+
+message AwardTranslation {
+  string CompanyID = 1;
+  string AwardID = 2;
+  string Language = 3;
+  string Title = 4;
+  string Issuer = 5;
+}
+
+message OpenCareerCenterRequest {
+  string CompanyID = 1;
+  string Title = 2;
+  string Description = 3;
+  bool CVButtonEnabled = 4;
+  bool CustomButtonEnabled = 5;
+  string CustomButtontitle = 6;
+  string CustomButtonURL = 7;
+}
+
+message CareerCenter {
+  string Title = 1;
+  string Description = 2;
+  bool CVButtonEnabled = 3;
+  bool CustomButtonEnabled = 4;
+  string CustomButtontitle = 5;
+  string CustomButtonURL = 6;
+}

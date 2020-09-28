@@ -1,0 +1,209 @@
+syntax = "proto3";
+package stuffRPC;
+
+// protoc --go_out=plugins=grpc:. stuff.proto
+
+service StuffService{
+  rpc SaveFeedback(FeedbackForm) returns (Empty);
+  rpc AddFileToFeedBackBug(File) returns (ID);
+  rpc AddFileToFeedBackSuggestion(File) returns (ID);
+  rpc SubmitFeedBack(FeedBack) returns (ID);
+  rpc GetAllFeedBack(FeedBackRequest) returns (FeedBacks);
+  rpc CreateWalletAccount(UserId) returns (Empty);
+  rpc GetAccoutWalletAmount(WalletAmountRequest) returns(WalletAmountResponse);
+  rpc ContactInvitationForWallet(InvitationWalletRequest) returns (WalletResponse);
+  rpc EarnCoinsForWallet(WalletRequest) returns(WalletResponse);
+  rpc GetWalletTransactions(WalletTransactionRequest) returns(WalletTransactionResponse);
+  rpc GetUserByInvitedID(UserId) returns  (WalletInvitedByCount);
+  rpc AddGoldCoinsToWallet(WalletAddGoldCoins) returns(Empty); 
+  rpc VoteForComingSoon(VoteForComingSoonRequest) returns(Empty);
+}
+
+
+message WalletAddGoldCoins{
+  string UserID = 1;
+  int32  coins  = 2;
+  string Type   = 3;
+}
+
+message VoteForComingSoonRequest {
+  string Email = 1;
+  string Type = 2;
+}
+
+message UserId {
+  string ID = 1;
+}
+
+message WalletInvitedByCount {
+  int32 Count = 1;
+}
+
+message WalletTransactionRequest {
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  TransactionType TransactionType = 4;
+}
+
+enum TransactionType {
+  ALL = 0;
+  GOLD = 1;
+  SILVER = 2;
+}
+
+message WalletTransactionResponse {
+  repeated WalletTransaction Transactions = 1;
+  int32 TransactionAmount = 2;
+}
+
+
+message WalletTransaction {
+  WalletActionEnum TransactionType = 1;
+  WalletStatusEnum TransactionStatus = 2;
+  WalletAmountResponse WalletAmount = 3;
+  string TransactionAt = 4;
+  TransactionType CoinType = 5; 
+
+}
+
+message WalletRequest {
+  string UserID = 1;
+  WalletActionEnum ActionType = 2;
+  WalletAmountResponse Amount = 3;
+
+
+}
+message InvitationWalletRequest {
+  string UserID = 1;
+  string Name = 2;
+  string Email = 3;
+  string Message = 4;
+  int32  SilverCoins = 5;
+}
+
+message WalletResponse {
+  WalletAmountResponse Amount = 1;
+  WalletStatusEnum Status = 2;
+}
+
+enum WalletStatusEnum {
+  DONE = 0;
+  PENDING = 1;
+  REJECTED = 3;
+}
+
+enum WalletActionEnum {
+  UNKNOWN_ACTION = 0;
+  SHARE = 1;
+  APPLY_JOB = 2;
+  INVITATION = 3;
+  USER_REGISTATION = 4;
+  COMPANY_REGISTATION = 5;
+  BECOME_CANDIDATE = 6;
+  CREATE_POST = 7;
+  JOB_SHARE = 8;
+}
+
+message WalletAmountResponse {
+  int32 GoldCoins = 1;
+  int32 SilverCoins = 2;
+  int32 PendingAmount = 3;
+}
+
+message WalletAmountRequest {
+ string UserID = 1;
+}
+
+
+message Empty {}
+
+message FeedbackForm{
+  string Name = 1;
+  string Email = 2;
+  string Message = 3;
+}
+
+message FeedBack {
+  string CompanyId = 1;
+  FeedBackReaction FeedBackReaction = 2;
+  FeedBackCompliment FeedBackCompliment = 3;
+  FeedBackComplaint FeedBackComplaint = 4;
+  string FeedBackBugs = 5;
+  string CouldNotFind = 6;
+  FeedBackSuggestion FeedBackSuggestion = 7;
+  FeedBackOther FeedBackOther = 8;
+  string UserID = 9;
+}
+
+message FeedBackRequest {
+  uint32 First = 1;
+  string After = 2;
+}
+
+message FeedBackResponse {
+  string UserID = 1;
+  FeedBackReaction FeedBackReaction = 2;
+  FeedBackCompliment FeedBackCompliment = 3;
+  FeedBackComplaint FeedBackComplaint = 4;
+  FeedBackBugs FeedBackBugs = 5;
+  string CouldNotFind = 6;
+  FeedBackSuggestion FeedBackSuggestion = 7;
+  FeedBackOther FeedBackOther = 8;
+  string CreatedAt = 9;
+}
+
+message FeedBacks {
+  repeated FeedBackResponse FeedBack = 1;
+}
+
+enum FeedBackReaction {
+    Very_Bad = 0;
+    Bad = 1;
+    Okey = 2;
+    Good = 3;
+    Great = 4;
+    Excellent = 5;
+}
+
+message FeedBackCompliment {
+  string FavoriteFeatures = 1;
+  string ImproveExperience = 2;
+  string ServicesToHave = 3;
+}
+
+message FeedBackComplaint {
+  string MissingOrWrong = 1;
+  string ImproveExperience = 2;
+  string TellUsMore = 3;
+}
+
+message FeedBackBugs {
+  string description = 1;
+  repeated File File = 2;
+}
+
+message FeedBackSuggestion {
+  string Idea = 1;
+  string Proposal = 2;
+  repeated File File = 3;
+}
+
+message FeedBackOther {
+  string Subject = 1;
+  string Description = 2;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+  string CompanyID = 3;
+  string TargetID = 4;
+  string Name = 5;
+  string MimeType = 6;
+  string URL = 7;
+}

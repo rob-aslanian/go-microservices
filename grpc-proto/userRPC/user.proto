@@ -1,0 +1,1261 @@
+syntax = "proto3";
+package userRPC;
+import "companyRPC/company.proto";
+
+// protoc --go_out=plugins=grpc:. user.proto
+
+service UserService{
+  rpc IdentifyCountry (Empty) returns (CountryID); // should be in info
+  rpc CheckToken (Empty) returns (BooleanValue);
+  rpc IsUsernameBusy (Username) returns (BooleanValue);
+  rpc RegisterUser (RegisterRequest) returns (LoginResponse);
+  rpc ActivateUser (ActivateUserRequest) returns (ActivateUserResponse);
+  rpc Login (Credentials) returns (LoginResponse);
+  rpc SignOut (Empty) returns (Empty);
+  rpc SignOutSession (SessionID) returns (Empty);
+  rpc SignOutFromAll (Empty) returns (Empty);
+  // rpc SendActivation(SendActivationRequest) returns (Empty); // happend  directly via http
+  rpc SendRecover (SendRecoverRequest) returns (Empty);
+  rpc RecoverPassword (RecoverPasswordRequest) returns (Empty);
+
+  // Account
+  rpc GetAccount (Empty) returns (Account);
+
+  rpc ChangeFirstName (FirstName) returns (Empty);
+  rpc ChangeLastname (Lastname) returns (Empty);
+  rpc ChangePatronymic (Patronymic) returns (Empty);
+  rpc ChangeNickname (Nickname) returns (Empty);
+  rpc ChangeMiddleName (Middlename) returns (Empty);
+  rpc ChangeNameOnNativeLanguage (NativeName) returns (Empty);
+  rpc ChangeBirthday (Birthday) returns (Empty);
+  rpc ChangeGender (Gender) returns (Empty);
+
+  rpc AddEmail (Email) returns (ID);
+  rpc RemoveEmail (Email) returns (Empty);
+  rpc ChangeEmail (Email) returns (Empty);
+
+  rpc AddPhone (Phone) returns (ID);
+  rpc RemovePhone (Phone) returns (Empty);
+  rpc ChangePhone (Phone) returns (Empty);
+
+  rpc AddMyAddress (MyAddress) returns (ID);
+  rpc RemoveMyAddress (MyAddress) returns (Empty);
+  rpc ChangeMyAddress (MyAddress) returns (Empty);
+
+  rpc AddOtherAddress (OtherAddress) returns (ID);
+  rpc RemoveOtherAddress (OtherAddress) returns (Empty);
+  rpc ChangeOtherAddress (OtherAddress) returns (Empty);
+
+  rpc ChangeUILanguage (Language) returns (Empty);
+  rpc ChangePrivacy (ChangePrivacyRequest) returns (Empty);
+  rpc ChangePassword (ChangePasswordRequest) returns (Empty);
+  // rpc ChangeNotification(ChangeNotificationRequest) returns (Empty); // shoudn't be here
+
+  rpc Init2FA (Empty) returns (TwoFAResponse);
+  rpc Enable2FA (TwoFACode) returns (Empty);
+  rpc Disable2FA (TwoFACode) returns (Empty);
+
+  rpc DeactivateAccount (CheckPasswordRequest) returns (Empty);
+
+  // Profile
+  rpc GetProfile (ProfileRequest) returns (Profile);
+  rpc GetProfileByID (ID) returns (Profile);
+  rpc GetProfilesByID (UserIDs) returns (ProfileList);
+  rpc GetMapProfilesByID (UserIDs) returns (MapProfiles);
+
+  rpc GetMyCompanies (Empty) returns (Companies);
+
+  rpc GetExperiences (RequestExperiences) returns (ExperienceList);
+  rpc GetEducations (RequestEducations) returns (EducationList);
+  rpc GetSkills (RequestSkills) returns (SkillList);
+  rpc GetEndorsements (RequestEndorsements) returns (ProfileList);
+  rpc GetInterests (RequestInterests) returns (InterestList);
+  rpc GetAccomplishments (RequestAccomplshments) returns (AccomplishmentList);
+  rpc GetKnownLanguages (RequestKnownLanguages) returns (KnownLanguageList);
+  rpc GetPortfolios (RequestPortfolios) returns (PortfolioList);
+  rpc GetPortfolioByID(RequestPortfolio) returns (Portfolio);
+  rpc GetToolsTechnologies (RequestToolTechnology) returns (ToolsTechnologiesList);
+
+  // recommendations
+  rpc GetReceivedRecommendations (IDWithPagination) returns (Recommendations);
+  rpc GetGivenRecommendations (IDWithPagination) returns (Recommendations);
+  rpc GetReceivedRecommendationRequests (IDWithPagination) returns (RecommendationRequests);
+  rpc GetRequestedRecommendationRequests (IDWithPagination) returns (RecommendationRequests);
+  rpc GetHiddenRecommendations (IDWithPagination) returns (Recommendations);
+
+  rpc SentEmailInvitation (EmailInvitation) returns (Empty);
+  rpc GetInvitation (Empty) returns (Invitations);
+  rpc GetInvitationForCompany (ID) returns (Invitations);
+  rpc ChangeHeadline (Headline) returns (Empty);
+  rpc ChangeStory (Story) returns (Empty);
+
+  rpc GetOriginAvatar (Empty) returns (File);
+  rpc ChangeOriginAvatar (File) returns (Empty);
+  rpc ChangeAvatar (File) returns (Empty);
+  rpc RemoveAvatar (Empty) returns (Empty);
+
+
+  rpc AddPortfolio (Portfolio) returns (ID);
+  rpc AddSavedCountToPortfolio(PortfolioAction) returns (Empty);
+  rpc AddViewCountToPortfolio(PortfolioAction) returns (Empty);
+  rpc GetUserPortfolioComments(GetPortfolioComment) returns(PortfolioCommentResponse);
+  rpc AddCommentToPortfolio(PortfolioComment)  returns(ID);
+  rpc RemoveCommentInPortfolio(RemovePortfolioComment)  returns(Empty);
+
+  rpc LikeUserPortfolio(PortfolioAction) returns (Empty);
+  rpc UnLikeUserPortfolio(PortfolioAction) returns (Empty);
+
+
+  rpc ChangeOrderFilesInPortfolio (PortfolioFile) returns (Empty);
+  rpc ChangePortfolio (Portfolio) returns (Empty);
+  rpc RemovePortfolio (Portfolio) returns (Empty);
+  rpc AddLinksInPortfolio (AddLinksRequest) returns (Empty);
+  rpc ChangeLinkInPortfolio (ChangeLinkRequest) returns (Empty);
+  rpc RemoveLinksInPortfolio (RemoveLinksRequest) returns (Empty);
+  rpc AddFileInPortfolio (File) returns (ID);
+  rpc RemoveFilesInPortfolio (RemoveFilesRequest) returns (Empty);
+
+  rpc AddToolTechnology (ToolTechnologyList) returns (IDs);
+  rpc ChangeToolTechnology (ToolTechnologyList) returns (Empty);
+  rpc RemoveToolTechnology (ToolTechnologyList) returns (Empty);
+
+  rpc AddExperience (Experience) returns (ID);
+  rpc ChangeExperience (Experience) returns (Empty);
+  rpc RemoveExperience (Experience) returns (Empty);
+  rpc AddLinksInExperience (AddLinksRequest) returns (Empty);
+  rpc AddFileInExperience (File) returns (ID);
+  rpc RemoveFilesInExperience (RemoveFilesRequest) returns (Empty);
+  rpc ChangeLinkInExperience (ChangeLinkRequest) returns (Empty);
+  rpc RemoveLinksInExperience (RemoveLinksRequest) returns (Empty);
+  rpc GetUploadedFilesInExperience (Empty) returns (Files);
+
+  rpc AddEducation (Education) returns (ID);
+  rpc ChangeEducation (Education) returns (Empty);
+  rpc RemoveEducation (Education) returns (Empty);
+  rpc AddLinksInEducation (AddLinksRequest) returns (ID);
+  rpc AddFileInEducation (File) returns (ID);
+  rpc RemoveFilesInEducation (RemoveFilesRequest) returns (Empty);
+  rpc ChangeLinkInEducation (ChangeLinkRequest) returns (Empty);
+  rpc RemoveLinksInEducation (RemoveLinksRequest) returns (Empty);
+  rpc GetUploadedFilesInEducation (Empty) returns (Files);
+
+  rpc AddSkills (SkillList) returns (ID);
+  rpc ChangeOrderOfSkill (Skill) returns (Empty);
+  rpc RemoveSkills (SkillList) returns (Empty);
+  rpc VerifySkill (VerifySkillRequest) returns (Empty);
+  rpc UnverifySkill (VerifySkillRequest) returns (Empty);
+
+  rpc AddInterest (Interest) returns (ID);
+  rpc ChangeInterest (Interest) returns (Empty);
+  rpc RemoveInterest (Interest) returns (Empty);
+  rpc ChangeImageInterest (File) returns(ID);
+  rpc RemoveImageInInterest (Interest) returns (Empty);
+  rpc GetUnuploadImageInInterest (Empty) returns (File);
+  rpc GetOriginImageInInterest (Interest) returns (File);
+  rpc ChangeOriginImageInInterest (File) returns (Empty);
+
+  rpc AddAccomplishment (Accomplishment) returns (ID);
+  rpc ChangeAccomplishment (Accomplishment) returns (Empty);
+  rpc RemoveAccomplishment (Accomplishment) returns (Empty);
+  rpc AddFileInAccomplishment (File) returns (ID);
+  rpc AddLinksInAccomplishment (AddLinksRequest) returns (Empty);
+  rpc RemoveLinksInAccomplishment (RemoveLinksRequest) returns (Empty);
+  rpc RemoveFilesInAccomplishment (RemoveFilesRequest) returns (Empty);
+  rpc GetUploadedFilesInAccomplishment (Empty) returns (Files);
+
+  rpc AddKnownLanguage (KnownLanguage) returns (ID);
+  rpc ChangeKnownLanguage (KnownLanguage) returns (Empty);
+  rpc RemoveKnownLanguage (KnownLanguage) returns (Empty);
+
+  rpc ReportUser (ReportUserRequest) returns (Empty);
+
+  rpc CheckPassword (CheckPasswordRequest) returns (Empty);
+
+  rpc SaveUserProfileTranslation (ProfileTranslation) returns (Empty);
+  rpc SaveUserExperienceTranslation (ExperienceTranslation) returns (Empty);
+  rpc SaveUserEducationTranslation (EducationTranslation) returns (Empty);
+  rpc SaveUserInterestTranslation (InterestTranslation) returns (Empty);
+  rpc SaveUserPortfolioTranslation (PortfolioTranslation) returns (Empty);
+  rpc SaveUserToolTechnologyTranslation (ToolTechnologyTranslation) returns (Empty);
+  rpc SaveUserSkillTranslation (SkillTranslation) returns (Empty);
+  rpc SaveUserAccomplishmentTranslation (AccomplishmentTranslation) returns (Empty);
+  rpc RemoveTranslation (Language) returns (Empty);
+
+  rpc GetConectionsPrivacy (ID) returns (Permission);
+
+  rpc GetUserPortfolioInfo(UserId) returns (PortfolioInfo);
+
+  rpc GetAllUsersForAdmin(Pagination) returns (GetAllUsersForAdminResponse);
+  rpc ChangeUserStatus(ChangeUserStatusRequest) returns (Empty);
+  // wallet
+  rpc ContactInvitationForWallet(InvitationWalletRequest) returns (WalletResponse);
+  rpc GetUserByInvitedID(UserId) returns  (WalletInvitedByCount);
+  rpc CreateWalletAccount(UserId) returns (Empty);
+  rpc AddGoldCoinsToWallet(WalletAddGoldCoins) returns(Empty);
+
+  rpc GetUsersForAdvert(GetUsersForAdvertRequest) returns(IDs);
+
+}
+
+
+message GetUsersForAdvertRequest {
+  string OwnerID = 1;
+  string Gender = 2;
+  int32 AgeFrom = 3;
+  int32 AgeTo = 4;
+  repeated string Locations = 5;
+  repeated string Languages = 6;
+  
+}
+
+
+message ChangeUserStatusRequest {
+  string UserID = 1;
+  Status Status = 21;
+}
+
+message GetAllUsersForAdminResponse {
+  int32 UserAmount = 1;
+  repeated UserForAdmin Users = 2;
+
+}
+
+message UserForAdmin {
+  string ID = 1;
+  string URL  = 2;
+  Status Status = 3;
+  string Avatar = 4;
+  string Firstname = 5;
+  string Lasttname = 6;
+  string Email = 7;
+  string PhoneNumber = 8;
+  string Birthday = 9;
+  LocationProfile Location = 10;
+  GenderValue Gender = 11;
+  int32 ProfileCompletePercent = 12;
+  string DateOfActivation = 13;
+}
+
+message ID {
+  string ID = 1;
+}
+
+message WalletAddGoldCoins{
+  string UserID = 1;
+  int32  coins  = 2;
+  string Type   = 3;
+}
+
+
+message WalletInvitedByCount {
+  int32 Count = 1;
+}
+
+message CountryID {
+  string ID = 1;
+}
+
+message Account {
+  string FirstName = 1;
+  string Lastname = 2;
+  Patronymic Patronymic = 3;
+  Middlename MiddleName = 4;
+  NativeName NativeName = 5;
+  Nickname NickName = 6;
+  Birthday Birthday = 7;
+  Gender Gender = 8;
+  repeated Email Emails = 9;
+  repeated Phone Phones = 10;
+  repeated MyAddress MyAddresses = 11;
+  repeated OtherAddress OtherAddresses = 12;
+  string LanguageID = 13;
+  Location Location = 14;
+  string Url = 15;
+  Privacies Privacies = 16;
+  Notifications Notifications = 17;
+  repeated Sessions Sessions = 18;
+  bool isEditable = 19;
+  string LastChangePassword = 20;
+  int32 AmountOfSessions = 21;
+}
+
+message Companies {
+  repeated companyRPC.Profile Companies = 1;
+}
+
+message Sessions {
+  string ID = 1;
+  string OS = 2;
+  string OSVersion = 3;
+  string DeviceType = 4;
+  string Browser = 5;
+  string BrowserVersion = 6;
+  uint32 City = 7;
+  string CountryID = 8;
+  string LastActivityTime = 9;
+  bool CurrentSession = 10;
+}
+
+message SessionID {
+  string ID = 1;
+}
+
+message RecoverPasswordRequest {
+  string Password = 1;
+  string UserId = 2;
+  string Code = 3;
+}
+
+message SendRecoverRequest {
+  string Login = 1;
+  bool ByEmail = 2;
+  bool ByPhone = 3;
+  bool SendUsername = 4;
+  bool ResetPassword = 5;
+}
+
+message SendActivationRequest {
+  string UserId = 1;
+  bool ByEmail = 2;
+  bool ByPhone = 3;
+}
+
+message LoginResponse{
+  string UserId = 1;
+  string Token = 2;
+  string URL = 3;
+  Status Status = 4;
+  bool TwoFARequired = 5;
+  string Avatar = 6;
+  string FirstName = 7;
+  string LastName = 8;
+  string Gender = 9;
+  string Email = 10;
+
+}
+
+message ActivateUserResponse {
+  string UserId = 1;
+  string Token = 2;
+  string URL = 3;
+  string Avatar = 4;
+  string FirstName = 5;
+  string LastName = 6;
+}
+
+message Session {
+  string Token = 1;
+}
+
+message UserId {
+  string Id = 1;
+}
+
+message UserIDs {
+  repeated string ID = 1;
+  string Language = 2;
+}
+
+message Credentials {
+  string Login = 1;
+  string Password = 2;
+  string TwoFACode = 3;
+}
+
+message RegisterRequest {
+  string FirstName = 1;
+  string LastName = 2;
+  string Email = 3;
+
+  int32 CountryPrefixCode = 4;
+  // string PhoneNumber = 5;
+
+  string Password = 6;
+
+  string Birthday = 7;
+
+  string CountryId = 8;
+  int32 CityID = 9;
+  string LanguageId = 10;
+  GenderValue Gender = 11;
+  string Username = 12;
+  string InvitedBy = 13;
+}
+
+// message User{
+//   string Id = 1;
+//   Status Status = 2;
+//   string Url = 3;
+//   string Avatar = 4;
+//   string FirstName = 5;
+//   string LastName = 6;
+//   Middlename MiddleName = 7;
+//   Patronymic Patronymic = 8;
+//   Nickname NickName = 9;
+//   NativeName NativeName = 10;
+//   repeated Title Titles = 11;
+//   Birthday Birthday = 12;
+//   GenderValue Gender = 13;
+//   repeated Email Emails = 14;
+//   repeated Phone Phones = 15;
+//   Location Location = 16;
+//   string Headline = 17;
+//   string Story = 18;
+//   string LanguageId = 19;
+// }
+
+message Location {
+  Country Country = 1;
+  City City = 2;
+  Permission Permission = 3;
+}
+
+message City {
+  int32 Id = 1;
+  string Title = 2;
+  string Subdivision = 3;
+}
+
+message Country{
+  string Id = 1;
+  //string Title = 2;
+}
+
+
+message Email {
+  string Id = 1;
+  string Email = 2;
+  bool IsActivated = 3;
+  bool IsPrimary = 4;
+  Permission Permission = 5;
+}
+
+message Phone {
+  string Id = 1;
+  string Number = 2;
+  CountryCode CountryCode = 3;
+  string CountryAbbreviation = 4;
+  bool IsActivated = 5;
+  bool IsPrimary = 6;
+  Permission Permission = 7;
+}
+
+message CountryCode {
+  uint32 ID = 1;
+  string Code = 2;
+}
+
+message Empty{}
+
+//message Account {
+//  Status Status = 1;
+//  Wallet Wallet = 2;
+//  Title Title = 3;
+//  string Firstname = 4;
+//  string Lastname = 5;
+//  Patronymic Patronymic = 6;
+//  Middlename Middlename = 7;
+//  FirstnameNative FirstnameNative = 8;
+//  Nickname Nickname = 9;
+//  Birthday Birthday = 10;
+//  //GenderValue Gender = 11;
+//}
+
+enum Status {
+  NOT_ACTIVATED = 0;
+  ACTIVATED = 1;
+  DISABLED = 2;
+  BLOCKED = 3;
+}
+
+//message Wallet {
+//  string Balance = 1;
+//  string Transition = 2;
+//  uint32 Points = 3;
+//}
+
+message Title {
+  uint32 Id = 1;
+  string Title = 2;
+  Permission Permission = 3;
+}
+
+message Permission {
+  PermissionType Type = 1;
+}
+
+enum PermissionType {
+  MEMBERS = 0;
+  NONE = 1; // in case it will be null
+  MY_CONNECTIONS = 2;
+  ME = 3;
+}
+
+message Patronymic {
+  string Patronymic = 1;
+  Permission Permission = 2;
+
+  bool IsPatronymicNull = 3;
+}
+
+message Middlename {
+  string Middlename = 1;
+  Permission Permission = 2;
+
+  bool IsMiddlenameNull = 3;
+}
+
+message NativeName {
+  string Name = 1;
+  string LanguageID = 2;
+  Permission Permission = 3;
+
+  bool IsNameNull = 4;
+}
+
+message Nickname {
+  string Nickname = 1;
+  Permission Permission = 2;
+
+  bool IsNicknameNull = 3;
+}
+
+message Birthday {
+  string Birthday = 1;
+  Permission Permission = 2;
+}
+
+enum GenderValue {
+  MALE = 0;
+  FEMALE = 1;
+}
+
+message FirstName {
+  string FirstName = 1;
+}
+
+message Lastname {
+  string Lastname = 1;
+}
+
+message Gender {
+  GenderValue Gender = 1;
+  Permission Permission = 2;
+
+  bool IsGenderNull = 3;
+}
+
+message MyAddress {
+  string ID = 1;
+  string Name = 2;
+  string Firstname = 3;
+  string Lastname = 4;
+  string Apartment = 5;
+  string Street = 6;
+  string ZIP = 7;
+  Location Location = 8;
+  bool IsPrimary = 9;
+}
+
+message OtherAddress {
+  string ID = 1;
+  string Name = 2;
+  string Firstname = 3;
+  string Lastname = 4;
+  string Apartment = 5;
+  string Street = 6;
+  string ZIP = 7;
+  Location Location = 8;
+}
+
+message Language {
+  string Language = 1;
+}
+
+enum PrivacySettings {
+  find_by_email = 0;
+  find_by_phone = 1;
+  active_status = 2;
+  sharing_edits = 3;
+  profile_pictures = 4;
+  my_connections = 5;
+}
+
+message ChangePrivacyRequest {
+  PrivacySettings Privacy = 1;
+  PermissionType Permission = 2;
+}
+
+message ChangePasswordRequest {
+  string OldPassword = 1;
+  string NewPassword = 2;
+}
+
+message TwoFAResponse {
+  string QR = 1;
+  string URL = 2;
+  string Key = 3;
+}
+
+message TwoFACode {
+  string Code = 1;
+}
+
+enum Notification {
+  connection_request = 0;
+  accept_invitation = 1;
+  new_followers = 2;
+  new_chat_message = 3;
+  birthdays = 4;
+  endorsements = 5;
+  email_updates = 6;
+  job_changes_in_network = 7;
+  import_contacts_joined = 8;
+  job_recommendations = 9;
+}
+
+message ChangeNotificationRequest {
+  Notification Notification = 1;
+  bool Value = 2;
+}
+
+message Notifications {
+  bool ConnectionRequest = 1;
+  bool AcceptInvitation = 2;
+  bool NewFollowers = 3;
+  bool NewChatMessage = 4;
+  bool Birthdays = 5;
+  bool Endorsements = 6;
+  bool EmailUpdates = 7;
+  bool JobChangesInNetwork = 8;
+  bool ImportContactsJoined = 9;
+  bool JobRecommendations = 10;
+}
+
+message Privacies {
+  PermissionType FindByEmail = 1;
+  PermissionType FindByPhone = 2;
+  PermissionType ActiveStatus = 3;
+  PermissionType ShareEdits = 4;
+  PermissionType ProfilePicture = 5;
+  PermissionType MyConnections = 6;
+}
+
+message ProfileRequest {
+  string URL = 1;
+  string Language = 2;
+}
+
+message ProfileList {
+  repeated Profile Profiles = 1;
+}
+
+message MapProfiles {
+  map<string, Profile> Profiles = 1;
+}
+
+message Profile {
+  string ID = 1;
+  string URL  = 2;
+  string Avatar = 3;
+  string Firstname = 4;
+  string Lastname = 5;
+  string Middlename = 6;
+  string Patronymic = 7;
+  string Nickname = 8;
+  NativeNameProfile NativeName = 9;
+
+  string Headline = 10;
+
+  string Email = 11;
+  string PhoneNumber = 12;
+  string Birthday = 13;
+  LocationProfile Location = 14;
+
+  GenderValue Gender = 15;
+
+  // 3rd party accounts
+
+  string Story = 16;
+
+  bool IsOnline = 17;
+  bool IsMe = 18;
+  bool IsFriend = 19;
+  bool IsFollow = 20;
+  bool IsFavorite = 21;
+  bool IsBlocked = 22;
+  bool IsFriendRequestSend = 23;
+  bool IsFriendRequestRecieved = 24;
+  string FriendshipID = 25;
+  int32 ProfileCompletePercent = 26;
+  string CurrentTranslation = 27;
+  repeated string AvailableTranslations = 28;
+  string DateOfActivation = 29;
+
+  bool IsAvatarNull = 30;
+  bool IsMiddlenameNull = 31;
+  bool IsPatronymicNull = 32;
+  bool IsNicknameNull = 33;
+  bool IsNativeNameNull = 34;
+  bool IsEmailNull = 35;
+  bool IsPhoneNumberNull = 36;
+  bool IsBirthdayNull = 37;
+  bool IsLocationNull = 38;
+
+  repeated string Emails = 39;
+  repeated string Phones = 40;
+  int32 MutualConnectionsAmount = 41;
+}
+
+message PortfolioInfo {
+  int32 ViewCount = 1;
+  int32 LikeCount = 2;
+  int32 CommentCount = 3;
+  bool HasPhoto = 4;
+  bool HasVideo = 5;
+  bool HasArticle = 6;
+  bool HasAudio = 7;
+
+
+
+}
+
+message NativeNameProfile {
+  string Name = 1;
+  string Language = 2;
+}
+
+message LocationProfile {
+  string City = 1;
+  string CountryID = 2;
+}
+
+message Headline {
+  string Headline = 1;
+}
+
+message RequestExperiences{
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message RequestEducations{
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message RequestSkills {
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message RequestKnownLanguages{
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+}
+
+message RequestInterests{
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message RequestAccomplshments {
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message Story {
+  string Story = 1;
+}
+
+message RemoveFilesRequest {
+  string ID = 1;
+  repeated File Files = 2;
+}
+
+message Files {
+  repeated File Files = 1;
+}
+
+message PortfolioFile {
+  string ID = 1;
+  string FileID = 2;
+  uint32 Position = 3;
+}
+
+message File {
+  string ID = 1;
+  string UserID = 2;
+
+  enum TargetType {
+    Experience = 0;
+    Education = 1;
+    Interest = 2;
+  }
+  TargetType Type = 3;
+
+  string TargetID = 4;
+  string Name = 5;
+  string MimeType = 6;
+  string URL = 7;
+}
+
+
+message AddLinksRequest {
+  string ID = 1;
+  repeated Link Links = 2;
+}
+
+message ChangeLinkRequest {
+  string ID = 1;
+  Link Link = 2;
+}
+
+message RemoveLinksRequest {
+  string ID = 1;
+  repeated Link Links = 2;
+}
+
+message Link {
+  string ID = 1;
+  string URL = 2;
+}
+
+message ExperienceList {
+  repeated Experience Experiences = 1;
+}
+
+message Experience {
+  string ID = 1;
+  string Position = 2;
+  string Company = 3;
+  Location Location = 4;
+  string StartDate = 5;
+  string FinishDate = 6;
+  bool CurrentlyWork = 7;
+  bool IsCurrentlyWorkNull = 8;
+  string Description = 9;
+  repeated File Files = 10;
+  repeated Link Links = 11;
+
+  bool IsLocationNull = 12;
+  bool IsDescriptionNull = 13;
+}
+
+message EducationList {
+  repeated Education Educations = 1;
+}
+
+message Education {
+  string ID = 1;
+  string School = 2;
+  string Degree = 3;
+  string FieldStudy = 4;
+  string Grade = 5;
+  Location Location = 6;
+  string StartDate = 7;
+  string FinishDate = 8;
+  bool IsCurrentlyStudy = 9;
+  string Description = 10;
+  repeated File Files = 11;
+  repeated Link Links = 12;
+
+  bool IsLocationNull = 13;
+  bool IsDegreeNull = 14;
+  bool IsGradeNull = 15;
+  bool IsDescriptionNull = 16;
+}
+
+
+message SkillList {
+  repeated Skill Skills = 1;
+}
+
+message Skill {
+  string ID = 1;
+  string Skill = 2;
+  uint32 Position = 3;
+}
+
+message VerifySkillRequest {
+  string UserID = 1;
+  Skill Skill = 2;
+}
+
+message KnownLanguageList {
+  repeated KnownLanguage KnownLanguages = 1;
+}
+
+message KnownLanguage {
+  string ID = 1;
+  string Language = 2;
+  uint32 Rank = 3;
+}
+
+message CheckPasswordRequest {
+  string Password = 1;
+}
+
+message AccomplishmentList {
+  repeated Accomplishment Accomplishments = 1;
+}
+
+message Accomplishment {
+  string ID = 1;
+
+  enum AccomplishmentType {
+    Certificate = 0;
+    License = 1;
+    Award = 2;
+    Project = 3;
+    Publication = 4;
+    Test = 5;
+  }
+
+  AccomplishmentType Type = 2;
+  string Name = 3;
+  string Issuer = 4;
+  string LicenseNumber = 5;
+  string FinishDate = 6;
+  bool IsExpire = 7;
+  string URL = 8;
+  string Description = 9;
+  string StartDate = 10;
+  float Score = 11;
+
+  bool IsNameNull = 12;
+  bool IsIssuerNull = 13;
+  bool IsLicenseNumberNull = 14;
+  bool IsFinishDateNull = 15;
+  bool IsIsExpireNull = 16;
+  bool IsURLNull = 17;
+  bool IsDescriptionNull = 18;
+  bool IsStartDateNull = 19;
+  bool IsScoreNull = 20;
+  repeated File Files = 21;
+  repeated Link Links = 22;
+}
+
+message InterestList {
+  repeated Interest Interests = 1;
+}
+
+message Interest {
+  string ID = 1;
+  string Image = 2;
+  string Interest = 3;
+  string Description = 4;
+
+  bool IsImageNull = 5;
+  bool IsInterestNull = 6;
+  bool IsDescriptionNull = 7;
+}
+
+message RequestEndorsements {
+  string SkillID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message Pagination {
+  uint32 First = 1;
+  string After = 2;
+}
+
+message Recommendation {
+  string ID = 1;
+  string Text = 2;
+  bool IsHidden = 3;
+  Profile Receiver = 4;
+  Profile Recommendator = 5;
+ 	int64 CreatedAt = 6;
+  bool IsIsHiddenNull = 7;
+  string Title = 8;
+  RecommendationRelationEnum Relation = 9;
+}
+
+message Recommendations {
+  repeated Recommendation Recommendations = 1;
+}
+
+message RecommendationRequest {
+  string ID = 1;
+  Profile Requestor = 2;
+  Profile Requested = 3;
+  string Text = 4;
+  int64 CreatedAt = 5;
+  string Title = 6;
+  RecommendationRelationEnum Relation = 7;
+}
+
+message RecommendationRequests {
+  repeated RecommendationRequest RecommendationRequests = 1;
+}
+
+enum RecommendationRelationEnum {
+  EDUCATION = 0;
+  EXPERIENCE = 1;
+  ACCOMPLISHMENT = 2;
+  NO_RELATION = 3;
+}
+
+message IDWithPagination {
+  string ID = 1;
+  Pagination Pagination = 2;
+  string Language = 3;
+}
+
+message ReportUserRequest {
+  enum ReportType {
+    Other = 0;
+    VolatationTermsOfUse = 1;
+    NotRealIndividual = 2;
+    PretendingToBeSomone = 3;
+    MayBeHacked = 4;
+    PictureIsNotPerson = 5;
+    PictureIsOffensive = 6;
+  }
+
+  ReportType Type = 1;
+  string Description = 2;
+  string UserID = 3;
+}
+
+message ProfileTranslation {
+  string Language = 1;
+  string Firstname = 2;
+  string Lastname = 3;
+  string Headline = 4;
+  string Story = 5;
+  string Nickname = 6;
+}
+
+message ExperienceTranslation {
+  string Language = 1;
+  string ExperienceID = 2;
+  string Position = 3;
+  string Company = 4;
+  string Description = 5;
+}
+
+message EducationTranslation {
+  string Language = 1;
+  string EducationID = 2;
+  string School = 3;
+  string Degree = 4;
+  string FieldStudy = 5;
+  string Grade = 6;
+  string Description = 7;
+}
+
+message InterestTranslation {
+  string Language = 1;
+  string InterestID = 2;
+  string Interest = 3;
+  string Description = 4;
+}
+
+message PortfolioAction {
+  string CompanyID = 1;
+  string OwnerID = 2;
+  string PortfolioID = 3;
+}
+
+message PortfolioComment  {
+  string ID  = 1;
+  string CompanyID = 2;
+  string OwnerID = 3;
+  string PortfolioID = 4;
+  string Comment = 5;
+  string CreatedAt = 6;
+  // Profile UserProfile = 7;
+  // companyRPC.Profile CompanyProfile = 8;
+  string UserID = 9;
+}
+
+
+message RemovePortfolioComment {
+  string CommentID = 1;
+  string PortfolioID = 2;
+  string CompanyID = 3;
+}
+
+message PortfolioTranslation {
+  string Language = 1;
+  string Title = 3;
+  string Description = 4;
+  string PortfolioID = 5;
+}
+
+message ToolTechnologyTranslation {
+  string Language = 1;
+  string TooltechnologyID = 2;
+  string ToolTechnology = 3;
+}
+
+message SkillTranslation {
+  string Language = 1;
+  string SkillID = 2;
+  string Skill = 3;
+}
+
+message AccomplishmentTranslation {
+  string Language = 1;
+  string AccomplishmentID = 2;
+  string Name = 3;
+  string Issuer = 4;
+  string Description = 5;
+}
+
+message BooleanValue {
+  bool Value = 1;
+}
+
+message Username {
+  string Username = 1;
+}
+
+message EmailInvitation {
+  string Address = 1;
+  string CompanyID = 2;
+  string Name = 3;
+}
+
+message Invitations {
+  int32 Amount = 1;
+  repeated Invitation Invitations = 2;
+}
+
+message Invitation {
+  string Email = 1;
+  string Name = 2;
+}
+enum ContentTypeEnum {
+  Content_Type_Photo = 0;
+  Content_Type_Article = 1;
+  Content_Type_Video = 2;
+  Content_Type_Audio = 3;
+}
+
+message Portfolio {
+  string ID = 1;
+
+  ContentTypeEnum ContentType = 5;
+  string Tittle = 6;
+  string Description = 7;
+  repeated File Files = 8;
+  string CreatedAt = 9;
+  repeated Link Links = 10;
+  repeated string Tools = 11;
+  bool   IsCommentDisabled = 12;
+  int32 ViewsCount = 13;
+  int32 LikesCount = 14;
+  int32 SavedCount = 15;
+  int32 SharedCount = 16;
+  bool HasLiked   = 17;
+}
+
+
+message RequestPortfolio{
+  string UserID = 1;
+  string PortfolioID = 2;
+  string CompanyID = 3;
+}
+
+message RequestPortfolios {
+  string UserID = 1;
+  ContentTypeEnum ContentType = 2;
+  uint32 First = 3;
+  string After = 4;
+  string CompanyID = 5;
+}
+
+message GetPortfolioComment {
+  string PortfolioID = 1;
+  uint32 First = 2;
+  string After = 3;
+}
+
+message InvitationWalletRequest {
+  string UserID = 1;
+  string Name = 2;
+  string Email = 3;
+  string Message = 4;
+  int32  SilverCoins = 5;
+}
+
+message WalletResponse {
+  WalletAmountResponse Amount = 1;
+  WalletStatusEnum Status = 2;
+}
+
+enum WalletStatusEnum {
+  DONE = 0;
+  PENDING = 1;
+  REJECTED = 3;
+}
+
+message WalletAmountResponse {
+  int32 GoldCoins = 1;
+  int32 SilverCoins = 2;
+  int32 PendingAmount = 3;
+}
+
+message PortfolioCommentResponse {
+  int32    CommentAmount = 1;
+  repeated PortfolioComment PortfolioComment = 2;
+}
+
+message PortfolioList {
+  int32 PortfolioAmount = 1;
+  repeated Portfolio Portfolios = 2;
+}
+
+message ToolTechnologyList {
+  repeated ToolTechnology ToolsTechnologies = 1;
+}
+
+message ToolTechnology {
+  string ID = 1;
+  string ToolTechnology = 2;
+  enum Level {
+      Level_Beginner = 0;
+      Level_Intermediate = 1;
+      Level_Advanced = 2;
+      Level_Master = 3;
+  }
+  Level Rank = 3;
+  int64 CreatedAt = 4;
+}
+
+message RequestToolTechnology {
+  string UserID = 1;
+  uint32 First = 2;
+  string After = 3;
+  string Language = 4;
+}
+
+message ToolsTechnologiesList{
+  repeated ToolTechnology ToolsTechnologies = 1;
+}
+
+message IDs {
+  repeated string IDs = 1;
+}
+
+message ActivateUserRequest {
+  string UserID = 1;
+  string Code = 2;
+}

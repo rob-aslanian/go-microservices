@@ -1,0 +1,514 @@
+syntax = "proto3";
+package rentalRPC;
+
+
+// protoc --go_out=plugins=grpc:. rental.proto
+
+service RentalService{
+    rpc AddRealEstate(AddRentalRequest) returns (ID);
+    rpc AddHouseRentalAppartament(AddRentalRequest) returns (ID);
+    rpc AddRealEstateBuildings(AddRentalRequest) returns (ID);
+    rpc AddRealEstateCommercial(AddRentalRequest) returns (ID);
+    rpc AddRealEstateGarage(AddRentalRequest) returns (ID);
+    rpc AddRealEstateHotelRooms(AddRentalRequest) returns (ID);
+    rpc AddRealEstateLand(AddRentalRequest) returns (ID);
+    rpc AddRealEstateOffice(AddRentalRequest) returns (ID);
+
+
+    rpc GetRealEstates(GetRealEstateRequest) returns (Estates);
+
+
+}
+
+
+message GetRealEstateRequest{
+    string CompanyID = 1;
+    uint32 First = 2;
+    string After = 3;
+    DealTypeEnum DealType = 4;
+}
+
+message AddRentalRequest {
+    string CompanyID = 1;
+    Rental Rental = 2;
+    repeated TypeOfPropertyEnum TypeOfProperty = 3;
+    StatusEnum Status = 4;
+    int32 BadRooms = 5;
+    int32 BathRooms = 6;
+    int32 TotalArea = 7;
+    int32 Floor = 8;
+    int32 Floors = 9;
+    int32 CarSpaces = 10;
+    repeated OutdoorFeaturesEnum OutdoorFeatures = 11;
+    repeated IndoorFeaturesEnum IndoorFeatures = 12;
+    repeated ClimatControlEnum ClimatControl = 13;
+    string AvailibatiFrom = 14;
+    string AvailibatiTo = 15;
+    repeated Detail Details = 16;
+    Price Price = 17;
+    repeated Phone Phones = 18;
+    bool IsAgent = 19;
+    bool HasRepossesed = 20;
+    repeated WhoLiveEnum WhoLive = 21; 
+    LayoutEnum Layout = 22;
+    BuildingUseEnum BuildingUse = 23;
+    Price Exterior = 24;
+    Price Interior = 25;
+    Price InteriorAndExterior = 26;
+    repeated ServiceEnum Services = 27;
+    repeated MaterialEnum Materials = 28;
+    repeated string CountryIDs = 29;
+    repeated string CityIDs = 30;
+    int32 Rooms = 31;
+    TimingEnum Timing = 32;
+    repeated AdditionalFiltersEnum AdditionalFilters = 33;
+    repeated CommercialPropertyEnum CommercialProperties = 34;
+    repeated CommericalPropertyLocationEnum CommericalPropertyLocation = 35;
+    PriceTypeEnum MetricType = 36;
+    repeated StatusEnum TypeOfLand = 37;
+    repeated PropertyTypeEnum PropertyType = 38;
+    repeated LocationEnum LocationType = 39;
+    Price Purchase = 40;
+
+
+ }
+ 
+message Appartaments {
+    Rental Rental = 1;
+    repeated TypeOfPropertyEnum TypeOfProperty = 2;
+    StatusEnum Status = 3;
+    int32 BadRooms = 4;
+    int32 BathRooms = 5;
+    int32 TotalArea = 6;
+    int32 Floor = 7;
+    int32 Floors = 8;
+    int32 CarSpaces = 9;
+    repeated OutdoorFeaturesEnum OutdoorFeatures = 10;
+    repeated IndoorFeaturesEnum IndoorFeatures = 11;
+    repeated ClimatControlEnum ClimatControl = 12;
+    string AvailibatiFrom = 13;
+    string AvailibatiTo = 14;
+    repeated Detail Details = 15;
+    Price Price = 16;
+    repeated Phone Phones = 17;
+    bool IsAgent = 18;
+    bool HasRepossesed = 19;
+    repeated WhoLiveEnum WhoLive = 20; 
+    PriceTypeEnum MetricType = 21;
+}
+
+   
+message StorageRoom {
+    Rental Rental = 1;
+    string AvailibatiFrom = 2;
+    string AvailibatiTo = 3;
+    repeated Detail Details = 4;
+    Price Price = 5;
+    repeated Phone Phones = 6;
+    bool IsAgent = 7;
+    bool HasRepossesed = 8;
+    PriceTypeEnum MetricType = 9;
+    int32 TotalArea = 10;
+    StatusEnum Status = 11;
+}
+message BuilldingsAndGarage {
+    Rental Rental = 1;
+    StatusEnum Status = 2;
+    int32 TotalArea = 3;
+    repeated Detail Details = 4;
+    Price Price = 5;
+    repeated Phone Phones = 6;
+    repeated AdditionalFiltersEnum AdditionalFilters = 7;
+    string AvailibatiFrom = 8;
+    string AvailibatiTo = 9;
+    bool IsAgent = 10;
+    bool HasRepossesed = 11;
+    PriceTypeEnum MetricType = 12;
+}
+
+message CommercialAndRuralFarm {
+    Rental Rental = 1;
+    StatusEnum Status = 2;
+    int32 TotalArea = 3;
+    repeated Detail Details = 4;
+    Price Price = 5;
+    repeated Phone Phones = 6;
+    repeated CommercialPropertyEnum CommercialProperties = 7;
+    repeated CommericalPropertyLocationEnum CommericalPropertyLocation = 8;
+    repeated AdditionalFiltersEnum AdditionalFilters = 9;
+    string AvailibatiFrom = 10;
+    string AvailibatiTo = 11;
+    bool IsAgent = 12;
+    bool HasRepossesed = 13;
+    PriceTypeEnum MetricType = 14;
+}
+
+
+message Land {
+    Rental Rental = 1;
+    repeated StatusEnum TypeOfLand = 2;
+    int32 TotalArea = 3;
+    repeated Detail Details = 4;
+    Price Price = 5;
+    repeated Phone Phones = 6;
+    repeated AdditionalFiltersEnum AdditionalFilters = 7;
+    string AvailibatiFrom = 8;
+    string AvailibatiTo = 9;
+}
+
+message Office {
+    Rental Rental = 1;
+    LayoutEnum Layout = 2;
+    BuildingUseEnum BuildingUse = 3;
+    int32 TotalArea = 4;
+    string AvailibatiFrom = 5;
+    string AvailibatiTo = 6;
+    repeated Detail Details = 7;
+    Price Price = 8;
+    repeated Phone Phones = 9;
+    StatusEnum Status = 10;
+    PriceTypeEnum MetricType = 11;
+    bool IsAgent = 12;
+    bool HasRepossesed = 13;
+}
+
+message HotelRooms {
+    Rental Rental = 1;
+    int32 Rooms = 2;
+    int32 TotalArea = 3;
+    string AvailibatiFrom = 4;
+    string AvailibatiTo = 5;
+    repeated Detail Details = 6;
+    Price Price = 7;
+    repeated Phone Phones = 8;
+    StatusEnum Status = 9;
+}
+
+
+message Rental {
+    string ID = 1;
+    string OwnerID = 2;
+    bool IsCompany = 3;
+    PostStatusEnum PostStatus = 4;
+    DealTypeEnum DealType = 5;
+    PropertyTypeEnum PropertyType = 6;
+    Location Location = 7;
+    Files Files = 8;
+    string CreatedAt = 9;
+    int32 ExpiredDays = 10;
+    int32 Alerts = 11;
+    int32 Offers = 12;
+    int32 Views = 13;
+    int32 Shares = 14;
+    bool IsUrgent = 15;
+    string PostCurrency = 16;
+}
+
+message Estates {
+    int32 Amount = 1;
+    repeated Estate Estates = 2;
+  }
+  
+message Estate{
+    Rental RentalInfo = 1;
+    Detail RentalDetail = 2;
+  
+    oneof estates {
+      HotelRooms HotelRooms = 3;
+      Office Office = 4;
+      CommercialAndRuralFarm CommercialAndRuralFarm = 5;
+      BuilldingsAndGarage BuilldingsAndGarage = 6;
+      Appartaments Appartaments = 7;
+      Land Land = 8;
+      StorageRoom StorageRoom = 9;
+    }
+}
+
+message Price {
+    PriceTypeEnum PriceType = 1;
+    int32 MaxPrice = 2;
+    int32 MinPrice = 3;
+    string Currency = 4;
+    int32 FixPrice = 5;
+}
+
+
+message Detail {
+    string ID = 1;
+    string Title = 2;
+    string HouseRules = 3;
+    string Description = 4;
+}
+
+message Empty {}
+
+message ID {
+    string ID = 1;
+}
+
+message Location {
+    Country Country = 1;
+    City City = 2;
+    string Street = 3;
+    string Address = 4;
+}
+
+message City {
+  string Id = 1;
+  string City = 2;
+  string Subdivision = 3;
+}
+
+message Country{
+  string Id = 1;
+}
+
+
+message File {
+    string ID = 1;
+    string TargetID = 2;
+    string Name = 3;
+    string MimeType = 4;
+    string URL = 5;
+    string ItemID = 6;
+}
+message Phone {
+    string Id = 1;
+    string Number = 2;
+    int32 CountryCode = 3;
+  }
+  
+
+message Files {
+    repeated File Files = 1;
+}
+
+enum AdditionalFiltersEnum {
+    Additional_Filter_Any = 0;
+    Additional_Filter_Electricity = 1;
+    Additional_Filter_Water = 2;
+    Additional_Filter_NaturalGas = 3;
+    Additional_Filter_Sewage = 4;
+    Additional_Filter_AireConditioning = 5;
+    Additional_Filter_Heating = 6;
+    Additional_Filter_OnCorner = 7;
+    Additional_Filter_SmokeExtractor = 8;
+    Additional_Filter_MotoBikeGarage = 9;
+    Additional_Filter_AutomaticDoor = 10;
+    Additional_Filter_SecuritySystem = 11; 
+    
+}
+
+enum BuildingUseEnum {
+    Building_Use_Any = 0;
+    Building_Use_Indifferent = 1;
+    Building_Use_OnlyOffice = 2;
+    Building_Use_Mixed = 3;
+}
+
+enum ClimatControlEnum {
+    ClimatControl_Any = 0;
+    ClimatControl_AirConditioning = 1;
+    ClimatControl_Hearting = 2;
+    ClimatControl_WaterTank = 3;
+    ClimatControl_SolarPanels = 4;
+    ClimatControl_HighEnergyEfficiency = 5;
+    ClimatControlSolarHotWater = 6;
+    ClimatControl_ZonalHeating = 7;
+    ClimatControl_HeatPumps = 8;
+
+
+}
+
+enum CommercialPropertyEnum {
+    CommericalProperty_Any = 0;
+    CommericalProperty_OfficeSpace = 1;
+    CommericalProperty_CommercialPremises = 2;
+    CommericalProperty_IndustrialBuilding = 3;
+    CommericalProperty_Warehouse = 4;
+    CommericalProperty_FoodFacility = 5;
+    CommericalProperty_Garage = 6;
+    CommericalProperty_Basement = 7;
+    CommericalProperty_TradingPlace = 8;
+}
+enum CommericalPropertyLocationEnum {
+    CommericalPropertyLocation_Any = 0;
+    CommericalPropertyLocation_Indifferent = 1;
+    CommericalPropertyLocation_InShoppingCentre = 2;
+    CommericalPropertyLocation_Mezzanine = 3;
+    CommericalPropertyLocation_BelowGround = 4;
+    CommericalPropertyLocation_Other = 5;
+    CommericalPropertyLocation_Garage = 6;
+
+}
+enum DealTypeEnum {
+    DealType_Any = 0;
+    DealType_Rent = 1;
+    DealType_Lease = 2;
+    DealType_Share = 3;
+    DealType_Sell = 4;
+    DealType_Build = 5;
+    DealType_Materials = 6;
+    DealType_Renovation = 7;
+    DealType_Move = 8;
+
+}
+
+enum IndoorFeaturesEnum {
+    IndoorFeatures_Any = 0;
+    IndoorFeatures_Ensuit = 1;
+    IndoorFeatures_Study = 2;
+    IndoorFeatures_AlarmSystem = 3;
+    IndoorFeatures_Floorboards = 4;
+    IndoorFeatures_RumpusRoom = 5;
+    IndoorFeatures_StorageRoom = 6;
+    IndoorFeatures_Dishwasher = 7;
+    IndoorFeatures_Lift = 8;
+    IndoorFeatures_BuiltInRobes = 9;
+    IndoorFeatures_Broadband = 10;
+    IndoorFeatures_Gym = 11;
+    IndoorFeatures_Workshop = 12;
+}
+
+enum OutdoorFeaturesEnum {
+    OutdoorFeatures_Any = 0;
+    OutdoorFeatures_SwimmingPool = 1;
+    OutdoorFeatures_Balcony = 2;
+    OutdoorFeatures_UndercoverParking = 3;
+    OutdoorFeatures_FullyFenced = 4;
+    OutdoorFeatures_TennisCourt = 5;
+    OutdoorFeatures_Garden = 6;
+    OutdoorFeatures_Garage = 7;
+    OutdoorFeatures_OutdoorArea = 8;
+    OutdoorFeatures_Shed = 9;
+    OutdoorFeatures_OutdoorSpa = 10;
+    OutdoorFeatures_Outbuildings = 11;
+
+}
+
+enum LayoutEnum {
+    Layout_Any = 0;
+    Layout_Indifferent = 1;
+    Layout_OpenPlan = 2;
+    Layout_Walls = 3;
+}
+
+enum PostStatusEnum {
+    PostStatus_Any = 0;
+    PostStatus_Active = 1;
+    PostStatus_Expired = 2;
+    PostStatus_Hidden = 3;
+    PostStatus_Sold = 4;
+}
+
+enum PriceTypeEnum {
+    PriceType_Any = 0;
+    PriceType_Total = 1;
+    PriceType_MetreSquare = 2;
+    PriceType_FeetSquare = 3;
+
+}
+
+enum WhoLiveEnum {
+    WhoLive_Any = 0;
+	WhoLive_Mortgagor = 1;
+	WhoLiveOwner = 2;
+}
+
+enum LocationEnum {
+    Any_Location = 0;
+    Location_Local = 1;
+    Location_International = 2;   
+
+
+}
+
+enum PropertyTypeEnum {
+    PropertyType_All = 0;
+    PropertyType_Any = 1;
+    PropertyType_NewHomes = 2;
+    PropertyType_Homes = 3;
+    PropertyType_Houses = 4;
+    PropertyType_Appartments = 5;
+    PropertyType_Garages = 6;
+    PropertyType_StorageRooms = 7;
+    PropertyType_Offices = 8;
+    PropertyType_CommercialProperties = 9;
+    PropertyType_Buildings = 10;
+    PropertyType_Land = 11;
+    PropertyType_BareLand = 12;
+    PropertyType_Barn = 13;
+    PropertyType_SummerCottage = 14;
+    PropertyType_RuralFarm = 15;
+    PropertyType_HotelRoom = 16;
+
+}
+
+enum ServiceEnum {
+    Any_Service = 0;
+    Service_Auto_Transport = 1;
+    Service_Storage = 2;
+    Service_Moving_Supplies = 3;
+    Service_Furniture_Movers = 4;
+}
+
+enum MaterialEnum {
+    Any_Material = 0;
+    Material_Lumber_Composites = 1;
+    Material_Fencing = 2;
+    Material_Decking = 3;
+    Material_Fastners = 4;
+    Material_Moulding_Millwork = 5;
+    Material_Paint = 6;
+    Material_Drywall = 7;
+    Material_Doors_Windows = 8;
+    Material_Roofing_Gutters = 9;
+    Material_Ladders = 10;
+    Material_Scaffolding = 11;
+    Material_Plumbing = 12;
+    Material_Siding = 13;
+    Material_Insulation = 14;
+    Material_Ceilings = 15;
+    Material_Wall_Paneling = 16;
+    Material_Flooring = 17;
+    Material_Concrete_Cement_Masonry = 18;
+    Material_Material_Handling_Equipment = 19;
+    Material_Building_Hardware = 20;
+    Material_Glass_and_Plastic_Sheets = 21;
+    Material_Heating_venting_Cooling = 22;
+    Material_Other = 23;
+
+}
+
+
+enum TimingEnum {
+    Any_Timing = 0;
+    Timing_Flexible = 1;
+    Timing_6Months = 2;
+    Timing_Year = 3;
+}
+
+enum StatusEnum {
+    Status_Any = 0;
+    Status_OldBuild = 1;
+    Status_NewBuilding = 2;
+    Status_UnderConstruction = 3;
+    StatusDeveloped = 4;
+    Status_Buildable = 5;
+    Status_NonBuilding = 6;
+}
+
+enum TypeOfPropertyEnum {
+    TypeOfProperty_Any = 0;
+    TypeOfProperty_Appartaments = 1;
+    TypeOfProperty_Houses = 2;
+    TypeOfProperty_CountryHomes = 3;
+    TypeOfProperty_Duplex = 4;
+    TypeOfProperty_Penthouses = 5;
+    TypeOfProperty_Bungalow = 6;
+
+}
+
+
+
+

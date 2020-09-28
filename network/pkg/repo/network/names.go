@@ -1,0 +1,18 @@
+package network
+
+const DbName = "hypercube"
+const GraphName = "network"
+const UsersName = "users"
+const FriendshipName = "friendship"
+const FollowName = "follow"
+const CategoriesName = "have_in_category"
+const CategoriesForFollowingsName = "have_in_category_followings"
+const CategoryTreeName = "category_tree"
+const CategoryTreeForFollowingsName = "category_tree_for_followings"
+const CompaniesName = "companies"
+const OwnsCompanyName = "owns_company"
+const AdminsName = "admins"
+const WorksAtName = "works_at"
+const BlocksName = "blocks"
+const RecommendationRequestsName = "recommendation_requests"
+const RecommendationsName = "recommendations"

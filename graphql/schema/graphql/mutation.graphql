@@ -1,0 +1,611 @@
+type Mutation {
+  // Account
+
+  Register(input: RegistrationInput!): LoginResponse!
+  ActivateUser(code: String!, user_id: ID!): ActivateResponse
+  Login(input: Credentials!): LoginResponse!
+  ChooseActivationMethod(id:ID!, methods: ActivationMethods!): LoginResponse
+  SendRecoverRequest(login: String!, methods: RecoverMethods!): Success
+  RecoverPassword(recoveryRequest: RecoveryRequestInput!): Success
+  ## User Account
+  SignOut(): Success
+  SignOutSession(sessionID: String!): Success
+  SignOutFromAll(): Success
+
+  ChangeFirstName(name: String!): Success
+  ChangeLastName(lastname: String!): Success
+  ChangePatronymic(patronymic: PatronymicInput!): Success
+  ChangeNickname(nickname: NicknameInput!): Success
+  ChangeMiddlename(middlename: MiddlenameInput!): Success
+  ChangeNativeName(name: NativeNameInput!): Success
+  ChangeBithday(birthday: BirthdayInput!): Success
+  ### ----
+  ChangeGender(gender: GenderInput!): Success
+
+  AddEmail(email: EmailInput!): Success
+  RemoveEmail(id: ID!): Success
+  ### ----
+  ChangeEmail(changes: ChangingEmailInput!): Success
+
+  AddPhone(phone: PhoneInput!): Success
+  RemovePhone(id: ID!): Success
+  ## ----
+  ChangePhone(changes: ChangingPhoneInput!): Success
+
+  AddMyAddress(address: AddressInput!): Success
+  RemoveMyAddress(id: ID!): Success
+  ### ----
+  ChangeMyAddress(id: ID!, address: ChangingMyAddressInput!): Success
+
+  AddOtherAddress(address: AddressInput!): Success
+  RemoveOtherAddress(id: ID!): Success
+  ### ----
+  ChangeOtherAddress(id: ID!, address: ChangingOtherAddressInput!): Success
+
+  ChangeUILanguage(language: ID!): Success
+  ChangePrivacy(privacy: PrivacyEnum!, permission: PermissionType!): Success
+  ### ----
+  ChangePassword(old_password: String!, new_password: String!): Success
+
+  ### ----
+  ChangeNotificationsSetting(property: NotificationOptions!, value: Boolean!): Success
+  RemoveNotification(ids: [ID!]!): Success
+  ### ----
+  MarkNotificationAsSeen(ids: [ID!]!): Success
+
+  Init2FA():TwoFAResponse
+  Enable2FA(code: String!): Success
+  ### ----
+  Disable2FA(code: String!): Success
+
+  ### ----
+  DeactivateUserAccount(password: String!):Success
+
+  ## User Profile
+  # ChangeNotification(notification: NotificationEnum!, value: Boolean!): Success
+
+  // Profile
+  ChangeHeadline(input: String!): Success
+  ChangeStory(input: String!): Success
+  ### ----
+  RemoveAvatar: Success
+
+
+  ContactInvitationForWallet(wallet_input:InvitationWalletInput!) : WalletResponse!
+  EarnCoinsForWallet(user_id:ID! , wallet_input: WalletInput!) : WalletResponse!
+  AddPortfolio(portfolio: PortfolioInput!): Success
+  LikeUserPortfolio(company_id:ID , owner_id: ID!,  portfolio_id: ID!) : Success
+  UnLikeUserPortfolio(company_id:ID , owner_id: ID!,  portfolio_id: ID!) : Success
+  AddSavedCountToPortfolio(owner_id: ID!,  portfolio_id: ID!) : Success
+  AddViewCountToPortfolio(company_id:ID , owner_id: ID!,  portfolio_id: ID!) : Success
+
+  AddCommentToPortfolio(comment:AddPortfolioCommentInput!) : Success
+  RemoveCommentInPortfolio(company_id:ID , portfolio_id:ID! comment_id:ID!) : Success
+
+
+
+  RemovePortfolio(id: ID!): Success
+  ChangeOrderFilesInPortfolio(file: ChangeOrderFilesInPortfolioInput!): Success
+  ChangePortfolio(id: ID!, portfolio: ChangingPortfolioInput!): Success
+  AddLinksInPortfolio(id: ID!, input: [LinkInput!]!): Success
+  ChangeLinkInPortfolio(id: ID!, link_id: ID!, url: String!): Success
+  RemoveLinksInPortfolio(id: ID!, links_id: [ID!]!): Success
+  RemoveFilesInPortfolio(id: ID!, files_id: [ID!]!): Success
+
+  AddToolTechnology(tools_technologies: [ToolTechnologyInput!]!): IDs!
+  ChangeToolTechnology(tools_technologies: [ChangeToolTechnologyInput!]!): Success
+  RemoveToolTechnology(id: [ID!]!): Success
+
+  AddExperience(experience: ExperienceInput!): Success
+  RemoveExperience(id: ID!): Success
+  ChangeExperience(id: ID!, experience: ChangingExperienceInput!): Success
+  AddLinksInExperience(id: ID!, input: [LinkInput!]!): Success
+  ChangeLinkInExperience(id: ID!, link_id: ID!, url: String!): Success
+  RemoveLinksInExperience(id: ID!, links_id: [ID!]!): Success
+  ### ----
+  RemoveFilesInExperience(id: ID!, files_id: [ID!]!): Success
+
+  AddEducation(education: EducationInput!): Success
+  RemoveEducation(id: ID!): Success
+  ChangeEducation(id: ID!, education: ChangingEducationInput!): Success
+  AddLinksInEducation(id: ID!, input: [LinkInput!]!): Success
+  ChangeLinkInEducation(id: ID!, link_id: ID!, url: String!): Success
+  RemoveLinksInEducation(id: ID!, links_id: [ID!]!): Success
+  ### ----
+  RemoveFilesInEducation(id: ID!, files_id: [ID!]!): Success
+  ChangeUserStatus(user_id:ID! , status:UserStatusEnum!) : Success
+
+  AddSkills(skills: [SkillInput!]!): Success
+  ChangeOrderOfSkill(skill: ChangeOrderSkillInput!): Success
+  RemoveSkills(skill_id: [ID!]!): Success
+  VerifySkill(user_id: ID!, skill_id: ID!): Success
+  ### ----
+  UnverifySkill(user_id: ID!, skill_id: ID!): Success
+
+  AddKnownLanguage(language: KnownLanguageInput!): Success
+  ChangeKnownLanguage(id: ID!, language: ChangingKnownLanguageInput!): Success
+  ### ----
+  RemoveKnownLanguage(id: ID!): Success
+
+  AddAccomplishmentCertification(input: CertificationInput!): Success
+  AddAccomplishmentLicense(input: LicenseInput!): Success
+  AddAccomplishmentAward(input: AwardInput!): Success
+  AddAccomplishmentProject(input: ProjectInput!): Success
+  AddAccomplishmentPublication(input: PublicationInput!): Success
+  AddAccomplishmentTest(input: TestInput!): Success
+  AddLinksInAccomplishment(id: ID!, input: [LinkInput!]!): Success
+  RemoveLinksInAccomplishment(id: ID!, links_id: [ID!]!): Success
+  ChangeAccomplishmentCertification(id: ID!, accomplishment: ChangingCertificationInput!): Success
+  ChangeAccomplishmentLicense(id: ID!, accomplishment: ChangingLicenseInput!): Success
+  ChangeAccomplishmentAward(id: ID!, accomplishment: ChangingAwardInput!): Success
+  ChangeAccomplishmentProject(id: ID!, accomplishment: ChangingProjectInput!): Success
+  ChangeAccomplishmentPublication(id: ID!, accomplishment: ChangingPublicationInput!): Success
+  ChangeAccomplishmentTest(id: ID!, accomplishment: ChangingTestInput!): Success
+  ### ----
+  RemoveAccomplishment(id: ID!): Success
+  RemoveFilesInAccomplishment(id: ID!, files_id: [ID!]!): Success
+
+  AddInterest(input: InterestInput!): Success
+  ChangeInterest(id: ID!, interest: ChangingInterestInput!): Success
+  RemoveInterest(id: ID!): Success
+  ### ----
+  RemoveImageInInterest(id: ID!): Success
+
+  AskRecommendation(user_id: ID!, text: String! , relation:RecommendationRelationEnum , title:String): Success
+  IgnoreRecommendationRequest(id: ID!): Success
+  SetVisibilityRecommendation(id: ID!, is_visible: Boolean!): Success
+  ### ----
+  WriteRecommendation(user_id: ID! text: String! , relation:RecommendationRelationEnum , title:String): Success
+
+  ### ----
+  ReportUser(user_id: ID!, input: ReportUserInput!): Success
+
+  // translations
+  SaveProfileTranslation(languageID: String!, translations: ProfileTranslationInput!): Success
+  SaveUserExperienceTranslation(languageID: String!, translations: ExperienceTranslationInput!): Success
+  SaveUserEducationTranslation(languageID: String!, translations: EducationTranslationInput!): Success
+  SaveUserInterestTranslation(languageID: String!, translations: InterestTranslationInput!): Success
+  SaveUserPortfolioTranslation(languageID: String!, translations: PortfolioTranslationInput!): Success
+  SaveUserToolTechnologyTranslation(languageID: String!, translations: ToolTechnologyTranslationInput!): Success
+  SaveUserSkillTranslation(languageID: String!, translations: SkillTranslationInput!): Success
+  SaveUserAccomplishmentTranslation(languageID: String!, translations: AccomplishmentTranslationInput!): Success
+  ## Network
+  removeTranslation(languageID: String!): Success
+
+  // visibility
+
+
+  // Network
+  CreateCategory(name: String!, parent: String!): Boolean
+  CreateFollowingsCategory(name: String!, parent: String!): Boolean
+  CreateFollowingsCategoryForCompany(companyId: ID!, name: String!, parent: String!): Boolean
+  RemoveCategory(name: String!, parent: String!): Boolean
+  RemoveFollowingsCategory(name: String!, parent: String!): Boolean
+  RemoveFollowingsCategoryForCompany(companyId: ID!, name: String!, parent: String!): Boolean
+  SendFriendRequest(userId: String! description: String): Friendship
+  ApproveFriendRequest(requestId: String!): Boolean
+  DenyFriendRequest(requestId: String!): Boolean
+  IgnoreFriendRequest(requestId: String!): Boolean
+  Unfriend(userId: ID!): Boolean
+  Follow(userId: String!): Boolean
+  Unfollow(userId: String!): Boolean
+  AddToFavourites(userId: String!): CategoryNameWithUserId!
+  AddToFollowingsFavourites(companyId: ID!): CategoryNameWithCompanyId!
+  AddToFollowingsFavouritesForCompany(companyId: ID!, refCompanyId: ID!): CategoryNameWithCompanyId!
+  RemoveFromFavourites(userId: String!): CategoryNameWithUserId!
+  RemoveFromFollowingsFavourites(companyId: ID!): CategoryNameWithCompanyId!
+  RemoveFromFollowingsFavouritesForCompany(companyId: ID!, refCompanyId: ID!): CategoryNameWithCompanyId!
+  AddToCategory(userId: String! category_name: String!): CategoryNameWithUserId!
+  AddToFollowingsCategory(companyId: ID! category_name: String!): CategoryNameWithCompanyId!
+  AddToFollowingsCategoryForCompany(companyId: ID!, refCompanyId: ID!, category_name: String!): CategoryNameWithCompanyId!
+  ### ----
+  RemoveFromCategory(userId: String! category_name: String!): CategoryNameWithUserId!
+  RemoveFromFollowingsCategory(companyId: ID! category_name: String!): CategoryNameWithCompanyId!
+  RemoveFromFollowingsCategoryForCompany(companyId: ID!, refCompanyId: ID!, category_name: String!): CategoryNameWithCompanyId!
+  BatchRemoveFromCategory(userIds: [String!]! category_name: String! all: Boolean!): Boolean
+  BatchRemoveFromFollowingsCategory(companyIds: [String!]! category_name: String! all: Boolean!): Boolean
+  BatchRemoveFromFollowingsCategoryForCompany(companyId: ID! companyIds: [String!]! category_name: String! all: Boolean!): Boolean
+
+  FollowCompany(companyId: String!): Boolean
+  UnfollowCompany(companyId: String!): Boolean
+  AddCompanyToFavourites(companyId: String!): Boolean
+  RemoveCompanyFromFavourites(companyId: String!): Boolean
+  AddCompanyToCategory(companyId: String! category_name: String!): Boolean
+  ### ----
+  RemoveCompanyFromCategory(companyId: String! category_name: String!): Boolean
+
+  BlockUser(userId: String!): Boolean
+  UnblockUser(userId: String!): Boolean
+  BlockCompany(companyId: String!): Boolean
+  ### ----
+  UnblockCompany(companyId: String!): Boolean
+
+  BlockUserForCompany(company_id: ID!, user_id: ID!): Boolean
+  ### ----
+  UnblockUserForCompany(company_id: ID!, user_id: ID!): Boolean
+
+  FollowForCompany(companyId: String! userId: String!): Boolean
+  UnfollowForCompany(companyId: String! userId: String!): Boolean
+  FollowCompanyForCompany(companyId: String! followId: String!): Boolean
+  ### ----
+  UnfollowCompanyForCompany(companyId: String! followId: String!): Boolean
+
+  AddCompanyReview(company_id: ID! input: CompanyReviewInput!): Success
+  DeleteCompanyReview(company_id: ID! id: ID!): Success
+  ### ----
+  AddCompanyReviewReport(company_id: ID! id: ID! input: CompanyReviewReportInput!): Success
+
+  AddCompanyReport(company_id: ID! input: CompanyReportInput!): Success
+  ### ----
+  DeleteCompanyReport(company_id: ID! id: Int!): Success
+  SentEmailInvitation(email: String!, name: String!, company_id: ID): Success
+  ## Company Account
+
+  // Company account management
+
+  RegisterCompany(input: RegistrationCompanyInput!): RegisterCompanyResponse!
+  DeactivateCompany(company_id: ID! password: String!): Success
+
+  ChangeCompanyName(company_id: ID! name: String!): Success
+  ChangeCompanyUrl(company_id: ID! url: String!): Success
+  ChangeCompanyFoundationDate(company_id: ID! foundation_date: String!): Success
+  ### ----
+  ChangeCompanyIndustry(company_id: ID! input: ChangeCompanyIndustryInput!): Success
+
+  ChangeCompanyType(company_id: ID! type: CompanyTypeEnum!): Success
+  ### ----
+  ChangeCompanySize(company_id: ID! size: CompanySizeEnum!): Success
+
+  AddCompanyEmail(company_id: ID! input: CompanyEmailInput!): Success
+  DeleteCompanyEmail(company_id: ID! id: ID!): Success
+  ### ----
+  ChangeCompanyEmail(company_id: ID! changes: ChangingCompanyEmailInput!): Success
+
+  AddCompanyPhone(company_id: ID! input: CompanyPhoneInput!): Success
+  DeleteCompanyPhone(company_id: ID! id: ID!): Success
+  ### ----
+  ChangeCompanyPhone(company_id: ID! changes: ChangingCompanyPhoneInput!): Success
+
+  AddCompanyAddress(company_id: ID! input: CompanyAddressInput!): Success
+  DeleteCompanyAddress(company_id: ID! id: ID!): Success
+  ### ----
+  ChangeCompanyAddress(company_id: ID! changes: ChangingCompanyAddressInput!): Success
+
+  AddCompanyWebsite(company_id: ID! website: String!): Success
+  DeleteCompanyWebsite(company_id: ID! id: ID!): Success
+  ### ----
+  ChangeCompanyWebsite(company_id: ID! changes: ChangingCompanyWebsiteInput!): Success
+
+  ### ----
+  ChangeCompanyParking(company_id: ID! parking: CompanyParkingEnum!): Success
+  ChangeCompanyBenefits(company_id: ID! benefits: [CompanyBenefitsEnum!]): Success
+
+  AddCompanyAdmin(company_id: ID! password: String! user_id: ID! role: CompanyAdminRoleEnum!): Success
+  ### ----
+  DeleteCompanyAdmin(company_id: ID! password: String! user_id: ID!): Success
+
+  ChangeCompanyNotificationsSetting(company_id: String! property: CompanyNotificationOptions!, value: Boolean!): Success
+  MarkNotificationAsSeenForCompany(company_id: String! ids: [ID!]!): Success
+  ## Company Profile
+  RemoveNotificationForCompany(company_id: String! ids: [ID!]!): Success
+
+  // Company profile management
+
+  RemoveCompanyAvatar(company_id: ID!): Success
+  RemoveCompanyCover(company_id: ID!): Success
+  ### ----
+  ChangeCompanyAboutUs(company_id: ID! changes: ChangingCompanyAboutUsInput!): Success
+
+  AddCompanyFounder(company_id: ID! input: CompanyFounderInput!): Success
+  DeleteCompanyFounder(company_id: ID! id: ID!): Success
+  ChangeCompanyFounder(company_id: ID! changes: ChangingCompanyFounderInput!): Success
+  ApproveFounderRequest(company_id: ID!, request_id: ID!): Success
+  ### ----
+  RemoveFounderRequest(company_id: ID!, request_id: ID!): Success
+
+  AddCompanyAward(company_id: ID! input: CompanyAwardInput!): Success
+  ChangeCompanyAward(company_id: ID! changes: ChangingCompanyAwardInput!): Success
+  AddLinksInCompanyAward(company_id: ID!, id: ID!, input: [LinkInput!]!): Success
+  ChangeLinkInCompanyAward(company_id: ID!, id: ID!, link_id: ID!, url: String!): Success
+  RemoveLinksInCompanyAward(company_id: ID!, id: ID!, links_id: [ID!]!): Success
+  ### ----
+  RemoveFilesInCompanyAward(company_id: ID!, id: ID!, files_id: [ID!]!): Success
+  DeleteCompanyAward(company_id: ID! id: ID!): Success
+
+  AddCompanyMilestone(company_id: ID! input: CompanyMilestoneInput!): Success
+  DeleteCompanyMilestone(company_id: ID! id: ID!): Success
+  ChangeCompanyMilestone(company_id: ID! changes: ChangingCompanyMilestoneInput!): Success
+  ### ----
+  RemoveImageInMilestone(company_id: ID!, id:ID!): Success
+
+  ### ----
+  SaveCompanyProfileTranslation(company_id: ID!, translations: CompanyProfileTranslationInput!): Success
+  SaveCompanyMilestoneTranslation(company_id: ID!, languageID: String!, translations: MilestoneTranslationInput!): Success
+  SaveCompanyAwardTranslation(company_id: ID!, languageID: String!, translations: AwardTranslationInput!): Success
+
+
+  // # RemoveCompanyBenefits(company_id: ID! input: CompanyBenefitsInput): Success
+
+  AddCompanyProduct(company_id: ID! input: CompanyProductInput!): Success
+  DeleteCompanyProduct(company_id: ID! id: ID!): Success
+  ChangeCompanyProduct(company_id: ID! changes: ChangingCompanyProductInput!): Success
+  ### ----
+  RemoveImageInProduct(company_id: ID!, id:ID!): Success
+
+  AddCompanyService(company_id: ID! input: CompanyServiceInput!): Success
+  DeleteCompanyService(company_id: ID! id: ID!): Success
+  ChangeCompanyService(company_id: ID! changes: ChangingCompanyServiceInput!): Success
+
+  ## Jobs
+  # for user
+  // # ChangeCompanyCover(company_id: ID! cover: String): Success
+  RemoveImageInService(company_id: ID!, id:ID!): Success
+
+
+  // jobs
+  SetOpenFlag(open: Boolean!): Boolean
+  SetCareerInterests(interests: CareerInterestsInput!): Boolean
+  ApplyJob(application: ApplicationInput!): Boolean
+  IgnoreInvitation(job_id: ID!): Boolean
+  SaveJob(jobId: ID!): Boolean
+  UnsaveJob(jobId: ID!): Boolean
+  SkipJob(jobId: ID!): Boolean
+  UnskipJob(jobId: ID!): Boolean
+  AddJobView(jobId: String!): Boolean
+  ReportJob(jobId: ID!, type: ReportJobEnum!, text: String): Boolean
+  // SaveJobSearchFilter(name: String!, filter: JobSearchFilterInput!): Boolean
+  # for company
+  # SaveJobAlert(name: String!, interval: String!, notify_email: Boolean!, notify_notification: Boolean!, filter: JobSearchFilterInput!): Boolean
+
+  PostJob(companyId: String!, details: JobDetailsInput!, meta: JobMetaInput!): Success!
+  ChangePost(companyId: String!, draftId: String!, details: JobDetailsInput!): Success!
+  DeleteExpiredPost(companyId: String!, postId: String!):Success!
+  SaveDraft(companyId: String!, details: JobDetailsInput!, meta: JobMetaInput!): Success!
+  ChangeDraft(companyId: String!, draftId: String!, details: JobDetailsInput!, meta: JobMetaInput!): Success!
+  ActivateJob(companyId: String!, jobId: String!): Boolean
+  PauseJob(companyId: String!, jobId: String!): Boolean
+  SetJobApplicationSeen(companyId: ID!, jobId: ID!, applicationId: ID!, seen: Boolean!): Boolean
+  SetJobApplicationCategory(companyId: ID!, jobId: ID!, applicationId: ID!, category: ApplicantCategoryEnum!): Boolean
+  InviteUserToApply(companyId: ID!, userId: ID!, jobId: ID!, text: String!): Boolean
+  SaveCandidate(companyId: ID!, candidateId: ID!): Boolean
+  UnsaveCandidate(companyId: ID!, candidateId: ID!): Boolean
+  SkipCandidate(companyId: ID!, candidateId: ID!): Boolean
+  UnskipCandidate(companyId: ID!, candidateId: ID!): Boolean
+  ReportCandidate(companyId: ID!, candidateId: ID!, text: String!): Boolean
+  SaveCandidateSearchFilter(companyId: ID!, name: String!, filter: CandidateSearchFilterInput!): Boolean
+  ## Messages
+  # SaveCandidateAlert(companyId: ID!, name: String!, interval: String!, notify_email: Boolean!, notify_notification: Boolean!, filter: CandidateSearchFilterInput!): ID!
+  # UpdateCandidateAlert(companyId: ID!, alertId: ID!, name: String!, interval: String!, notify_email: Boolean!, notify_notification: Boolean!, filter: CandidateSearchFilterInput!): Boolean
+  # DeleteCandidateAlert(companyId: ID!, alertId: ID!): Boolean
+
+// messages
+  CreateConversation(name: String!, avatar: String!, participants: [ParticipantInput!]!): Conversation
+  AddParticipants(conversationId: ID!, participants: [ParticipantInput!]!): Conversation
+  LeaveConversation(conversationId: ID!): Boolean
+  DeleteConversation(conversationId: ID!): Boolean
+  SetConversationUnreadFlag(conversationId: ID!, flag: Boolean!): Boolean
+  MuteConversation(conversationId: ID!, mute: Boolean!): Boolean
+  BlockConversation(conversationId: ID!, block: Boolean!): Boolean
+  ArchiveConversation(conversationId: ID!, archive: Boolean!): Boolean
+  RenameConversation(conversationId: ID!, name: String!): Boolean
+  ChangeConversationAvatar(conversationId: ID!, avatar: String!): Boolean
+
+  CreateReply(title: String!, text: String!, files: [ChatReplyFileInput!]): ChatReply
+  UpdateReply(id: ID!, title: String!, text: String!, files: [ChatReplyFileInput!]): ChatReply
+  DeleteReply(id: ID!): Boolean
+
+  CreateLabel(name: String!, color: String!): ChatLabel!
+  UpdateLabel(id: ID!, name: String!, color: String!): Boolean
+  DeleteLabel(id: ID!): Boolean
+  AddLabelToConversation(conversationId: ID!, labelId: ID!): Boolean
+  RemoveLabelFromConversation(conversationId: ID!, labelId: ID!): Boolean
+
+  SetOffline(offline: Boolean!): Boolean
+
+  # for company
+  CreateConversationForCompany(companyId: String!, name: String!, avatar: String!, participants: [ParticipantInput!]!): Conversation
+  AddParticipantsForCompany(companyId: String!, conversationId: ID!, participants: [ParticipantInput!]!): Conversation
+  LeaveConversationForCompany(companyId: String!, conversationId: ID!): Boolean
+  DeleteConversationForCompany(companyId: String!, conversationId: ID!): Boolean
+  SetConversationUnreadFlagForCompany(companyId: String!, conversationId: ID!, flag: Boolean!): Boolean
+  MuteConversationForCompany(companyId: String!, conversationId: ID!, mute: Boolean!): Boolean
+  BlockConversationForCompany(companyId: String!, conversationId: ID!, block: Boolean!): Boolean
+  ArchiveConversationForCompany(companyId: String!, conversationId: ID!, archive: Boolean!): Boolean
+  RenameConversationForCompany(companyId: String!, conversationId: ID!, name: String!): Boolean
+  ChangeConversationAvatarForCompany(companyId: String!, conversationId: ID!, avatar: String!): Boolean
+
+  CreateReplyForCompany(companyId: String!, title: String!, text: String!, files: [ChatReplyFileInput!]): ChatReply
+  UpdateReplyForCompany(companyId: String!, id: ID!, title: String!, text: String!, files: [ChatReplyFileInput!]): ChatReply
+  DeleteReplyForCompany(companyId: String!, id: ID!): Boolean
+
+  CreateLabelForCompany(companyId: String!, name: String!, color: String!): ChatLabel!
+  UpdateLabelForCompany(companyId: String!, id: ID!, name: String!, color: String!): Boolean
+  DeleteLabelForCompany(companyId: String!, id: ID!): Boolean
+  AddLabelToConversationForCompany(companyId: String!, conversationId: ID!, labelId: ID!): Boolean
+  RemoveLabelFromConversationForCompany(companyId: String!, conversationId: ID!, labelId: ID!): Boolean
+
+  SetOfflineForCompany(companyId: ID!, offline: Boolean!): Boolean
+  ## Ads
+  ReportConversationForCompany(companyId: String!, conversationId: ID!, text: String!): Boolean
+
+  // Ads
+
+  CreateAdvertCampaign(input: AdvertCampaignInput!): Success
+  CreateAdvertByCampaign(campaign_id:ID! input:AdvertInput!) : Success
+  PauseAdvertCampaign(campaign_id:ID!) : Success 
+  ActiveAdvertCampaign(campaign_id:ID!): Success
+
+  PauseAdvert(advert_id:ID!)  : Success 
+  ActiveAdvert(advert_id:ID!) : Success
+
+
+  ## ---
+  RemoveAdvertCampaign(campaign_id:ID!) : Success
+  RemoveAdvert(campaign_id:ID! , advert_id:ID!): Success
+  ## Other
+
+  // Other
+  SaveFeedback(feedback: FeedbackInput!): Success
+  SubmitFeedback(feedback:AdditionalFeedbackInput!): Success
+  VoteForComingSoon(email:String! , type:String!): Success
+  # Statistics
+  ReportConversation(conversationId: ID!, text: String!): Boolean
+
+  // Statistics
+  PersistEvent(event: String!, actorId: String!, actorType: String!, targetId: String, targetType: String, data: JSON!): Boolean
+  IncrementCounter(targetId: String, increments: JSON!): Boolean
+
+  // search
+
+  SaveUserSearchFilter(user_filter: UserSearchFilter!): Success!
+  SaveCompanySearchFilter(company_filter: CompanySearchFilter!): Success!
+  SaveJobSearchFilter(job_filter: JobSearchFilter!): Success!
+  SaveServiceSearchFilter(company_id:ID , service_filter:SearchServiceQuery!) : Success!
+  SaveServiceRequestSearchFilter(company_id:ID , service_request_filter:SearchServiceRequestQuery!) : Success!
+
+
+  RemoveFilter(filter_id: ID!): Success!
+
+  SaveUserSearchFilterForCompany(user_filter: UserSearchFilterForCompany!): Success!
+  SaveCompanySearchFilterForCompany(company_filter: CompanySearchFilterForCompany!): Success!
+  SaveJobSearchFilterForCompany(job_filter: JobSearchFilterForCompany!): Success!
+  SaveCandidateSearchFilterForCompany(candidate_filter: CandidateSearchFilterForCompany!): Success!
+
+  RemoveFilterForCompany(filter_id: ID!, companyID: ID!): Success!
+
+  # AddCompanyGallery(company_id: ID!, gallery: [GalleryInput!]!) : Success
+  # ChangeOrderOfCompanyGallery(gallery: ChangeOrderGalleryInput!): Success
+  RemoveFilesInCompanyGallery(company_id: ID!,  files_id: [ID!]!): Success
+
+  // Services
+  CreateVOffice(company_id: ID, input: CreateVOfficeInput!): Success
+  ChangeVOffice(company_id: ID, office_id:ID! , input: CreateVOfficeInput!): Success
+  RemoveVOffice(company_id: ID , office_id:String!): Success
+  ChangeVOfficeName(company_id: ID, office_id: ID!, name: String!): Success
+  AddChangeVOfficeDescription(company_id: ID, office_id: ID!,  description: String!): Success
+
+
+  # Pass company_id only if the office belongs to the company. Pass portfolio_id only when you are changing the portfolio itself or changing link.
+  AddVOfficePortfolio(company_id: ID,  office_id: ID!, portfolio: VOfficePortfolioInput!): AddVofficeResponse
+  ChangeVOfficePortfolio(company_id: ID,  office_id: ID!, portfolio_id: ID, portfolio: VOfficePortfolioInput!): Success
+  RemoveVofficeCover(office_id:ID! , company_id:ID): Success
+  RemoveVOfficePortfolio(company_id: ID, office_id: ID!, portfolio_id: ID!): Success
+  RemoveLinksInVOfficePortfolio(company_id: ID, office_id: ID!, portfolio_id: ID!, links_ids: [ID!]!): Success
+  RemoveFilesInVOfficePortfolio(company_id: ID, office_id: ID!, portfolio_id: ID!, files_ids: [ID!]!): Success
+
+  # Pass company_id if qthe office belongs to the company. Pass qualifications_id if you are changing them
+  AddVOfficeLanguages(company_id: ID, office_id: ID!,  languages: [ChangeQualificationLanguageInput!]): IDs!
+  ChangeVOfficeLanguage(company_id: ID, office_id: ID!,  languages: [ChangeQualificationLanguageInput!]): Success
+  RemoveVOfficeLanguages(company_id: ID, office_id: ID!, language_ids: [ID!]!): Success
+
+  IsOutOfOffice(company_id: ID, office_id: ID!, is_Out: Boolean!, return_Date: String): Success
+
+  AddVOfficeService(company_id: ID, office_id: ID!, service:ServiceInput!): Success
+  ChangeVOfficeServiceStatus(company_id:ID , office_id:ID! , service_id:ID! status:ServiceStatusEnum!): Success
+  ChangeVOfficeService(company_id: ID, service_id: ID!, office_id: ID!, service:ServiceInput!): Success
+  # Pass company_id only if the office belongs to the company.
+  RemoveVOfficeService(company_id: ID,  service_id: ID!): Success
+  # Pass company_id only if the office belongs to the company.
+  RemoveFilesInVOfficeService(company_id: ID, service_id: ID!, files_ids: [ID!]!): Success
+
+  RemoveFilesInServiceRequest(company_id: ID, service_id: ID!, files_ids: [ID!]!): Success
+
+  # Pass company_id only if the office belongs to the company. Pass request_id only when you are changing the service itself or changing link.
+  AddServicesRequest(company_id: ID,   request:ServiceRequestInput!): Success
+  ChangeServicesRequest(company_id: ID, service_id:ID! , request:ServiceRequestInput!): Success
+
+  ChangeServicesRequestStatus(company_id: ID, service_id:ID! , status:ServiceStatusEnum!): Success
+
+  # Pass company_id only if the request was posted by to the company.
+  RemoveServicesRequest(company_id: ID,  request_id: ID!): Success
+
+  #CreateVOffice(input: CreateVOfficeInput!): CreateVOfficeResponse!
+
+  SendProposalForServiceRequest(input:ProposalInput!) : Success
+  IgnoreProposalForServiceRequest(company_id:ID, proposal_id:ID!) : Success
+  OrderService(input:OrderServiceInput!) : Success
+  OrderProposalForServiceRequest(company_id:ID , proposal_id:ID!) : Success
+  AddNoteForOrderService(order_id:ID! company_id:ID , text:String!) : Success
+  AcceptOrderService(company_id:ID , service_id:ID! , order_id:ID!) : Success
+  DeclineServiceOrder(company_id:ID , order_id:ID!) : Success
+  CancelServiceOrder(company_id:ID , order_id:ID!) : Success
+  DeliverServiceOrder(company_id:ID , order_id:ID!) : Success
+  AcceptDeliverdServiceOrder(company_id:ID , order_id:ID!) : Success
+  CancelDeliverdServiceOrder(company_id:ID , order_id:ID!) : Success
+
+
+  SaveVOfficeService(service_id:ID! company_id:ID): Success
+  UnSaveVOfficeService(service_id:ID! company_id:ID): Success
+
+  SaveServiceRequest(service_id:ID! company_id:ID): Success
+  UnSaveServiceRequest(service_id:ID! company_id:ID): Success
+
+  WriteReviewForService(service_id:ID! , office_id:ID! , owner_id:ID! , review_detail:ReviewDetailInput!)  : Success
+  WriteReviewForServiceRequest(owner_id:ID! , is_owner_company:Boolean! , review_detail:ReviewDetailInput!)  : Success
+
+
+  // newsfeed
+  AddPostInNewsfeed(post: PostNewsfeedInput!): Success
+  AddCommentInPostInNewsfeed(comment: CommentPostNewsfeedInput!): Success
+  ChangeCommentInPostInNewsfeed(comment: ChangeCommentNewsfeedInput!): Success
+  RemoveCommentInPostInNewsfeed(post_id: ID! comment_id: ID! company_id: ID): Success
+  ChangePostInNewsfeed(post: ChangePostNewsfeedInput!): Success
+  RemovePostInNewsfeed(post_id: ID!, company_id: ID): Success
+  RemoveFileInNewsfeed(post_id: ID!, comment_id: ID, company_id: ID, file_id: ID!): Success
+  LikePostInNewsfeed(post_id: ID!, comment_id: ID, like: LikeInput!): Success
+  ## Groups
+  UnlikePostInNewsfeed(post_id: ID!, comment_id: ID, id: ID!): Success
+
+  // groups
+  RegisterGroup(input: RegisterGroupRequestInput): Success
+  ChangeGroupTagline(group_id: ID!, tagline: String!): Success
+  ChangeGroupDescription(group_id: ID!, description: GroupDescriptionInput!): Success
+  ChangeGroupName(group_id: ID!, name: String!): Success
+  ChangeGroupPrivacyType(group_id: ID!, type: GroupPrivacyTypeEnum!): Success
+  ChangeGroupURL(group_id: ID!, url: String!): Success
+  AddAdminInGroup(group_id: ID!, user_id: ID!): Success
+  # only for public groups
+  JoinGroup(group_id: ID!): Success
+  LeaveGroup(group_id: ID!): Success
+  RemoveMemberFromGroup(group_id: ID!, user_id: ID!): Success
+  # for groups of any type
+  SentInvitations(group_id: ID!, user_id: [ID!]!): Success
+  AcceptInvitation(group_id: ID!): Success
+  DeclineInvitation(group_id: ID!): Success
+  # only for closed groups
+  SentJoinRequest(group_id: ID!): Success
+  ApproveJoinRequest(group_id: ID!, user_id: ID!): Success
+  ## Carrer Center
+  DeclineJoinRequest(group_id: ID!, user_id: ID!): Success
+
+  // Career Center
+  openCareerCenter(company_id: ID!, input: OpenCareerCenterInput!): Boolean
+  addCVInCareerCenter(company_id: ID!, options: AddCVInCareerCenterInput): Boolean
+  RemoveCVs(companyId: ID!, ids: [ID!]!): Boolean
+  ## Shop
+  MakeFavoriteCVs(companyId: ID!, ids: [ID!]!, is_favourite: Boolean!): Boolean
+
+  // Shop
+  createShop(company_id: ID, input: CreateShopInput!): Success
+  addProduct(company_id: ID, input: AddProductRequestInput!): Success
+  changeShowcase(company_id: ID, input: ChangeShowcaseRequestInput!): Success
+  makeOrder(company_id: ID, input: MakeOrderRequestInput!): Success
+  AddToWishlist(company_id: ID, product_id: ID!): Success
+  removeShopLogo(company_id: ID, shop_id: ID!): Success
+  removeShopCover(company_id: ID, shop_id: ID!): Success
+  changeProduct(company_id: ID, product_id: ID!, input: ChangeProductInput!): Success
+  removeProduct(company_id: ID, product_id: ID!): Success
+  hideProduct(company_id: ID, product_id: ID!, value: Boolean!): Success
+
+  ## House Rental
+  ChangeOrderStatus(company_id: ID, input: ChangeOrderStatusInput!): Success
+  // House Rental
+  AddRealEstate(input:AddRealEstateInput!) : Success
+  AddRealEstateAppartamentOrHouse(input:HouseRentalAppartamentInput!) : Success
+  AddRealEstateBuildings(input:RealEstateBuildingsInput!) : Success
+  AddRealEstateCommercial(input:RealEstateCommercialInput!) : Success
+  AddRealEstateGarage(input:RealEstateGarageInput!) : Success
+  AddRealEstateHotelRooms(input:RealEstateHotelRoomsInput!) : Success
+  AddRealEstateLand(input:RealEstateLandInput!) : Success
+  AddRealEstateOffice(input:RealEstateOfficeInput!) : Success
+}
