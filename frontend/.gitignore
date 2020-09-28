@@ -1,0 +1,8 @@
+/build
+/data
+/vendor
+/Hypercube
+
+*.exe
+.idea
+.tmp

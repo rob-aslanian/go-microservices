@@ -1,0 +1,256 @@
+mongo-url = "mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_ADDR}"
+elasticsearch-urls = ["${ES_ADDR}"]
+# namespace-regex = ['^users_db\.users$', '^jobs_db\.profiles$', '^jobs_db\.jobs$', '^companies-db\.companies$']
+# direct-read-namespaces = ["users_db.users", "jobs_db.profiles", "jobs_db.jobs", "companies-db.companies", "reviews.company_reviews"]
+direct-read-namespaces = ["users_db.users", "jobs_db.profiles", "jobs_db.jobs", "companies-db.companies", "services_db.services", "services_db.requests"]
+# change-stream-namespaces = [""] # for test (should read commit of transactions)
+change-stream-namespaces = ["users_db.users", "jobs_db.profiles", "jobs_db.jobs", "companies-db.companies", "services_db.services", "services_db.requests", "reviews.company_reviews"]
+
+# curl "localhost:9200/_cat/indices?v"
+
+# curl -X DELETE "localhost:9200/users_db.users"
+# curl -X DELETE "localhost:9200/companies-db.companies"
+
+# curl -X PUT "localhost:9200/users_db.users?pretty" -H "Content-Type: application/json" -d'
+# {
+#   "mappings":{
+#     "properties": {
+#       "status": {
+#         "type": "keyword"
+#       },
+#       "gender": {
+#         "type": "object",
+#         "properties": {
+#           "gender": {
+#             "type": "keyword"
+#           }
+#         }
+#       },
+#       "location.country.id": {
+#         "type": "keyword"
+#       },
+#       "location.city.id": {
+#         "type": "keyword"
+#       },
+#       "experiences": {
+#         "type": "nested"
+#        },
+#       "accomplishments": {
+#         "type": "object",
+#         "properties": {
+#           "score": {
+#             "type": "double"
+#           }
+#         }
+#       },
+#       "translation.ru.last_name": {
+#         "type": "text",
+#         "analyzer": "russian"
+#       },
+#       "translation.ru.first_name": {
+#         "type": "text",
+#         "analyzer": "russian"
+#       },
+#       "translation.ru.headline": {
+#         "type": "text",
+#         "analyzer": "russian"
+#       },
+#       "translation.ru.story": {
+#         "type": "text",
+#         "analyzer": "russian"
+#       },
+#       "my_joing_field":{
+#         "type": "join",
+#         "relations":{
+#           "user": "candidate"
+#         }
+#       }
+#     }
+#   }
+# }
+# '
+
+
+# curl -X PUT "localhost:9200/companies-db.companies?pretty" -H "Content-Type: application/json" -d'
+# {
+#   "mappings":{
+#     "properties": {
+#       "industry": {
+#         "type": "object",
+#           "properties": {
+#               "main": {
+#                   "type": "keyword"
+#               },
+#               "sub": {
+#                   "type": "keyword"
+#               }
+#           }
+#       },
+#       "business_hours": {
+#         "type": "object",
+#           "properties": {
+#               "weekdays": {
+#                   "type": "keyword"
+#               }
+#           }
+#       },
+#       "type": {
+#         "type": "keyword"
+#       },
+#       "document_type": {
+#         "type": "keyword"
+#       },
+#       "status": {
+#         "type": "keyword"
+#       },
+#       "size": {
+#         "type": "keyword"
+#       },
+#       "parking": {
+#         "type": "keyword"
+#       },
+#       "foundation_date": {
+#         "type": "date"
+#       },
+#       "created_at": {
+#         "type": "date"
+#       },
+#       "my_joing_field":{
+#         "type": "join",
+#         "relations":{
+#           "company": "job"
+#         }
+#       }
+#     }
+#   }
+# }
+# '
+
+# if free space run out es will be blocked
+# curl -X PUT "localhost:9200/_settings" -H "Content-Type: application/json" -d '
+# {"index": {"blocks": {"read_only_allow_delete": false}}}
+# '
+
+# users/candidates
+
+[[script]]
+namespace = "jobs_db.profiles"
+routing = true
+script = """
+module.exports = function(doc) {
+  var routing;
+  routing = doc.user_id;
+
+  console.log("Inserting candidate: ", doc._id,  "parent is ", routing)
+
+  doc.document_type = "candidate";
+  doc.my_joing_field = {
+    name: "candidate",
+    parent: routing
+  };
+
+
+  doc._meta_monstache = {routing: routing};
+  return doc;
+}
+"""
+
+#redirect candidates into users_db
+[[mapping]]
+namespace = "jobs_db.profiles"
+index = "users_db.users"
+
+
+# adding type field
+[[script]]
+namespace = "users_db.users"
+routing = true
+script = """
+module.exports = function(doc) {
+    doc.document_type = "user";
+    doc.my_joing_field = {
+      name: "user",
+    };
+
+    console.log("Inserting user: ", doc._id)
+
+  return doc;
+}
+"""
+
+# ----------- reviews -----------
+
+[[pipeline]]
+namespace = "reviews.company_reviews"
+script = """
+module.exports = function(ns, changeStream){
+
+  console.log("pipeline:", ns, changeStream)
+
+  return [ { $match: {} } ];
+}
+"""
+
+# [[script]]
+# namespace = "reviews.company_reviews"
+# script = """
+# module.exports = function(doc) {
+#   doc.type = "review";
+#
+#   console.log("Inserting", doc.type)
+#
+#   return doc;
+# }
+# """
+
+
+# [[mapping]]
+# namespace = "reviews.company_reviews"
+# index = "companies-db.companies"
+
+
+# ----------- companies/jobs -----------
+
+[[script]]
+namespace = "jobs_db.jobs"
+routing = true
+script = """
+module.exports = function(doc) {
+  var routing;
+  routing = doc.company_id;
+
+  console.log("Inserting jobs: ", doc._id,  "parent is ", routing)
+
+  doc.document_type = "job";
+  doc.my_joing_field = {
+    name: "job",
+    parent: routing
+  };
+
+
+  doc._meta_monstache = {routing: routing};
+  return doc;
+}
+"""
+
+#redirect candidates into users_db
+[[mapping]]
+namespace = "jobs_db.jobs"
+index = "companies-db.companies"
+
+
+# adding type field
+[[script]]
+namespace = "companies-db.companies"
+routing = true
+script = """
+module.exports = function(doc) {
+    doc.document_type = "company";
+    doc.my_joing_field = {
+      name: "company",
+    };
+    console.log("Inserting company: ", doc._id)
+
+  return doc;
+}
+"""
